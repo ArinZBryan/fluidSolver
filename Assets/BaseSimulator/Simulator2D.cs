@@ -14,6 +14,8 @@ public class Simulator2D : MonoBehaviour
     FluidSolver.Solver solver;
     Vector2[,] velocityField;
     float[,] densityField;
+    Texture2D drawTex;
+    bool newFrame = true;
 
     public int penSize = 20;
     int mouseX;
@@ -22,8 +24,13 @@ public class Simulator2D : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        drawTex = new Texture2D(N, N);  
         velocityField = new Vector2[N + 2, N + 2];
         densityField = new float[N + 2, N + 2];
+    }
+
+    private void LateUpdate()
+    {
         Time.fixedDeltaTime = 1 / stepsPerSecond;
         solver = new Solver(N, 1 / stepsPerSecond, diffusionRate, viscosity);
     }
@@ -55,13 +62,18 @@ public class Simulator2D : MonoBehaviour
         }
 
         solver.step(velocityField, densityField);
-        
+        drawTex = densityTexture(solver.currentState);
+        newFrame = true;
     }
 
     void OnGUI()
     {
-        Texture2D tex = densityTexture(solver.currentState);
-        Graphics.DrawTexture(new Rect(0, 0, N * 10, N * 10), tex);
+        if (newFrame)
+        {
+            Graphics.DrawTexture(new Rect(0, 0, N * 10, N * 10), drawTex);
+            newFrame = false;
+        }
+            
     }
 
     Texture2D densityTexture(Solver.State solveState)
