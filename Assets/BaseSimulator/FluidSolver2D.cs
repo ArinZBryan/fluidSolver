@@ -30,7 +30,7 @@ namespace FluidSolver
                 this.density_prev = new float[N + 2, N + 2];
             }
 
-            public Vector2[,] velocityField()
+            public Vector2[,] getVelocityField()
             {
                 Vector2[,] velocity = new Vector2[N + 2, N + 2];
                 for (int i = 0; i < N + 2; i++)
@@ -38,9 +38,22 @@ namespace FluidSolver
                         velocity[i, j] = new Vector2(velocityX[i, j], velocityY[i, j]);
                 return velocity;
             }
+
+            public void setVelocityField(Vector2[,] velocities)
+            {
+                for (int i = 0; i < N + 2; i++)
+                {
+                    for (int j = 0; j < N + 2; j++)
+                    {
+                        velocityX[i, j] = velocities[i, j].x;
+                        velocityY[i, j] = velocities[i, j].y;
+                    }
+                }
+            }
+
         }
 
-        State currentState;
+        public State currentState;
         enum BoundaryType { IGNORE, HORIZONTAL, VERTICAL }
 
         public Solver(int N, float deltaTime, float diffusionRate, float viscosity)
@@ -201,6 +214,15 @@ namespace FluidSolver
 
             cur_state = project(cur_state);
             return cur_state;
+        }
+        
+        public State step(Vector2[,] velocityField, float[,] densityField)
+        {
+            currentState.setVelocityField(velocityField);
+            currentState.density = densityField;
+            currentState = vel_step(currentState);
+            currentState = dens_step(currentState);
+            return currentState;
         }
 
         T swap<T>(ref T a, ref T b) { T t = a; a = b; b = t; return a; }
