@@ -310,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962945030}
-  - component: {fileID: 1962945029}
+  - component: {fileID: 1962945031}
   m_Layer: 0
   m_Name: Simulator2D
   m_TagString: Untagged
@@ -318,25 +318,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1962945029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962945028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be1ab3ce67f2ef64396c8b5eeee0c1f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  N: 10
-  stepsPerSecond: 50
-  diffusionRate: 0.0001
-  viscosity: 0.0001
-  showDensity: 1
-  showVelocity: 0
-  penSize: 20
 --- !u!4 &1962945030
 Transform:
   m_ObjectHideFlags: 0
@@ -352,3 +333,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1962945031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962945028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26afd217a2e107e478708e5704a7b83a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  penSize: 3
