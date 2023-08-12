@@ -345,6 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6607e68a07909504d934a64269408cf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  texWidth: 100
+  texHeight: 100
   penColor: {r: 1, g: 1, b: 1, a: 1}
   baseColor: {r: 0, g: 0, b: 0, a: 1}
-  penSize: 1
+  penSize: 3
