@@ -310,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962945030}
-  - component: {fileID: 1962945032}
+  - component: {fileID: 1962945033}
   m_Layer: 0
   m_Name: Simulator2D
   m_TagString: Untagged
@@ -333,7 +333,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962945032
+--- !u!114 &1962945033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -342,11 +342,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1962945028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6607e68a07909504d934a64269408cf2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f99d91ddeee3074bbe0b608ca1a8f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   texWidth: 100
   texHeight: 100
-  penColor: {r: 1, g: 1, b: 1, a: 1}
-  baseColor: {r: 0, g: 0, b: 0, a: 1}
-  penSize: 3
+  penColor: {r: 1, g: 0, b: 0, a: 1}
+  baseColor: {r: 0, g: 0.40936995, b: 1, a: 1}
+  penSize: 1
