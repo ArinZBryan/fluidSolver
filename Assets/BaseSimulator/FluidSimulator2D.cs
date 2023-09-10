@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using UnityEngine;
 
-public class ScreenDrawWithEffect : MonoBehaviour
+public class FluidSimulator2D : MonoBehaviour
 {
     public int texWidth = 32;
     public int texHeight = 32;
-    
+
     public Color penColor;
     public Color baseColor;
     Vector4 penVector;
@@ -18,9 +18,13 @@ public class ScreenDrawWithEffect : MonoBehaviour
 
     int mouseX;
     int mouseY;
-    public ITexture2DEffect selectedImplementation;
 
-    // Start is called before the first frame update
+    public float viscosity;
+    public float diffusionRate;
+    public float deltaTime;
+    Solver2D solver;
+
+     // Start is called before the first frame update
     void Start()
     {
 
@@ -38,7 +42,8 @@ public class ScreenDrawWithEffect : MonoBehaviour
         baseVector = (Vector4)baseColor;
         for (int i = 0; i < texWidth; i++) for (int j = 0; j < texHeight; j++) drawVecs[i, j] = baseVector;
 
-        selectedImplementation = new Texture2DEffects.NoEffect();
+        solver = new Solver2D(texWidth, diffusionRate, viscosity, deltaTime);
+
     }
 
     // Update is called once per frame
@@ -47,7 +52,7 @@ public class ScreenDrawWithEffect : MonoBehaviour
         mouseX = (int)Input.mousePosition.x;
         mouseY = (int)Input.mousePosition.y - (Screen.height - texWidth);
 
-        mouseX = Math.Clamp(mouseX, 0, texWidth-1);
+        mouseX = Math.Clamp(mouseX, 0, texWidth - 1);
         mouseY = Math.Clamp(mouseY, 0, texHeight - 1);
 
         if (Input.GetMouseButton(0))
@@ -59,8 +64,10 @@ public class ScreenDrawWithEffect : MonoBehaviour
         {
             vector4Paint(ref drawVecs, baseVector, mouseX, mouseY, penSize);
         }
-
-        selectedImplementation.runEffect(ref drawVecs);
+        vecsToSolverDensity();
+        solver.dens_step();
+        solver.vel_step();
+        solverDensityToVecs();
         drawTex = vector4sToTexture(drawVecs);
     }
 
@@ -93,21 +100,40 @@ public class ScreenDrawWithEffect : MonoBehaviour
         Texture2D tex = new Texture2D(vecWidth, vecHeight);
         tex.SetPixels(cols);
         tex.Apply();
-        return tex; 
+        return tex;
     }
-
     void vector4Paint(ref Vector4[,] vec, Vector4 value, int x, int y, int brushSize)
     {
         int vecWidth = vec.GetLength(0);
         int vecHeight = vec.GetLength(1);
-        for (int i = x-(brushSize-1); i < x + brushSize; i++ )
+        for (int i = x - (brushSize - 1); i < x + brushSize; i++)
         {
             if (i >= vecWidth || i < 0) { continue; }
-            for (int j = y-(brushSize-1); j < y + brushSize; j++)
+            for (int j = y - (brushSize - 1); j < y + brushSize; j++)
             {
                 if (j >= vecHeight || j < 0) { continue; }
                 vec[i, j] = value;
             }
         }
     }
+    void solverDensityToVecs()
+    {
+        float[,] density = solver.getDensity();
+        for (int i = 0; i < texWidth; i++)
+        {
+            for (int j = 0; j < texHeight; j++)
+            {
+                drawVecs[i, j].Set(density[i, j], density[i, j], density[i, j], density[i, j]);
+            }
+        }
+    }
+    void vecsToSolverDensity()
+    {
+        for (int i = 0;i < texWidth; i++)
+            for (int j = 0;j < texHeight; j++)
+            {
+                solver.density[i, j] = drawVecs[i, j].x;
+            }
+    }
+
 }
