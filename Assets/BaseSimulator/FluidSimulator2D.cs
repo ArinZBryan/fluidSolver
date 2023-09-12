@@ -19,10 +19,12 @@ public class FluidSimulator2D : MonoBehaviour
     int mouseX;
     int mouseY;
 
+    public float drawModifier = 1.0f;
     public float viscosity;
     public float diffusionRate;
     public float deltaTime;
     Solver2D solver;
+
 
      // Start is called before the first frame update
     void Start()
@@ -51,7 +53,7 @@ public class FluidSimulator2D : MonoBehaviour
     {
         mouseX = (int)Input.mousePosition.x;
         mouseY = (int)Input.mousePosition.y - (Screen.height - texWidth);
-
+        
         mouseX = Math.Clamp(mouseX, 0, texWidth - 1);
         mouseY = Math.Clamp(mouseY, 0, texHeight - 1);
 
@@ -112,7 +114,7 @@ public class FluidSimulator2D : MonoBehaviour
             for (int j = y - (brushSize - 1); j < y + brushSize; j++)
             {
                 if (j >= vecHeight || j < 0) { continue; }
-                vec[i, j] = value;
+                vec[i, j] = value * drawModifier;
             }
         }
     }
@@ -123,7 +125,7 @@ public class FluidSimulator2D : MonoBehaviour
         {
             for (int j = 0; j < texHeight; j++)
             {
-                drawVecs[i, j].Set(density[i, j], density[i, j], density[i, j], density[i, j]);
+                drawVecs[i, j].Set(density[i, j], density[i, j], density[i, j], 1f);
             }
         }
     }
