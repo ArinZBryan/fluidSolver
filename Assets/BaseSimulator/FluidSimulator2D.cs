@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FluidSimulator2D : MonoBehaviour
 {
+    public bool interactive = true;
+
     public int texWidth = 32;
     public int texHeight = 32;
 
@@ -66,6 +68,7 @@ public class FluidSimulator2D : MonoBehaviour
         {
             vector4Paint(ref drawVecs, baseVector, mouseX, mouseY, penSize);
         }
+        
         vecsToSolverDensity();
         solver.dens_step();
         solver.vel_step();
