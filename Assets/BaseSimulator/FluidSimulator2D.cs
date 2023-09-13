@@ -1,4 +1,7 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FluidSimulator2D : MonoBehaviour
@@ -25,7 +28,6 @@ public class FluidSimulator2D : MonoBehaviour
     public float viscosity;
     public float diffusionRate;
     public float deltaTime;
-    Solver2D solver;
 
 
      // Start is called before the first frame update
@@ -139,6 +141,56 @@ public class FluidSimulator2D : MonoBehaviour
             {
                 solver.density[i, j] = drawVecs[i, j].x;
             }
+    }
+
+}
+
+class Solver2D
+{
+    float[] u;
+    float[] u_prev;
+    float[] v;
+    float[] v_prev;
+    float[] dens;
+    float[] dens_prev;
+
+    int N;
+    float diffusionRate;
+    float viscosity;
+    float deltaTime;
+
+    public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime) 
+    {
+        int size = N + 2 * N + 2;
+        
+        u = new float[size];
+        u_prev = new float[size];
+        v = new float[size];
+        v_prev = new float[size];
+        dens = new float[size];
+        dens_prev = new float[size];
+
+        this.diffusionRate = diffusionRate;
+        this.viscosity = viscosity;
+        this.deltaTime = deltaTime;
+    }
+
+    [DllImport("unmanagedSolver.dll")]
+    static extern unsafe void dens_step(int N, float* x, float* x0, float* u, float* v, float diff, float dt);
+
+    [DllImport("unmanagedSolver.dll")]
+    static extern unsafe void vel_step(int N, float* u, float* v, float* u0, float* v0, float visc, float dt);
+
+    void densStep()
+    {
+        unsafe
+        {
+            fixed (float* densP = &dens, dens_prevP = &dens_prev, uP = &u, vP = &v)
+            {
+                dens_step(N, (float*)(void*)dens, (float*)(void*)dens_prev, (float*)(void*)u, (float*)(void*)v, diffusionRate, deltaTime);
+            }
+        }
+
     }
 
 }
