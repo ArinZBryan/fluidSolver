@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.spoiledcat.git": {
-      "version": "1.0.12",
+      "version": "1.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
