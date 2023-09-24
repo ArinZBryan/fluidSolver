@@ -6,6 +6,8 @@
         void SWAP<T>(ref T a, ref T b) -> void SWAP(void* a, void* b) or void SWAP<T>(T* a, T* b) 
 */
 
+using System;
+
 class Solver2D
 {
     //Vector Fields
@@ -46,7 +48,8 @@ class Solver2D
     void add_source(ref float[,] destination, ref float[,] source)
     {
         int i, j = 0;
-        for (i = 0; i < (N + 2); i++) for (j = 0; j < (N + 2); j++) { destination[i, j] += deltaTime * source[i, j]; }
+        
+        //for (i = 0; i < (N + 2); i++) for (j = 0; j < (N + 2); j++) { destination[i, j] += deltaTime * source[i, j]; }
     }
     //Enforce boundary conditions for vector fields
     void set_bnd(Boundary boundaryType, ref float[,] valueField)
