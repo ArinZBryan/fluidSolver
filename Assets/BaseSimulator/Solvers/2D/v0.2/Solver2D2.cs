@@ -153,31 +153,64 @@
     }
 
 
-
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array 
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getDensity()
     {
         return ref x;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array*/
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getDensityPrev()
     {
         return ref x0;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array*/
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getVelocityX()
     {
         return ref u;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array*/
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getVelocityY()
     {
         return ref v;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array*/
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getVelocityXPrev()
     {
         return ref u0;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array*/
+    /// </summary>
+    /// <returns></returns>
     public ref float[] getVelocityYPrev()
     {
         return ref v0;
     }
+    /// <summary>
+    /// This returns the full (n+2)*(n+2) array
+    /// </summary>
+    /// <param name="density"></param>
+    /// <param name="density_prev"></param>
+    /// <param name="velocity_horizontal"></param>
+    /// <param name="velocity_horizontal_prev"></param>
+    /// <param name="velocity_vertical"></param>
+    /// <param name="velocity_vertical_prev"></param>
+    /// <param name="N"></param>
     public void getAll(out float[] density, out float[] density_prev, out float[] velocity_horizontal, out float[] velocity_horizontal_prev, out float[] velocity_vertical, out float[] velocity_vertical_prev, out int N)
     {
         density = this.x;

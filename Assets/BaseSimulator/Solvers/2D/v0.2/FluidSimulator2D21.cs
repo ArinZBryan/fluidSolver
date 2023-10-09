@@ -1,9 +1,11 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 class FluidSimulator2D21 : MonoBehaviour
 {
     public int gridSize = 32;
+    int N;
     public int scale = 5;
     public float viscosity = 0;
     public float diffusionRate = 0;
@@ -17,6 +19,9 @@ class FluidSimulator2D21 : MonoBehaviour
 
     int mouseX = 0;
     int mouseY = 0;
+    float mouseVelocityX = 0;
+    float mouseVelocityY = 0;
+
 
     private void Start()
     {
@@ -27,6 +32,7 @@ class FluidSimulator2D21 : MonoBehaviour
         velTex.filterMode = FilterMode.Point;
 
         solver = new Solver2D2(gridSize, diffusionRate, viscosity, deltaTime);
+        N = gridSize + 2;
     }
 
     private void Update()
@@ -36,52 +42,124 @@ class FluidSimulator2D21 : MonoBehaviour
         mouseY = (int)Input.mousePosition.y - Screen.height;
 
         //clamp to area of simulation
-        mouseX = Math.Clamp(mouseX, 0, gridSize * scale -1);
-        mouseY = Math.Clamp(mouseY, 0, gridSize * scale -1);
+        mouseX = Math.Clamp(mouseX, 0, gridSize * scale - 1);
+        mouseY = Math.Clamp(mouseY, 0, gridSize * scale - 1);
 
         //get grid pos of cursor
         int cursorX = mouseX / scale;
         int cursorY = mouseY / scale;
 
+        //get mouse velocity
+        mouseVelocityX = Input.GetAxis("Mouse X");
+        mouseVelocityY = Input.GetAxis("Mouse Y");
+
         if (Input.GetKey(KeyCode.V))
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                // paint to velocity
+                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorX, cursorY, gridSize, gridSize, penSize);
             }
 
             if (Input.GetMouseButton(1)) //RMB
             {
-                // paint to velocity
+                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorX, cursorY, gridSize, gridSize, penSize);
             }
 
             solver.dens_step();
             solver.vel_step();
 
-            //Draw Velocityies
+            drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex);
 
-        } else
+        }
+        else
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                // paint to density
+                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensity(), 1, cursorX, cursorY, gridSize, gridSize, penSize);
             }
 
             if (Input.GetMouseButton(1)) //RMB
             {
-                // paint to density
+                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensity(), 0, cursorX, cursorY, gridSize, gridSize, penSize);
             }
 
             solver.dens_step();
             solver.vel_step();
-        
-            //Draw Densities
+
+            drawDensity(solver.getDensity(), ref densTex);
         }
-
-
     }
 
-    public void line(int x, int y, int x2, int y2, int color)
+    void OnGUI()
+    {
+        if (Event.current.type.Equals(EventType.Repaint))
+        {
+            if (Input.GetKey(KeyCode.V))
+            {
+                Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize*scale), velTex);
+            } else
+            {
+                Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), densTex);
+            }
+        }
+    }
+
+    void drawDensity(in float[] density, ref Texture2D drawTex)
+    {
+        int numCols = density.Length;
+
+        Color[] cols = new Color[gridSize*gridSize];
+
+        // Calculate the size of the slice
+        int sliceRows = gridSize;
+        int sliceCols = gridSize;
+
+        // Copy the elements from the packed array to the slice array
+        for (int row = 1; row < gridSize+1; row++)
+        {
+            for (int col = 1; col < gridSize+1; col++)
+            {
+                int sourceIndex = (row * numCols) + col;
+                int targetIndex = ((row - 1) * sliceCols) + (col - 1);
+                try
+                {
+                    cols[targetIndex].r = density[sourceIndex];
+                    cols[targetIndex].g = density[sourceIndex];
+                    cols[targetIndex].b = density[sourceIndex];
+                    cols[targetIndex].a = 1;
+                } catch (IndexOutOfRangeException ex) 
+                {
+                    Debug.Log(sourceIndex.ToString() + " : " + targetIndex.ToString());
+                    throw ex;
+                }
+                
+            }
+        }
+
+        drawTex.SetPixels(cols);
+        drawTex.Apply();
+    }
+    void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex)
+    {
+        Vector2 normalised;
+        Vector2 velocity;
+        int xCoord, yCoord;
+        for (int i = 1; i < N; i++)
+        {
+            for (int j = 1; j < N; j++)
+            {
+                velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
+                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
+                normalised = velocity.normalized;
+                xCoord = (i - 1) * 5 + 2;
+                yCoord = (j - 1) * 5 + 2;
+                line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * 2).x), (int)Math.Round((normalised * 2).y), Color.white);
+
+            }
+        }
+        drawTex.Apply();
+    }
+    public void line(ref Texture2D tex, int x, int y, int x2, int y2, Color color)
     {
         int w = x2 - x;
         int h = y2 - y;
@@ -101,7 +179,7 @@ class FluidSimulator2D21 : MonoBehaviour
         int numerator = longest >> 1;
         for (int i = 0; i <= longest; i++)
         {
-            putpixel(x, y, color);
+            tex.SetPixel(x, y, color);
             numerator += shortest;
             if (!(numerator < longest))
             {
@@ -116,6 +194,5 @@ class FluidSimulator2D21 : MonoBehaviour
             }
         }
     }
-
 
 }

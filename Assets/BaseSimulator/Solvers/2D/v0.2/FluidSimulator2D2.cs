@@ -52,6 +52,10 @@ public class FluidSimulator2D2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //this is just to prevent unity complaining about compilation errors and forcing safe mode
+        int texHeights = 0;
+        //DO NOT REMOVE THIS LINE
+
         mouseX = (int)Input.mousePosition.x;
         mouseY = (int)Input.mousePosition.y - (Screen.height - texWidth);
 
@@ -60,12 +64,12 @@ public class FluidSimulator2D2 : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            vector4Paint(ref drawVecs, penVector, mouseX, mouseY, texWidth, texHeights, penSize); ;
+            vector4Paint(ref drawVecs, penVector, mouseX, mouseY, texWidth, texHeights, penSize);
         }
 
         if (Input.GetMouseButton(1))
         {
-            vector4Paint(ref drawVecs, baseVector, texWidth + 2, mouseX, mouseY, penSize);
+            vector4Paint(ref drawVecs, penVector, mouseX, mouseY, texWidth, texHeights, penSize);
         }
         vecsToSolverDensity();
         solver.dens_step();
