@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -106,38 +107,52 @@ class FluidSimulator2D21 : MonoBehaviour
 
     void drawDensity(in float[] density, ref Texture2D drawTex)
     {
-        int numCols = density.Length;
+        // Define the dimensions of the original 2D array
+        int numRows = gridSize + 2;
+        int numCols = gridSize + 2;
 
-        Color[] cols = new Color[gridSize*gridSize];
+        // Define the range of rows and columns for the 2D slice
+        int startRow = 1; // Starting row (0-based index)
+        int endRow = numRows;   // Ending row (exclusive)
+        int startCol = 1; // Starting column (0-based index)
+        int endCol = numCols;   // Ending column (exclusive)
 
         // Calculate the size of the slice
-        int sliceRows = gridSize;
-        int sliceCols = gridSize;
+        int sliceRows = endRow - startRow;
+        int sliceCols = endCol - startCol;
+
+        // Create a 1D array to hold the slice
+        Color[] sliceArray = new Color[gridSize * gridSize];
 
         // Copy the elements from the packed array to the slice array
-        for (int row = 1; row < gridSize+1; row++)
+        for (int row = startRow; row < endRow; row++)
         {
-            for (int col = 1; col < gridSize+1; col++)
+            for (int col = startCol; col < endCol; col++)
             {
                 int sourceIndex = (row * numCols) + col;
-                int targetIndex = ((row - 1) * sliceCols) + (col - 1);
+                int targetIndex = ((row - startRow) * sliceCols) + (col - startCol);
                 try
                 {
-                    cols[targetIndex].r = density[sourceIndex];
-                    cols[targetIndex].g = density[sourceIndex];
-                    cols[targetIndex].b = density[sourceIndex];
-                    cols[targetIndex].a = 1;
-                } catch (IndexOutOfRangeException ex) 
+                    sliceArray[targetIndex].r = density[sourceIndex];
+                    sliceArray[targetIndex].g = density[sourceIndex];
+                    sliceArray[targetIndex].b = density[sourceIndex];
+                    sliceArray[targetIndex].a = 1f;
+                } catch (IndexOutOfRangeException e)
                 {
-                    Debug.Log(sourceIndex.ToString() + " : " + targetIndex.ToString());
-                    throw ex;
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("sourceIndex: " + sourceIndex.ToString());
+                    sb.AppendLine("targetIndex: " + targetIndex.ToString());
+                    sb.AppendLine("row, col: " + row.ToString() + ", " + col.ToString());
+                    Debug.Log(sb.ToString());
                 }
+                
                 
             }
         }
 
-        drawTex.SetPixels(cols);
-        drawTex.Apply();
+        densTex.SetPixels(sliceArray);
+        densTex.Apply();
+    
     }
     void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex)
     {
