@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ public static class ArrayFuncs
         return ret;
     }
 
-    public static void printArray2D<T>(T[,] arr, string delimiter = "\t")
+    public static string printArray2D<T>(T[,] arr, string delimiter = "\t")
     {
         int rowLength = arr.GetLength(0);
         int colLength = arr.GetLength(1);
@@ -70,7 +71,8 @@ public static class ArrayFuncs
             }
             msg.Append("\n");
         }
-        Debug.Log(msg.ToString());
+        //Console.WriteLine(msg.ToString());
+        return msg.ToString();
     }
     public static T accessArray1DAs2D<T>(int x, int y, int width, int height, in T[] array)
     {
@@ -86,6 +88,20 @@ public static class ArrayFuncs
         int x = index % (xLen - 1);
         int y = index / (xLen - 1);
         return array[x, y];
+    }
+    public static int accessArray1DAs2D(int x, int y, int width, int height)
+    {
+        /*
+        if (x >= width) {
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (x Coordinate)" + "(" + x.ToString() + " >= "  + width.ToString() + ")"); }
+        if (x < 0) { 
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (x Coordinate)" + "(" + x.ToString() + " < 0)"); }
+        if (y >= height) { 
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (y Coordinate)" + "(" + y.ToString() + " >= " + height.ToString() + ")"); }
+        if (y < 0) { 
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (y Coordinate)" + "(" + y.ToString() + " < 0)"); }
+        */
+        return x + y * width;
     }
     public static T[] getSlice1DFromArray1D<T>(in T[] values, int start, int length)
     {

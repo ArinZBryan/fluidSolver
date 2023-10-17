@@ -134,7 +134,7 @@ public class FluidSimulator2D : MonoBehaviour
         for (int i = 0;i < texWidth; i++)
             for (int j = 0;j < texHeight; j++)
             {
-                solver.density[i, j] = drawVecs[i, j].x;
+                solver.density_prev[i, j] = drawVecs[i, j].x;
             }
     }
 
