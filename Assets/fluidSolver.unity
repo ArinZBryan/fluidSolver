@@ -240,9 +240,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 32
   scale: 5
-  viscosity: 0
+  viscosity: 0.1
   diffusionRate: 0.01
-  deltaTime: 0.01
+  deltaTime: 0.08
   penSize: 3
 --- !u!4 &489610160
 Transform:

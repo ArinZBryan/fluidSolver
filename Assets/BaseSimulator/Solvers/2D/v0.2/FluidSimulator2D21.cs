@@ -81,6 +81,7 @@ class FluidSimulator2D21 : MonoBehaviour
         {
             if (Input.GetMouseButton(0)) //LMB
             {
+                solver.getDensityPrev();
                 ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
@@ -89,12 +90,9 @@ class FluidSimulator2D21 : MonoBehaviour
                 ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 0f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
-
-
             solver.vel_step();
             solver.dens_step();
             
-
             drawDensity(solver.getDensity(), ref densTex);
             
         }
