@@ -86,7 +86,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
             if (Input.GetMouseButton(1)) //RMB
             {
-                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 0f, cursorY, cursorX, gridSize, gridSize, penSize);
+                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
 
