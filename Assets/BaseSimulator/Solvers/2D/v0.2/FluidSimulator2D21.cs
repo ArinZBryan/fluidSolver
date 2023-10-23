@@ -28,7 +28,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
     private void Start()
     {
-        densTex = new Texture2D(gridSize * scale, gridSize * scale);
+        densTex = new Texture2D(gridSize, gridSize);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
 
         densTex.filterMode = FilterMode.Point;
@@ -71,17 +71,16 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
-            
+
 
             drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex);
 
-            
+
         }
         else
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                solver.getDensityPrev();
                 ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
@@ -90,11 +89,14 @@ class FluidSimulator2D21 : MonoBehaviour
                 ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
+
+
             solver.vel_step();
             solver.dens_step();
-            
+
+
             drawDensity(solver.getDensity(), ref densTex);
-            
+
         }
     }
 
@@ -106,10 +108,6 @@ class FluidSimulator2D21 : MonoBehaviour
             {
                 Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), velTex);
             }
-            else if (Input.GetKey(KeyCode.Y))
-            {
-                Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), floatsToTexture(solver.getDensity()));
-            }
             else
             {
                 Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), densTex);
@@ -119,34 +117,19 @@ class FluidSimulator2D21 : MonoBehaviour
 
     void drawDensity(in float[] density, ref Texture2D drawTex)
     {
-        //using modified implementation of ArrayFuncs.getSlice2DfromArray2D
-        //Replacements are:
-        // - 2D arrays -> 1D arrays
-        // - 2D indicies -> ArrayFuncs.accessArray1DAs2D(i,j,w,h)
-
-        int xStart, xEnd, yStart, yEnd;
-        xStart = 1; yStart = 1;
-        xEnd = gridSize + 1; yEnd = gridSize + 1; 
-
-        int width = gridSize+2;
-        int height = gridSize+2;
-        for (int i = xStart; i < xEnd; i++) for (int j = yStart; j < yEnd-1; j++)
-        {
-            for (int scaleX = 0; scaleX < scale; scaleX++) for (int scaleY = 0; scaleY < scale; scaleY++)
+        Color[] colors = new Color[gridSize * gridSize];
+        for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
-                float dens = density[ArrayFuncs.accessArray1DAs2D(i, j, gridSize + 2, gridSize + 2)];
-                int iX = (i - xStart) * scale + scaleX;
-                int iY = (i - yStart) * scale + scaleY;
-                densColour[ArrayFuncs.accessArray1DAs2D(iX, iY, gridSize * scale, gridSize * scale)].r = dens;
-                densColour[ArrayFuncs.accessArray1DAs2D(iX, iY, gridSize * scale, gridSize * scale)].g = dens;
-                densColour[ArrayFuncs.accessArray1DAs2D(iX, iY, gridSize * scale, gridSize * scale)].b = dens;
-                densColour[ArrayFuncs.accessArray1DAs2D(iX, iY, gridSize * scale, gridSize * scale)].a = 1f;
+                int colIndex = ArrayFuncs.accessArray1DAs2D(simCellX - 1, simCellY - 1, gridSize, gridSize);
+                int denIndex = ArrayFuncs.accessArray1DAs2D(simCellX, simCellY, gridSize + 2, gridSize + 2);
+                colors[colIndex].r = density[denIndex];
+                colors[colIndex].g = density[denIndex];
+                colors[colIndex].b = density[denIndex];
+                colors[colIndex].a = 1f;
             }
-                
-        }
-        drawTex.SetPixels(densColour);
+        drawTex.SetPixels(colors);
         drawTex.Apply();
-    
+
     }
     void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex)
     {
@@ -202,41 +185,5 @@ class FluidSimulator2D21 : MonoBehaviour
                 y += dy2;
             }
         }
-    }
-    Texture2D vector4sToTexture(Vector4[] vecs)
-    {
-
-        Color[] cols = new Color[vecs.Length];
-
-        for (int i = 0; i < vecs.Length; i++)
-        {
-            cols[i].r = vecs[i].x;
-            cols[i].g = vecs[i].y;
-            cols[i].b = vecs[i].z;
-            cols[i].a = vecs[i].w;
-        }
-
-        Texture2D tex = new Texture2D(32, 32);
-        tex.SetPixels(cols);
-        tex.Apply();
-        return tex;
-    }
-    Texture2D floatsToTexture(float[] vecs)
-    {
-
-        Color[] cols = new Color[vecs.Length];
-
-        for (int i = 0; i < vecs.Length; i++)
-        {
-            cols[i].r = vecs[i];
-            cols[i].g = vecs[i];
-            cols[i].b = vecs[i];
-            cols[i].a = 1f;
-        }
-
-        Texture2D tex = new Texture2D(32, 32);
-        tex.SetPixels(cols);
-        tex.Apply();
-        return tex;
     }
 }
