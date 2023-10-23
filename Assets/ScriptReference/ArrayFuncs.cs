@@ -113,8 +113,8 @@ public static class ArrayFuncs
         int height = values.GetLength(1);
         ret = new T[xEnd - xStart, yEnd - yStart];
         for (int i = xStart; i < xEnd; i++) for (int j = yStart; i < yEnd; j++)
-        {
+            {
                 ret[i - xStart, j - yStart] = values[i, j];
-        }
+            }
     }
 }

@@ -136,7 +136,7 @@
 
     public void dens_step()
     {
-        add_source(N, ref x, ref x0, dt);
+        //add_source(N, ref x, ref x0, dt);
         SWAP(ref x0, ref x); diffuse(N, 0, ref x, ref x0, diff, dt);
         SWAP(ref x0, ref x); advect(N, 0, ref x, ref x0, ref u, ref v, dt);
     }
