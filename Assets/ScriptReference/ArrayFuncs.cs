@@ -8,7 +8,17 @@ using UnityEngine;
 
 public static class ArrayFuncs
 {
-    public static void paintTo1DArrayAs2D<T>(ref T[] arr, T value, int x, int y, int arrW, int arrH, int brushSize)
+    public static void edit1DArrayAs2D<T>(ref T[] arr, T value, int x, int y, int arrW, int arrH)
+    {
+        T[,] values = array1Dto2D(arr, arrW, arrH);
+        values[x,y] = value;
+        arr = array2Dto1D(values);
+    }
+
+    //FIXME:    This calculates the valid indicies incorrectly, for the time being, the above function is replacing this.
+    //          It has no support for brushes larger than 1, so this needs doing sometime soon.
+    //          In the mean time, a workaround is to just have a really large value to paint with, and let diffusion do its hting
+    public static string paintTo1DArrayAs2D<T>(ref T[] arr, T value, int x, int y, int arrW, int arrH, int brushSize)
     {
         int a = (brushSize - 1) / 2;
         List<int> validIndicies = new List<int>(brushSize * brushSize);
@@ -25,6 +35,8 @@ public static class ArrayFuncs
         {
             arr[index] = value;
         }
+
+        return printArray2DMatrix(array1Dto2D(arr, arrW + 2, arrH + 2));
     }
 
     public static T[] array2Dto1D<T>(T[,] A)
@@ -74,6 +86,65 @@ public static class ArrayFuncs
         //Console.WriteLine(msg.ToString());
         return msg.ToString();
     }
+    public static string printArray2DMatrix<T>(T[,] matrix)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        int longestChar = 0;
+        for (int row = 0; row < matrix.GetLength(0); row++)
+        {
+            for (int column = 0; column < matrix.GetLength(1); column++)
+            {
+                if (matrix[row, column].ToString().Length > longestChar)
+                {
+                    longestChar = matrix[row, column].ToString().Length;
+                }
+
+            }
+        }
+        int xPadding = matrix.GetLength(1) * 2 + matrix.GetLength(1) * longestChar;
+        for (int padding = 0; padding < xPadding; padding++)
+        {
+            stringBuilder.Append(" ");
+        }
+        for (int xDisplay = 0; xDisplay < matrix.GetLength(0); xDisplay++)
+        {
+            for (int yDisplay = 0; yDisplay < matrix.GetLength(1); yDisplay++)
+            {
+                if (yDisplay == 0)
+                {
+                    stringBuilder.Append(" ");
+                }
+                int requiredPadding = longestChar - matrix[xDisplay, yDisplay].ToString().Length;
+                if (matrix[xDisplay, yDisplay].ToString().Length < longestChar)
+                {
+                    if (requiredPadding % 2 != 0)
+                    {
+                        stringBuilder.Append(" ");
+                        requiredPadding--;
+                    }
+                    for (int padding = 0; padding < (requiredPadding) / 2; padding++)
+                    {
+                        stringBuilder.Append(" ");
+                    }
+                }
+                stringBuilder.Append(" ");
+
+                stringBuilder.Append(matrix[xDisplay, yDisplay].ToString());
+                stringBuilder.Append(" ");
+                if (yDisplay == matrix.GetLength(1) - 1)
+                {
+                    stringBuilder.Append(" ");
+                }
+                for (int padding = 0; padding < requiredPadding / 2; padding++)
+                {
+                    stringBuilder.Append(" ");
+                }
+            }
+            stringBuilder.Append(" \n");
+        }
+        return stringBuilder.ToString();
+    }
+
     public static T accessArray1DAs2D<T>(int x, int y, int width, int height, in T[] array)
     {
         if (x >= width || x < 0) { Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates"); }
