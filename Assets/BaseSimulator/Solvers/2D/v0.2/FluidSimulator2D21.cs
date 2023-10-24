@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 
 class FluidSimulator2D21 : MonoBehaviour
@@ -36,7 +33,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
         solver = new Solver2D2(gridSize, diffusionRate, viscosity, deltaTime);
         N = gridSize + 2;
-        densColour = new Color[(gridSize) * scale * (gridSize) * scale];
+        densColour = new Color[gridSize * gridSize];
     }
 
     private void Update()
@@ -51,7 +48,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
         //get grid pos of cursor
         int cursorX = (int)(mouseX / scale);
-        int cursorY = gridSize - (int)(mouseY / scale);
+        int cursorY = gridSize - (int)(mouseY / scale) - 1;
 
         //get mouse velocity
         mouseVelocityX = Input.GetAxis("Mouse X");
@@ -72,16 +69,15 @@ class FluidSimulator2D21 : MonoBehaviour
             solver.vel_step();
             solver.dens_step();
 
-
             drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex);
-
-
         }
         else
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize);
+                Debug.Log((cursorX, cursorY));
+                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                //Debug.Log(ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize));
             }
 
             if (Input.GetMouseButton(1)) //RMB
@@ -89,13 +85,17 @@ class FluidSimulator2D21 : MonoBehaviour
                 ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
-
-
             solver.vel_step();
             solver.dens_step();
 
-
-            drawDensity(solver.getDensity(), ref densTex);
+            if (Input.GetKey(KeyCode.Y))
+            {
+                drawDensity(solver.getDensityPrev(), ref densTex);
+            }
+            else
+            {
+                drawDensity(solver.getDensity(), ref densTex);
+            }
 
         }
     }
@@ -117,17 +117,16 @@ class FluidSimulator2D21 : MonoBehaviour
 
     void drawDensity(in float[] density, ref Texture2D drawTex)
     {
-        Color[] colors = new Color[gridSize * gridSize];
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 int colIndex = ArrayFuncs.accessArray1DAs2D(simCellX - 1, simCellY - 1, gridSize, gridSize);
                 int denIndex = ArrayFuncs.accessArray1DAs2D(simCellX, simCellY, gridSize + 2, gridSize + 2);
-                colors[colIndex].r = density[denIndex];
-                colors[colIndex].g = density[denIndex];
-                colors[colIndex].b = density[denIndex];
-                colors[colIndex].a = 1f;
+                densColour[colIndex].r = density[denIndex];
+                densColour[colIndex].g = density[denIndex];
+                densColour[colIndex].b = density[denIndex];
+                densColour[colIndex].a = 1f;
             }
-        drawTex.SetPixels(colors);
+        drawTex.SetPixels(densColour);
         drawTex.Apply();
 
     }

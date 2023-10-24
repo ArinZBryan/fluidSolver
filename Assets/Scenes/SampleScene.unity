@@ -310,8 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962945030}
-  - component: {fileID: 1962945033}
-  - component: {fileID: 1962945034}
+  - component: {fileID: 1962945031}
   m_Layer: 0
   m_Name: Simulator2D
   m_TagString: Untagged
@@ -334,24 +333,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962945033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962945028}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f99d91ddeee3074bbe0b608ca1a8f33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  texWidth: 128
-  texHeight: 128
-  penColor: {r: 1, g: 1, b: 1, a: 1}
-  baseColor: {r: 0, g: 0, b: 0, a: 1}
-  penSize: 5
---- !u!114 &1962945034
+--- !u!114 &1962945031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -360,16 +342,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1962945028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cfbadad78b920418aa7e7c050736e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 08560b8ddd4116b4ca4def7e2bae0cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texWidth: 32
-  texHeight: 32
-  scale: 1
-  penColor: {r: 1, g: 1, b: 1, a: 1}
-  baseColor: {r: 0, g: 0, b: 0, a: 1}
+  gridSize: 32
+  scale: 7
+  viscosity: 0.1
+  diffusionRate: 0.1
+  deltaTime: 0.01
   penSize: 1
-  drawModifier: 1
-  viscosity: 0
-  diffusionRate: 0
-  deltaTime: 0
