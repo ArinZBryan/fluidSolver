@@ -139,8 +139,9 @@ class FluidSimulator2D21 : MonoBehaviour
     {
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
-                int colIndex = ArrayFuncs.accessArray1DAs2D(simCellX - 1, simCellY - 1, gridSize, gridSize);
-                int denIndex = ArrayFuncs.accessArray1DAs2D(simCellX, simCellY, gridSize + 2, gridSize + 2);
+                //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
+                int colIndex = (simCellX - 1) + (simCellY - 1)*gridSize;
+                int denIndex = (simCellX) +(simCellY)*(gridSize + 2);
                 densColour[colIndex].r = density[denIndex];
                 densColour[colIndex].g = density[denIndex];
                 densColour[colIndex].b = density[denIndex];
@@ -157,7 +158,6 @@ class FluidSimulator2D21 : MonoBehaviour
         //Makes a texture of one colour
         Color[] pixels = Enumerable.Repeat(background, Screen.width * Screen.height).ToArray();
         drawTex.SetPixels(pixels);
-
         Vector2 normalised;
         Vector2 velocity;
         int xCoord, yCoord;
@@ -167,7 +167,9 @@ class FluidSimulator2D21 : MonoBehaviour
             {
                 velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
                 velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityY);
+
                 normalised = velocity.normalized;
+
                 xCoord = (i - 1) * scale + 2;
                 yCoord = (j - 1) * scale + 2;
                 line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);

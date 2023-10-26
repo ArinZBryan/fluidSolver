@@ -33,7 +33,7 @@ public static class ArrayFuncs
             arr[index] = value;
         }
 
-        return printArray2DMatrix(array1Dto2D(arr, arrW + 2, arrH + 2));
+        return printArray2D(array1Dto2D(arr, arrW + 2, arrH + 2));
     }
 
     public static T[] array2Dto1D<T>(T[,] A)
