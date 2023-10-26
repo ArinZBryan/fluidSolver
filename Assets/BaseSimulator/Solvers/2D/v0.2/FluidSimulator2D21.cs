@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using AdvancedEditorTools.Attributes;
 using UnityEngine;
 
 class FluidSimulator2D21 : MonoBehaviour
@@ -9,11 +11,16 @@ class FluidSimulator2D21 : MonoBehaviour
     public float viscosity = 0;
     public float diffusionRate = 0;
     public float deltaTime = 0.1f;
-
+    
+    public float drawValue = 100f;
+    public int penSize = 1;
+    
     public static Texture2D densTex;
     Color[] densColour;
     public static Texture2D velTex;
-    public int penSize = 1;
+    bool drawBoth = false;
+    
+    
 
     Solver2D2 solver;
 
@@ -54,48 +61,56 @@ class FluidSimulator2D21 : MonoBehaviour
         mouseVelocityX = Input.GetAxis("Mouse X");
         mouseVelocityY = Input.GetAxis("Mouse Y");
 
+        if (Input.GetKeyUp(KeyCode.T))
+        {
+            drawBoth = !drawBoth;
+        }
+
         if (Input.GetKey(KeyCode.V))
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorY, cursorX, gridSize, gridSize, penSize);
+                ArrayFuncs.edit1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                ArrayFuncs.edit1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorY, cursorX, gridSize, gridSize, penSize);
             }
-
             if (Input.GetMouseButton(1)) //RMB
             {
-                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorY, cursorX, gridSize, gridSize, penSize);
+                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
             solver.vel_step();
             solver.dens_step();
-
-            drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex);
+            
+            if (drawBoth)
+            {
+                drawDensity(solver.getDensity(), ref densTex);
+                drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.clear, Color.green);
+            } else
+            {
+                drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.black, Color.green);
+            }
         }
         else
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                Debug.Log((cursorX, cursorY));
-                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                //Debug.Log(ArrayFuncs.printArray2DMatrix(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize+2, gridSize+2)));
                 //Debug.Log(ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize));
             }
-
             if (Input.GetMouseButton(1)) //RMB
             {
-                ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
+                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), -drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                //Debug.Log(ArrayFuncs.printArray2DMatrix(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2)));
+                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
             solver.vel_step();
             solver.dens_step();
 
-            if (Input.GetKey(KeyCode.Y))
-            {
-                drawDensity(solver.getDensityPrev(), ref densTex);
-            }
-            else
-            {
-                drawDensity(solver.getDensity(), ref densTex);
-            }
+            if (Input.GetKey(KeyCode.Y)) drawDensity(solver.getDensityPrev(), ref densTex);
+            else drawDensity(solver.getDensity(), ref densTex);
 
         }
     }
@@ -106,6 +121,7 @@ class FluidSimulator2D21 : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.V))
             {
+                if (drawBoth) { Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), densTex); }
                 Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), velTex);
             }
             else
@@ -130,8 +146,13 @@ class FluidSimulator2D21 : MonoBehaviour
         drawTex.Apply();
 
     }
-    void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex)
+    void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex, Color background, Color foreground)
     {
+        int maxLength = (scale - 1) / 2;
+        //Makes a texture of one colour
+        Color[] pixels = Enumerable.Repeat(background, Screen.width * Screen.height).ToArray();
+        drawTex.SetPixels(pixels);
+
         Vector2 normalised;
         Vector2 velocity;
         int xCoord, yCoord;
@@ -140,11 +161,11 @@ class FluidSimulator2D21 : MonoBehaviour
             for (int j = 1; j < N; j++)
             {
                 velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
-                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
+                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityY);
                 normalised = velocity.normalized;
-                xCoord = (i - 1) * 5 + 2;
-                yCoord = (j - 1) * 5 + 2;
-                line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * 2).x), (int)Math.Round((normalised * 2).y), Color.white);
+                xCoord = (i - 1) * scale + 2;
+                yCoord = (j - 1) * scale + 2;
+                line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
 
             }
         }
@@ -185,4 +206,11 @@ class FluidSimulator2D21 : MonoBehaviour
             }
         }
     }
+
+
+    /*IN-EDITOR DEBUG BUTTONS*/
+    [Button("Print Density")]
+    void printDensity() { Debug.Log(ArrayFuncs.printArray2DMatrix<float>(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2))); }
+    [Button("Print Previous Density")]
+    void printPrevDensity() { Debug.Log(ArrayFuncs.printArray2DMatrix<float>(ArrayFuncs.array1Dto2D(solver.getDensityPrev(), gridSize + 2, gridSize + 2))); }
 }

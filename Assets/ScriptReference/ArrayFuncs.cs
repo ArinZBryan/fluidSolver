@@ -102,10 +102,6 @@ public static class ArrayFuncs
             }
         }
         int xPadding = matrix.GetLength(1) * 2 + matrix.GetLength(1) * longestChar;
-        for (int padding = 0; padding < xPadding; padding++)
-        {
-            stringBuilder.Append(" ");
-        }
         for (int xDisplay = 0; xDisplay < matrix.GetLength(0); xDisplay++)
         {
             for (int yDisplay = 0; yDisplay < matrix.GetLength(1); yDisplay++)

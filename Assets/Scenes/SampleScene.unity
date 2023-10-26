@@ -347,7 +347,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 32
   scale: 7
-  viscosity: 0.1
-  diffusionRate: 0.1
-  deltaTime: 0.01
+  viscosity: 0
+  diffusionRate: 0
+  deltaTime: 0.1
+  drawValue: 1
   penSize: 1
