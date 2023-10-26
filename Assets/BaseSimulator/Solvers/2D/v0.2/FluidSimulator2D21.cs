@@ -82,6 +82,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
+
             //zeros out prev_density - This prevents runaway densities
             solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
@@ -107,6 +108,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
+
             //Zeros out prev_density - this prevents runaway densities
             solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
@@ -213,7 +215,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
     /*IN-EDITOR DEBUG BUTTONS*/
     [Button("Print Density")]
-    void printDensity() { Debug.Log(ArrayFuncs.printArray2DMatrix<float>(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2))); }
+    void printDensity() { Debug.Log(ArrayFuncs.printArray2D<float>(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2))); }
     [Button("Print Previous Density")]
-    void printPrevDensity() { Debug.Log(ArrayFuncs.printArray2DMatrix<float>(ArrayFuncs.array1Dto2D(solver.getDensityPrev(), gridSize + 2, gridSize + 2))); }
+    void printPrevDensity() { Debug.Log(ArrayFuncs.printArray2D<float>(ArrayFuncs.array1Dto2D(solver.getDensityPrev(), gridSize + 2, gridSize + 2))); }
 }
