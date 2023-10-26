@@ -1,4 +1,6 @@
-﻿class Solver2D2
+﻿using System;
+
+class Solver2D2
 {
     //Vector Fields
     public float[] u;
@@ -39,7 +41,10 @@
     void add_source(int N, ref float[] x, ref float[] s, float dt)
     {
         int i, size = (N + 2) * (N + 2);
-        for (i = 0; i < size; i++) x[i] += dt * s[i];
+        for (i = 0; i < size; i++)
+        {
+            x[i] += dt * s[i];
+        }
     }
 
     void set_bnd(int N, int b, ref float[] x)
@@ -69,7 +74,20 @@
             {
                 for (j = 1; j <= N; j++)
                 {
-                    x[((i) + (N + 2) * (j))] = (x0[((i) + (N + 2) * (j))] + a * (x[((i - 1) + (N + 2) * (j))] + x[((i + 1) + (N + 2) * (j))] + x[((i) + (N + 2) * (j - 1))] + x[((i) + (N + 2) * (j + 1))])) / c;
+                    float calc = (x0[((i) + (N + 2) * (j))]
+                                                + a * (x[((i - 1) + (N + 2) * (j))]
+                                                + x[((i + 1) + (N + 2) * (j))]
+                                                + x[((i) + (N + 2) * (j - 1))]
+                                                + x[((i) + (N + 2) * (j + 1))])) / c;
+                    if (Single.IsNaN(calc))     //Kills all NAN occurences as soon as possible
+                    {
+                        calc = 0;
+                    }
+                    if (Single.IsInfinity(calc))    //Preventing runaway density (also prevents some NAN occurences
+                    {
+                        calc = 1;
+                    }
+                    x[((i) + (N + 2) * (j))] = calc;
                 }
             }
 

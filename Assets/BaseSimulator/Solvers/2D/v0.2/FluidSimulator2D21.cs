@@ -2,6 +2,7 @@
 using System.Linq;
 using AdvancedEditorTools.Attributes;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 class FluidSimulator2D21 : MonoBehaviour
 {
@@ -81,7 +82,9 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
-            
+            //zeros out x0 - This prevents runaway densities
+            solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+
             if (drawBoth)
             {
                 drawDensity(solver.getDensity(), ref densTex);
@@ -108,6 +111,9 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
+            //Zeros out x0 - this prevents runaway densities
+            solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+
 
             if (Input.GetKey(KeyCode.Y)) drawDensity(solver.getDensityPrev(), ref densTex);
             else drawDensity(solver.getDensity(), ref densTex);
