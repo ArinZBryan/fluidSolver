@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unity.Editor.Tasks;
 using UnityEngine;
 
 public static class ArrayFuncs
@@ -70,23 +67,7 @@ public static class ArrayFuncs
         return ret;
     }
 
-    public static string printArray2D<T>(T[,] arr, string delimiter = "\t")
-    {
-        int rowLength = arr.GetLength(0);
-        int colLength = arr.GetLength(1);
-        StringBuilder msg = new StringBuilder();
-        for (int i = 0; i < rowLength; i++)
-        {
-            for (int j = 0; j < colLength; j++)
-            {
-                msg.Append(string.Format("{0} ", arr[i, j]));
-            }
-            msg.Append("\n");
-        }
-        //Console.WriteLine(msg.ToString());
-        return msg.ToString();
-    }
-    public static string printArray2DMatrix<T>(T[,] matrix)
+    public static string printArray2D<T>(T[,] matrix)
     {
         StringBuilder stringBuilder = new StringBuilder();
         int longestChar = 0;
@@ -158,16 +139,6 @@ public static class ArrayFuncs
     }
     public static int accessArray1DAs2D(int x, int y, int width, int height)
     {
-        /*
-        if (density >= width) {
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (density Coordinate)" + "(" + density.ToString() + " >= "  + width.ToString() + ")"); }
-        if (density < 0) { 
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (density Coordinate)" + "(" + density.ToString() + " < 0)"); }
-        if (y >= height) { 
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (y Coordinate)" + "(" + y.ToString() + " >= " + height.ToString() + ")"); }
-        if (y < 0) { 
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (y Coordinate)" + "(" + y.ToString() + " < 0)"); }
-        */
         return x + y * width;
     }
     public static T[] getSlice1DFromArray1D<T>(in T[] values, int start, int length)

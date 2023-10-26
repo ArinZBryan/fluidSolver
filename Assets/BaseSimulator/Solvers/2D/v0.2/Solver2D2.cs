@@ -74,11 +74,8 @@ class Solver2D2
             {
                 for (j = 1; j <= N; j++)
                 {
-                    float calc = (x0[((i) + (N + 2) * (j))]
-                                                + a * (x[((i - 1) + (N + 2) * (j))]
-                                                + x[((i + 1) + (N + 2) * (j))]
-                                                + x[((i) + (N + 2) * (j - 1))]
-                                                + x[((i) + (N + 2) * (j + 1))])) / c;
+                    float calc = (x0[((i) + (N + 2) * (j))] + a * (x[((i - 1) + (N + 2) * (j))] + x[((i + 1) + (N + 2) * (j))] + x[((i) + (N + 2) * (j - 1))] + x[((i) + (N + 2) * (j + 1))])) / c;
+
                     if (Single.IsNaN(calc))     //Kills all NAN occurences as soon as possible
                     {
                         calc = 0;
@@ -87,6 +84,7 @@ class Solver2D2
                     {
                         calc = 1;
                     }
+
                     x[((i) + (N + 2) * (j))] = calc;
                 }
             }
