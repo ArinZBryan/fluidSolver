@@ -82,7 +82,7 @@ class FluidSimulator2D21 : MonoBehaviour
 
             solver.vel_step();
             solver.dens_step();
-            //zeros out x0 - This prevents runaway densities
+            //zeros out prev_density - This prevents runaway densities
             solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
             if (drawBoth)
@@ -99,19 +99,15 @@ class FluidSimulator2D21 : MonoBehaviour
             if (Input.GetMouseButton(0)) //LMB
             {
                 ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
-                //Debug.Log(ArrayFuncs.printArray2DMatrix(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize+2, gridSize+2)));
-                //Debug.Log(ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), 10000f, cursorY, cursorX, gridSize, gridSize, penSize));
             }
             if (Input.GetMouseButton(1)) //RMB
             {
                 ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), -drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
-                //Debug.Log(ArrayFuncs.printArray2DMatrix(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2)));
-                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getDensityPrev(), -10000f, cursorY, cursorX, gridSize, gridSize, penSize);
             }
 
             solver.vel_step();
             solver.dens_step();
-            //Zeros out x0 - this prevents runaway densities
+            //Zeros out prev_density - this prevents runaway densities
             solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
 
@@ -155,6 +151,7 @@ class FluidSimulator2D21 : MonoBehaviour
     void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex, Color background, Color foreground)
     {
         int maxLength = (scale - 1) / 2;
+
         //Makes a texture of one colour
         Color[] pixels = Enumerable.Repeat(background, Screen.width * Screen.height).ToArray();
         drawTex.SetPixels(pixels);

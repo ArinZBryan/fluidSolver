@@ -106,9 +106,9 @@ public class FluidSimulator2D2 : MonoBehaviour
     }
 
     /*
-    void vector4Paint(ref Vector4[] vec, Vector4 value, int vecWidth, int x, int y, int brushSize)
+    void vector4Paint(ref Vector4[] vec, Vector4 value, int vecWidth, int density, int y, int brushSize)
     {
-        for (int i = x - (brushSize - 1); i < x + brushSize; i++)
+        for (int i = density - (brushSize - 1); i < density + brushSize; i++)
         {
             for (int j = y - (brushSize - 1); j < y + brushSize; j++)
             {
@@ -149,6 +149,6 @@ public class FluidSimulator2D2 : MonoBehaviour
     }
     void vecsToSolverDensity()
     {
-        for (int i = 0; i < texWidth * texHeight; i++) solver.x[i] = drawVecs[i].x;
+        for (int i = 0; i < texWidth * texHeight; i++) solver.density[i] = drawVecs[i].x;
     }
 }

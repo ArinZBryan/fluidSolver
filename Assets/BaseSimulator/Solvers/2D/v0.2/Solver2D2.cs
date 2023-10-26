@@ -3,32 +3,32 @@
 class Solver2D2
 {
     //Vector Fields
-    public float[] u;
-    public float[] v;
-    public float[] u0;
-    public float[] v0;
-    public float[] x;
-    public float[] x0;
+    public float[] velocity_horizontal;
+    public float[] velocity_vertical;
+    public float[] prev_velocity_horizontal;
+    public float[] prev_velocity_vertical;
+    public float[] density;
+    public float[] prev_density;
 
     //Constants
     int N;
-    float diff, visc, dt;
+    float diffusion_rate, viscosity, sim_delta_time;
 
 
     public Solver2D2(int N, float diffusionRate, float viscosity, float deltaTime)
     {
         int size = (N + 2) * (N + 2);
 
-        u = new float[size];    //Velocity (Horizontal)
-        v = new float[size];    //Velocity (Vertical)
-        u0 = new float[size];     //Previous Velocity (Horizontal)
-        v0 = new float[size];   //Previous Velocity (Vertical)
-        x = new float[size];    //Density
-        x0 = new float[size];   //Previous Density
+        velocity_horizontal = new float[size];          //Velocity (Horizontal)
+        velocity_vertical = new float[size];            //Velocity (Vertical)
+        prev_velocity_horizontal = new float[size];     //Previous Velocity (Horizontal)
+        prev_velocity_vertical = new float[size];       //Previous Velocity (Vertical)
+        density = new float[size];                      //Density
+        prev_density = new float[size];                 //Previous Density
 
-        this.diff = diffusionRate;
-        this.visc = viscosity;
-        this.dt = deltaTime;
+        this.diffusion_rate = diffusionRate;
+        this.viscosity = viscosity;
+        this.sim_delta_time = deltaTime;
         this.N = N;
     }
 
@@ -47,16 +47,16 @@ class Solver2D2
         }
     }
 
-    void set_bnd(int N, int b, ref float[] x)
+    void set_bnd(int N, Boundary b, ref float[] x)
     {
         int i;
 
         for (i = 1; i <= N; i++)
         {
-            x[((0) + (N + 2) * (i))] = b == 1 ? -x[((1) + (N + 2) * (i))] : x[((1) + (N + 2) * (i))];
-            x[((N + 1) + (N + 2) * (i))] = b == 1 ? -x[((N) + (N + 2) * (i))] : x[((N) + (N + 2) * (i))];
-            x[((i) + (N + 2) * (0))] = b == 2 ? -x[((i) + (N + 2) * (1))] : x[((i) + (N + 2) * (1))];
-            x[((i) + (N + 2) * (N + 1))] = b == 2 ? -x[((i) + (N + 2) * (N))] : x[((i) + (N + 2) * (N))];
+            x[((0) + (N + 2) * (i))] = b == Boundary.HORIZONTAL ? -x[((1) + (N + 2) * (i))] : x[((1) + (N + 2) * (i))];
+            x[((N + 1) + (N + 2) * (i))] = b == Boundary.HORIZONTAL ? -x[((N) + (N + 2) * (i))] : x[((N) + (N + 2) * (i))];
+            x[((i) + (N + 2) * (0))] = b == Boundary.VERTICAL ? -x[((i) + (N + 2) * (1))] : x[((i) + (N + 2) * (1))];
+            x[((i) + (N + 2) * (N + 1))] = b == Boundary.VERTICAL ? -x[((i) + (N + 2) * (N))] : x[((i) + (N + 2) * (N))];
         }
         x[((0) + (N + 2) * (0))] = 0.5f * (x[((1) + (N + 2) * (0))] + x[((0) + (N + 2) * (1))]);
         x[((0) + (N + 2) * (N + 1))] = 0.5f * (x[((1) + (N + 2) * (N + 1))] + x[((0) + (N + 2) * (N))]);
@@ -64,7 +64,7 @@ class Solver2D2
         x[((N + 1) + (N + 2) * (N + 1))] = 0.5f * (x[((N) + (N + 2) * (N + 1))] + x[((N + 1) + (N + 2) * (N))]);
     }
 
-    void lin_solve(int N, int b, ref float[] x, ref float[] x0, float a, float c)
+    void lin_solve(int N, Boundary b, ref float[] x, ref float[] x0, float a, float c)
     {
         int i, j, k;
 
@@ -95,13 +95,13 @@ class Solver2D2
         }
     }
 
-    void diffuse(int N, int b, ref float[] x, ref float[] x0, float diff, float dt)
+    void diffuse(int N, Boundary b, ref float[] x, ref float[] x0, float diff, float dt)
     {
         float a = dt * diff * N * N;
         lin_solve(N, b, ref x, ref x0, a, 1 + 4 * a);
     }
 
-    void advect(int N, int b, ref float[] d, ref float[] d0, ref float[] u, ref float[] v, float dt)
+    void advect(int N, Boundary b, ref float[] d, ref float[] d0, ref float[] u, ref float[] v, float dt)
     {
         int i, j, i0, j0, i1, j1;
         float x, y, s0, t0, s1, t1, dt0;
@@ -149,25 +149,37 @@ class Solver2D2
             }
         }
 
-        set_bnd(N, 1, ref u); set_bnd(N, 2, ref v);
+        set_bnd(N, Boundary.HORIZONTAL, ref u); set_bnd(N, Boundary.VERTICAL, ref v);
     }
 
     public void dens_step()
     {
-        add_source(N, ref x, ref x0, dt);
-        SWAP(ref x0, ref x); diffuse(N, 0, ref x, ref x0, diff, dt);
-        SWAP(ref x0, ref x); advect(N, 0, ref x, ref x0, ref u, ref v, dt);
+        add_source(N, ref density, ref prev_density, sim_delta_time);
+        SWAP(ref prev_density, ref density); 
+        diffuse(N, Boundary.NONE, ref density, ref prev_density, diffusion_rate, sim_delta_time);
+        SWAP(ref prev_density, ref density); 
+        advect(N, Boundary.NONE, ref density, ref prev_density, ref velocity_horizontal, ref velocity_vertical, sim_delta_time);
     }
 
     public void vel_step()
     {
-        add_source(N, ref u, ref u0, dt); add_source(N, ref v, ref v0, dt);
-        SWAP(ref u0, ref u); diffuse(N, 1, ref u, ref u0, visc, dt);
-        SWAP(ref v0, ref v); diffuse(N, 2, ref v, ref v0, visc, dt);
-        project(N, ref u, ref v, ref u0, ref v0);
-        SWAP(ref u0, ref u); SWAP(ref v0, ref v);
-        advect(N, 1, ref u, ref u0, ref u0, ref v0, dt); advect(N, 2, ref v, ref v0, ref u0, ref v0, dt);
-        project(N, ref u, ref v, ref u0, ref v0);
+        add_source(N, ref velocity_horizontal, ref prev_velocity_horizontal, sim_delta_time);
+        add_source(N, ref velocity_vertical, ref prev_velocity_vertical, sim_delta_time);
+
+        SWAP(ref prev_velocity_horizontal, ref velocity_horizontal);
+        diffuse(N, Boundary.HORIZONTAL, ref velocity_horizontal, ref prev_velocity_horizontal, viscosity, sim_delta_time);
+        SWAP(ref prev_velocity_vertical, ref velocity_vertical);
+        diffuse(N, Boundary.VERTICAL, ref velocity_vertical, ref prev_velocity_vertical, viscosity, sim_delta_time);
+        
+        project(N, ref velocity_horizontal, ref velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical);
+
+        SWAP(ref prev_velocity_horizontal, ref velocity_horizontal);
+        SWAP(ref prev_velocity_vertical, ref velocity_vertical);
+
+        advect(N, Boundary.HORIZONTAL, ref velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_vertical, sim_delta_time); 
+        advect(N, Boundary.VERTICAL, ref velocity_vertical, ref prev_velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical, sim_delta_time);
+        
+        project(N, ref velocity_horizontal, ref velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical);
     }
 
 
@@ -177,7 +189,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getDensity()
     {
-        return ref x;
+        return ref density;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array*/
@@ -185,7 +197,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getDensityPrev()
     {
-        return ref x0;
+        return ref prev_density;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array*/
@@ -193,7 +205,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getVelocityX()
     {
-        return ref u;
+        return ref velocity_horizontal;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array*/
@@ -201,7 +213,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getVelocityY()
     {
-        return ref v;
+        return ref velocity_vertical;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array*/
@@ -209,7 +221,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getVelocityXPrev()
     {
-        return ref u0;
+        return ref prev_velocity_horizontal;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array*/
@@ -217,7 +229,7 @@ class Solver2D2
     /// <returns></returns>
     public ref float[] getVelocityYPrev()
     {
-        return ref v0;
+        return ref prev_velocity_vertical;
     }
     /// <summary>
     /// This returns the full (n+2)*(n+2) array
@@ -231,12 +243,12 @@ class Solver2D2
     /// <param name="N"></param>
     public void getAll(out float[] density, out float[] density_prev, out float[] velocity_horizontal, out float[] velocity_horizontal_prev, out float[] velocity_vertical, out float[] velocity_vertical_prev, out int N)
     {
-        density = this.x;
-        density_prev = this.x0;
-        velocity_horizontal = this.u;
-        velocity_vertical = this.v;
-        velocity_horizontal_prev = this.u0;
-        velocity_vertical_prev = this.v0;
+        density = this.density;
+        density_prev = this.prev_density;
+        velocity_horizontal = this.velocity_horizontal;
+        velocity_vertical = this.velocity_vertical;
+        velocity_horizontal_prev = this.prev_velocity_horizontal;
+        velocity_vertical_prev = this.prev_velocity_vertical;
         N = this.N;
     }
 

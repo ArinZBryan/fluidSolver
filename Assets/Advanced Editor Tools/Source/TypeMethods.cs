@@ -204,7 +204,7 @@ namespace AdvancedEditorTools
                 if (fields == null || fields.Count == 0)
                 {
                     rect.y += EditorGUIUtility.singleLineHeight;
-                    rect.x += EditorGUIUtility.singleLineHeight * 1.75f;
+                    rect.density += EditorGUIUtility.singleLineHeight * 1.75f;
                     rect.width -= EditorGUIUtility.singleLineHeight * 1.75f;
                     rect.height = EditorGUIUtility.singleLineHeight * 2.15f;
 
@@ -224,14 +224,14 @@ namespace AdvancedEditorTools
                     if (Event.current.type == EventType.Repaint)
                     {
                         rectVal.y = rect.y + EditorGUIUtility.singleLineHeight;
-                        rectVal.x += EditorGUI.indentLevel * indentSize;
+                        rectVal.density += EditorGUI.indentLevel * indentSize;
                         rectVal.width -= EditorGUI.indentLevel * indentSize;
                         rectVal.height = GetPropertyFieldSize(ref valueWrapper) - EditorGUIUtility.singleLineHeight * 1.5f;
                         customWindowStyle.Draw(rectVal, GUIContent.none, false, false, false, false);
                     }
 
                     rectVal = rect;
-                    rectVal.x += EditorGUI.indentLevel * (indentSize - 2);
+                    rectVal.density += EditorGUI.indentLevel * (indentSize - 2);
                     rectVal.width -= EditorGUI.indentLevel * (indentSize + 2);
                     foreach (var field in fields)
                     {
@@ -368,7 +368,7 @@ namespace AdvancedEditorTools
             EditorGUILayout.BeginHorizontal();
             base.PaintFoldout(ref wrapper, label, rect);
             rect.y += 4;
-            rect.x += rect.width - 20;
+            rect.density += rect.width - 20;
             rect.width = 20; 
             if (!wrapper.isInstantiated)
             {

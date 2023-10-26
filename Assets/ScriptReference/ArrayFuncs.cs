@@ -159,10 +159,10 @@ public static class ArrayFuncs
     public static int accessArray1DAs2D(int x, int y, int width, int height)
     {
         /*
-        if (x >= width) {
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (x Coordinate)" + "(" + x.ToString() + " >= "  + width.ToString() + ")"); }
-        if (x < 0) { 
-            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (x Coordinate)" + "(" + x.ToString() + " < 0)"); }
+        if (density >= width) {
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (density Coordinate)" + "(" + density.ToString() + " >= "  + width.ToString() + ")"); }
+        if (density < 0) { 
+            Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (density Coordinate)" + "(" + density.ToString() + " < 0)"); }
         if (y >= height) { 
             Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates (y Coordinate)" + "(" + y.ToString() + " >= " + height.ToString() + ")"); }
         if (y < 0) { 

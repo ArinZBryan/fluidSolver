@@ -206,7 +206,7 @@ namespace AdvancedEditorTools
             var list = ListWrapped;
 
             headerRect.width = 80;
-            headerRect.x += rect.width - headerRect.width;
+            headerRect.density += rect.width - headerRect.width;
             headerRect.height = EditorGUIUtility.singleLineHeight;
             var newListSize = EditorGUI.DelayedIntField(headerRect, list.Count);
             if (newListSize != list.Count)
