@@ -1,0 +1,8 @@
+The intended stakeholders for this project include but are not limited to:
+- VFX houses
+	- These are usually small to medium sized companies, specialising in visual effects for videos. These companies usually are host to video editors, compositors, animators, 3D artists and modellers. Much of the available tooling used for simulating fluids is geared towards physical accuracy, and requires lots of time to compute simulations.  Furthermore, the available tools require lots of setup and knowledge of complex software used for many parts of the toolchain, only one of of which is the simulation needed. Thus, there is room for a simple simulation tool that runs in real-time, and produces files which can easily be composited and worked with by professionals otherwise unskilled in 3D or 2D simulation software.
+- Animators
+	- During the animation process, there are several stages where mock-ups are required, whether it's just so that further planning can be done, or that a client may want to see WIP versions of the animation. In these cases, the layout of a scene, and the entire animation itself is subject to change, and so a fast animation tool that can be used to approximate the highly accurate PBD simulations used for the final product may be useful. 
+- Game Developers
+	- In games, it is generally expected that simulations of all-kinds run in real time. As such, simulations need to be often capable of running significantly faster than real-time, as where before, a simulation may only have to be finished in ~33ms, now simulations should be completed with many milliseconds to spare. As this project is created in the Unity game engine
+

@@ -1,0 +1,57 @@
+## Analysis
+- Problem Statement
+	- Main Features of the program
+	- Addition features (prototypes of what the features could be)
+- Solvability by computational methods
+	- Thinking computationally in terms of abstraction and decomposition
+	- Data structures used
+	- Why using a computational approach is important, through stakeholders
+- Stakeholders
+	- Interview
+	- Stakeholder Requirements
+- Review of similar Solutions
+	- Blender
+	- Maya
+- Proposed Solution
+- Limitations
+- Requirements for solution
+	- Software required
+	- Hardware required
+- Success Criteria
+## Design
+- Detailed decomposition of the problem
+	- Structure of the program
+	- System 1
+	- System 2
+	- System 3
+- Usability features
+	- Description of the features
+	- Visualisation of program features
+		- Program Windows
+		- Program Functions
+- Fundamental inputs
+- Fundamental outputs
+- Main Algorithms
+	- Navier-Stokes Equations
+	- System 1 Function Overview
+		- Summary
+		- Pseudocode
+	- System 2 Function Overview
+		- Summary
+		- Pseudocode
+	- System 3 Function Overview
+		- Summary
+		- Pseudocode
+- Class Diagrams
+	- Program Overview
+	- Individual Class Overview
+- Database / Save Files
+	- Structure
+## Development and Testing
+- UI
+- Simulator
+- Saving
+- System 1
+- System 2
+- System 3
+## Evaluation

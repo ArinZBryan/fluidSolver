@@ -48,7 +48,7 @@ public class ScreenDraw : MonoBehaviour
             drawTex.Apply();
         }
 
-        Graphics.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), drawTex);
+        //Graphics.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), drawTex);
 
     }
 
