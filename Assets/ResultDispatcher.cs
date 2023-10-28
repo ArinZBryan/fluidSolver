@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class ResultDispatcher : MonoBehaviour
 {
@@ -12,7 +9,8 @@ public class ResultDispatcher : MonoBehaviour
     ISimulator simulator;
     public List<IImageDestination> destinations = new List<IImageDestination>();
     bool doHaveViewportAsTarget = false;
-
+    public Destinations.FileFormat fmt;
+    public string path;
     RenderTexture inputTex;
 
 
@@ -27,7 +25,7 @@ public class ResultDispatcher : MonoBehaviour
 
         foreach (IImageDestination destination in destinations)
         {
-            destination.init("", Destinations.FileFormat.PNG);
+            destination.init(path, fmt);
         }
 
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
