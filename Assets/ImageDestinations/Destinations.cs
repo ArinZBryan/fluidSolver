@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Destinations
 {
@@ -9,11 +10,21 @@ public class Destinations
 
     public class Viewport : IImageDestination
     {
-        RenderTexture currentImage;
-        public Viewport() { }
-        public RenderTexture sendCurrentImage()
+        Texture2D texture;
+        int imageWidth, imageHeight;
+        public Viewport() 
         {
 
+        }
+        public void setImage(RenderTexture img)
+        {
+            if (texture == null)
+            {
+                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
+            }
+            Graphics.CopyTexture(img, texture);
+            imageWidth = img.width;
+            imageHeight = img.height;
         }
         public void init(string fpath, Destinations.FileFormat format)
         {
@@ -21,7 +32,11 @@ public class Destinations
         }
         public string destroy()
         {
-
+            return "";
+        }
+        public void renderImageNow()
+        {
+            Graphics.DrawTexture(new Rect(0, 0, imageWidth, imageHeight), texture);
         }
     }
 }

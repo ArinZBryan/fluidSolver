@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7376e9e79cd9b55449b6930523c371c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: 32
+  scale: 5
   viscosity: 0
   diffusionRate: 0
   deltaTime: 0.1
   drawValue: 100
   penSize: 1
-  renderTexture: {fileID: 0}
