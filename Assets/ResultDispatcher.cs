@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using AdvancedEditorTools.Attributes;
 using UnityEngine;
 
 public class ResultDispatcher : MonoBehaviour
@@ -21,7 +23,7 @@ public class ResultDispatcher : MonoBehaviour
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
         destinations.Add(new Destinations.Viewport());
-
+        destinations.Add(new Destinations.ImageSequence());
 
         foreach (IImageDestination destination in destinations)
         {
@@ -39,6 +41,14 @@ public class ResultDispatcher : MonoBehaviour
         foreach (var destination in destinations)
         {
             destination.setImage(inputTex);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (IImageDestination dest in destinations)
+        {
+            dest.destroy();
         }
     }
 
@@ -67,4 +77,27 @@ public class ResultDispatcher : MonoBehaviour
         }
     }
 
+
+    [Button("Delete Media Folder Contents")]
+    void deleteMediaFolderContents()
+    {
+        string[] parts = path.Split('\\');
+        parts[parts.Length - 1] = "";
+        string folder = "";
+        foreach (var part in parts)
+        {
+            folder += part;
+            folder += "\\";
+        }
+
+        System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(folder);
+        foreach (FileInfo file in di.EnumerateFiles())
+        {
+            file.Delete();
+        }
+        foreach (DirectoryInfo dir in di.EnumerateDirectories())
+        {
+            dir.Delete(true);
+        }
+    }
 }

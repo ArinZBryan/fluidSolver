@@ -156,9 +156,11 @@ MonoBehaviour:
     keys:
     - {fileID: 5570458702938253645, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
     - {fileID: 1594036558}
+    - {fileID: 0}
     values:
     - {fileID: 2119079336}
     - {fileID: 936499896}
+    - {fileID: 1531751716}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &669310994
@@ -372,6 +374,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1531751716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods:
+  - rid: 3783564197189386252
+  - rid: 3783564197189386253
+  references:
+    version: 2
+    RefIds:
+    - rid: 3783564197189386252
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printDensity
+        buttonName: Print Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 3783564197189386253
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printPrevDensity
+        buttonName: Print Previous Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []
 --- !u!1 &1594036557
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,8 +440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
-  fmt: 6
-  path: C:\\dev\\fluidSolver\\media\\
+  fmt: 0
+  path: C:\\dev\\fluidSolver\\Media\\testSequence.png
 --- !u!4 &1594036559
 Transform:
   m_ObjectHideFlags: 0
@@ -434,12 +472,12 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 3783564193787019270
-  - rid: 3783564193787019271
+  - rid: 3783564197189386242
+  - rid: 3783564197189386243
   references:
     version: 2
     RefIds:
-    - rid: 3783564193787019270
+    - rid: 3783564197189386242
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: printDensity
@@ -447,7 +485,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 3783564193787019271
+    - rid: 3783564197189386243
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: printPrevDensity
