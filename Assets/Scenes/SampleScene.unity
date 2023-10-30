@@ -123,6 +123,59 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &669310992
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 669310994}
+  - component: {fileID: 669310993}
+  m_Layer: 0
+  m_Name: _AEAManager
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &669310993
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669310992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac13497f3f6603147a1538f9825c4cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataDict:
+    keys:
+    - {fileID: 5570458702938253645, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
+    - {fileID: 1594036558}
+    values:
+    - {fileID: 2119079336}
+    - {fileID: 936499896}
+  extensionEnabled: 1
+  debugMode: 0
+--- !u!4 &669310994
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669310992}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +270,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &936499896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods:
+  - rid: 3783564225957855262
+  references:
+    version: 2
+    RefIds:
+    - rid: 3783564225957855262
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: deleteMediaFolderContents
+        buttonName: Delete Media Folder Contents
+        foldout: 1
+        buttonSize: 12
+        parameters: []
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +381,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1962945028
+--- !u!1 &1594036557
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,46 +389,78 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1962945030}
-  - component: {fileID: 1962945031}
+  - component: {fileID: 1594036559}
+  - component: {fileID: 1594036558}
   m_Layer: 0
-  m_Name: Simulator2D
+  m_Name: ResultDispatcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1962945030
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962945028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962945031
+--- !u!114 &1594036558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962945028}
+  m_GameObject: {fileID: 1594036557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08560b8ddd4116b4ca4def7e2bae0cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 015ef585aeb9f8f4db9d5ebe77509577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 32
-  scale: 7
-  viscosity: 0
-  diffusionRate: 0
-  deltaTime: 0.1
-  drawValue: 1
-  penSize: 1
+  simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
+  fmt: 0
+  path: C:\\dev\\fluidSolver\\Media\\testSequence.png
+--- !u!4 &1594036559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594036557}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.149018, y: 2.575435, z: 10.601313}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119079336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods:
+  - rid: 3783564197189386242
+  - rid: 3783564197189386243
+  references:
+    version: 2
+    RefIds:
+    - rid: 3783564197189386242
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printDensity
+        buttonName: Print Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 3783564197189386243
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printPrevDensity
+        buttonName: Print Previous Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []

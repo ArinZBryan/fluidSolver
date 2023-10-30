@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public interface ISimulator
+interface ISimulator
 {
     public RenderTexture getCurrentTexture();
     public RenderTexture getNextTexture();
+    public RenderTexture getGurrentExportableTexture();
 }

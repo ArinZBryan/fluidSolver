@@ -6,21 +6,24 @@ using UnityEngine.UIElements;
 
 class FluidSimulator : MonoBehaviour, ISimulator
 {
-    public static int gridSize = 32;
+    public int gridSize = 32;
     int N;
-    public static int scale = 5;
+    public int scale = 5;
     public float viscosity = 0;
     public float diffusionRate = 0;
     public float deltaTime = 0.1f;
-    
+
+    public float force = 100f;
     public float drawValue = 100f;
     public int penSize = 1;
     
     Texture2D densTex;
     Color[] densColour;
     Texture2D velTex;
-    bool drawBoth = false;
-    public RenderTexture renderTexture;
+    bool drawBoth = true;
+    Texture2D bothTex;
+    RenderTexture renderTexture;
+    
 
     Solver2D solver;
 
@@ -30,11 +33,13 @@ class FluidSimulator : MonoBehaviour, ISimulator
     float mouseVelocityY = 0;
 
 
-    private void Start()
+    private void Awake()
     {
         densTex = new Texture2D(gridSize, gridSize);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
-        renderTexture = new RenderTexture(gridSize * scale, gridSize * scale, 0);   
+        bothTex = new Texture2D(gridSize, gridSize);
+        renderTexture = new RenderTexture(gridSize * scale, gridSize * scale, 0);
+
         densTex.filterMode = FilterMode.Point;
         velTex.filterMode = FilterMode.Point;
 
@@ -58,13 +63,17 @@ class FluidSimulator : MonoBehaviour, ISimulator
         int cursorY = gridSize - (int)(mouseY / scale) - 1;
 
         //get mouse velocity
-        mouseVelocityX = Input.GetAxis("Mouse X");
-        mouseVelocityY = Input.GetAxis("Mouse Y");
+        mouseVelocityX = Input.GetAxis("Mouse X") * force;
+        mouseVelocityY = Input.GetAxis("Mouse Y") * force;
 
+        /*
+         * 
+         * This can be a bit funky with detecting the toggle, and I rarely use the ability to draw only velocity
         if (Input.GetKeyUp(KeyCode.T))
         {
             drawBoth = !drawBoth;
         }
+        */
 
         if (Input.GetKey(KeyCode.V))
         {
@@ -87,8 +96,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
             if (drawBoth)
             {
-                drawDensity(solver.getDensity(), ref densTex);
-                drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.clear, Color.green);
+                drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, ref densTex, Color.green);
             } else
             {
                 drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.black, Color.green);
@@ -116,38 +124,26 @@ class FluidSimulator : MonoBehaviour, ISimulator
             else drawDensity(solver.getDensity(), ref densTex);
 
         }
-
         return getCurrentTexture();
     }
-
     public RenderTexture getCurrentTexture()
     {
+        ;
         if (Input.GetKey(KeyCode.V))
         {
-            Graphics.Blit(densTex, renderTexture);
-            Graphics.Blit(velTex, renderTexture);
+            if (drawBoth) Graphics.Blit(bothTex, renderTexture);
+            else Graphics.Blit(velTex, renderTexture);
         }
         else
         {
-            Graphics.Blit(velTex, renderTexture);
+            Graphics.Blit(GPUTextureScaler.Scaled(densTex, gridSize * scale, gridSize * scale, FilterMode.Point), renderTexture);
         }
         return renderTexture;
     }
-
-    void OnGUI()
+    public RenderTexture getGurrentExportableTexture()
     {
-        if (Event.current.type.Equals(EventType.Repaint))
-        {
-            if (Input.GetKey(KeyCode.V))
-            {
-                if (drawBoth) { Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), densTex); }
-                Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), velTex);
-            }
-            else
-            {
-                Graphics.DrawTexture(new Rect(0, 0, gridSize * scale, gridSize * scale), densTex);
-            }
-        }
+        Graphics.Blit(densTex, renderTexture);
+        return renderTexture;
     }
 
     void drawDensity(in float[] density, ref Texture2D drawTex)
@@ -193,6 +189,50 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
         drawTex.Apply();
     }
+    public void drawDensityAndVelocity(in float[] density, in float[] velocityX, in float[] velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
+    {
+        bothTex.Reinitialize(gridSize, gridSize);
+        for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
+            {
+                //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
+                int colIndex = (simCellX - 1) + (simCellY - 1) * gridSize;
+                int denIndex = (simCellX) + (simCellY) * (gridSize + 2);
+
+                densColour[colIndex].r = density[denIndex];
+                densColour[colIndex].g = density[denIndex];
+                densColour[colIndex].b = density[denIndex];
+                densColour[colIndex].a = 1f;
+            }
+        bothTex.SetPixels(densColour);
+        bothTex.Apply();
+        GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
+        densTex.SetPixels(bothTex.GetPixels());
+        
+        //Makes a texture of one colour
+
+
+        int maxLength = (scale - 1) / 2;
+
+        Vector2 normalised;
+        Vector2 velocity;
+        int xCoord, yCoord;
+        for (int i = 1; i < N; i++)
+        {
+            for (int j = 1; j < N; j++)
+            {
+                velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
+                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityY);
+
+                normalised = velocity.normalized;
+
+                xCoord = (i - 1) * scale + 2;
+                yCoord = (j - 1) * scale + 2;
+                line(ref bothTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
+
+            }
+        }
+        bothTex.Apply();
+    }
     public void line(ref Texture2D tex, int x, int y, int x2, int y2, Color color)
     {
         int w = x2 - x;
@@ -228,7 +268,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
             }
         }
     }
-
+    
 
     /*IN-EDITOR DEBUG BUTTONS*/
     [Button("Print Density")]
