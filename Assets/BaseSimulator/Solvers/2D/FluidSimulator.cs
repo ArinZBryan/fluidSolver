@@ -96,7 +96,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
             if (drawBoth)
             {
-                drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, Color.green);
+                drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, ref densTex, Color.green);
             } else
             {
                 drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.black, Color.green);
@@ -126,7 +126,6 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
         return getCurrentTexture();
     }
-
     public RenderTexture getCurrentTexture()
     {
         ;
@@ -139,6 +138,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
         {
             Graphics.Blit(GPUTextureScaler.Scaled(densTex, gridSize * scale, gridSize * scale, FilterMode.Point), renderTexture);
         }
+        return renderTexture;
+    }
+    public RenderTexture getGurrentExportableTexture()
+    {
+        Graphics.Blit(densTex, renderTexture);
         return renderTexture;
     }
 
@@ -186,9 +190,9 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
         drawTex.Apply();
     }
-    public void drawDensityAndVelocity(in float[] density, in float[] velocityX, in float[] velocityY, ref Texture2D drawTex, Color foreground)
+    public void drawDensityAndVelocity(in float[] density, in float[] velocityX, in float[] velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
-        drawTex.Reinitialize(gridSize, gridSize);
+        bothTex.Reinitialize(gridSize, gridSize);
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
@@ -200,10 +204,13 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 densColour[colIndex].b = density[denIndex];
                 densColour[colIndex].a = 1f;
             }
-        drawTex.SetPixels(densColour);
-        drawTex.Apply();
-        GPUTextureScaler.Scale(drawTex, gridSize * scale, gridSize * scale, FilterMode.Point);
+        bothTex.SetPixels(densColour);
+        bothTex.Apply();
+        GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
+        densTex.SetPixels(bothTex.GetPixels());
+        
         //Makes a texture of one colour
+
 
         int maxLength = (scale - 1) / 2;
 
@@ -221,11 +228,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
                 xCoord = (i - 1) * scale + 2;
                 yCoord = (j - 1) * scale + 2;
-                line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
+                line(ref bothTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
 
             }
         }
-        drawTex.Apply();
+        bothTex.Apply();
     }
     public void line(ref Texture2D tex, int x, int y, int x2, int y2, Color color)
     {

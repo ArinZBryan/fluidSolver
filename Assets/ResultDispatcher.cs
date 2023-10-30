@@ -40,7 +40,8 @@ public class ResultDispatcher : MonoBehaviour
         inputTex = simulator.getNextTexture();
         foreach (var destination in destinations)
         {
-            destination.setImage(inputTex);
+            if (destination is Destinations.Viewport) destination.setImage(inputTex);
+            else destination.setImage(simulator.getGurrentExportableTexture());
         }
     }
 
