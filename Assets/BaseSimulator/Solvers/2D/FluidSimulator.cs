@@ -153,7 +153,6 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
                 int colIndex = (simCellX - 1) + (simCellY - 1)*gridSize;
                 int denIndex = (simCellX) +(simCellY)*(gridSize + 2);
-
                 densColour[colIndex].r = density[denIndex];
                 densColour[colIndex].g = density[denIndex];
                 densColour[colIndex].b = density[denIndex];
