@@ -44,13 +44,22 @@ public class Destinations
         Destinations.FileFormat fmt;
         string fpath = "";
         List<byte[]> unsavedImages = new List<byte[]>();
+        RenderTexture tempRT;
         public void setImage(RenderTexture img)
         {
             if (texture == null)
             {
                 texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
             }
-            Graphics.CopyTexture(img, texture);
+
+
+            //This might be a bit slow;
+            tempRT = RenderTexture.active;
+            RenderTexture.active = img;
+            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
+            texture.Apply();
+            RenderTexture.active = tempRT;
+
             imageWidth = img.width;
             imageHeight = img.height;
             switch (fmt)
@@ -68,9 +77,16 @@ public class Destinations
         }
         public string destroy()
         {
-            for (int imageIndex = 0; imageIndex < unsavedImages.Count; imageIndex++)
+            for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
             {
-                string path = fpath.Substring(0, fpath.Length-4) + imageIndex.ToString().PadLeft(4, '0') + fpath.Substring(fpath.Length - 4);
+                string path = fpath.Substring(0, fpath.Length - 4) + (imageIndex - 1).ToString().PadLeft(4, '0');
+                switch (fmt)
+                {
+                    case FileFormat.PNG: path += ".png"; break;
+                    case FileFormat.JPG: path += ".jpg"; break;
+                    case FileFormat.TGA: path += ".tga"; break;
+                    default: Debug.LogError("Why? You changed the file format during execution, and now it's all fucked. i_i"); break;
+                }
                 File.WriteAllBytes(path, unsavedImages[imageIndex]);
             }
             return fpath;
