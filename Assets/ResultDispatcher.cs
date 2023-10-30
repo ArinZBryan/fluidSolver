@@ -12,7 +12,9 @@ public class ResultDispatcher : MonoBehaviour
     public List<IImageDestination> destinations = new List<IImageDestination>();
     bool doHaveViewportAsTarget = false;
     public Destinations.FileFormat fmt;
-    public string path;
+    public string folder;
+    public string name;
+    public int time;
     RenderTexture inputTex;
 
 
@@ -23,12 +25,7 @@ public class ResultDispatcher : MonoBehaviour
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
         destinations.Add(new Destinations.Viewport());
-        destinations.Add(new Destinations.ImageSequence());
-
-        foreach (IImageDestination destination in destinations)
-        {
-            destination.init(path, fmt);
-        }
+        destinations.Add(new Destinations.TimedImageSequence(folder, name, fmt, time));
 
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
 
@@ -37,12 +34,26 @@ public class ResultDispatcher : MonoBehaviour
     // Update is called once per tick
     void FixedUpdate()
     {
+        List<IImageDestination> thingsToRemove = new List<IImageDestination>();
         inputTex = simulator.getNextTexture();
         foreach (var destination in destinations)
         {
             if (destination is Destinations.Viewport) destination.setImage(inputTex);
-            else destination.setImage(simulator.getGurrentExportableTexture());
+            else
+            {
+                destination.setImage(simulator.getGurrentExportableTexture());
+            }
+            if (destination.lifetimeRemaining <= 0) 
+            {
+                thingsToRemove.Add(destination);
+            }
         }
+        foreach (IImageDestination dest in thingsToRemove)
+        {
+            dest.destroy();
+            destinations.Remove(dest);
+        }
+
     }
 
     private void OnDestroy()
@@ -82,15 +93,6 @@ public class ResultDispatcher : MonoBehaviour
     [Button("Delete Media Folder Contents")]
     void deleteMediaFolderContents()
     {
-        string[] parts = path.Split('\\');
-        parts[parts.Length - 1] = "";
-        string folder = "";
-        foreach (var part in parts)
-        {
-            folder += part;
-            folder += "\\";
-        }
-
         System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(folder);
         foreach (FileInfo file in di.EnumerateFiles())
         {
@@ -100,5 +102,11 @@ public class ResultDispatcher : MonoBehaviour
         {
             dir.Delete(true);
         }
+    }
+    [Button("Take Single Image")]
+    void screenshot()
+    {
+        Destinations.Image image = new Destinations.Image(folder, name, fmt);
+        destinations.Add(image);
     }
 }
