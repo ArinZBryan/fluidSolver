@@ -25,14 +25,14 @@ public class ResultDispatcher : MonoBehaviour
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
         destinations.Add(new Destinations.Viewport());
-        destinations.Add(new Destinations.TimedImageSequence(folder, name, fmt, time));
+        //destinations.Add(new Destinations.TimedImageSequence(folder, name, fmt, time));
 
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
 
     }
 
     // Update is called once per tick
-    void FixedUpdate()
+    void Update()
     {
         List<IImageDestination> thingsToRemove = new List<IImageDestination>();
         inputTex = simulator.getNextTexture();

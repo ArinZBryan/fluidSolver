@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using AdvancedEditorTools.Attributes;
+using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,8 +22,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
     Texture2D densTex;
     Color[] densColour;
     Texture2D velTex;
+    Color[] velColour;
+
     bool drawBoth = true;
     Texture2D bothTex;
+    Color[] bothColour;
     RenderTexture renderTexture;
     
 
@@ -35,9 +40,9 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
     private void Awake()
     {
-        densTex = new Texture2D(gridSize, gridSize);
+        densTex = new Texture2D(gridSize * scale, gridSize * scale);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
-        bothTex = new Texture2D(gridSize, gridSize);
+        bothTex = new Texture2D(gridSize * scale, gridSize * scale);
         renderTexture = new RenderTexture(gridSize * scale, gridSize * scale, 0);
 
         densTex.filterMode = FilterMode.Point;
@@ -46,6 +51,8 @@ class FluidSimulator : MonoBehaviour, ISimulator
         solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime);
         N = gridSize + 2;
         densColour = new Color[gridSize * gridSize];
+        velColour = new Color[gridSize * scale * gridSize * scale];
+        bothColour = new Color[gridSize * gridSize * scale * scale];
     }
 
     public RenderTexture getNextTexture()
@@ -136,7 +143,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
         else
         {
-            Graphics.Blit(GPUTextureScaler.Scaled(densTex, gridSize * scale, gridSize * scale, FilterMode.Point), renderTexture);
+            Graphics.Blit(densTex, renderTexture);
         }
         return renderTexture;
     }
@@ -158,7 +165,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 densColour[colIndex].b = density[denIndex];
                 densColour[colIndex].a = 1f;
             }
-        drawTex.SetPixels(densColour);
+        drawTex.SetPixels(ArrayFuncs.scaleArray1Das2D(densColour, scale, gridSize, gridSize));
         drawTex.Apply();
 
     }
@@ -167,8 +174,8 @@ class FluidSimulator : MonoBehaviour, ISimulator
         int maxLength = (scale - 1) / 2;
 
         //Makes a texture of one colour
-        Color[] pixels = Enumerable.Repeat(background, Screen.width * Screen.height).ToArray();
-        drawTex.SetPixels(pixels);
+        velColour = Enumerable.Repeat(background, gridSize * scale * gridSize * scale).ToArray();
+        drawTex.SetPixels(velColour);
         Vector2 normalised;
         Vector2 velocity;
         int xCoord, yCoord;
@@ -183,15 +190,18 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
                 xCoord = (i - 1) * scale + 2;
                 yCoord = (j - 1) * scale + 2;
-                line(ref drawTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
-
+                line(ref velColour, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground, gridSize * scale, gridSize * scale);
             }
         }
+        drawTex.SetPixels(velColour);
         drawTex.Apply();
     }
+    /* FIXME: Use ArrayFuncs.scaleArray1Das2D
+     * - Leave bothtex as the big version
+     * - make new colour array for bothtex and use scaling to copy to it.
+     */
     public void drawDensityAndVelocity(in float[] density, in float[] velocityX, in float[] velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
-        bothTex.Reinitialize(gridSize, gridSize);
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
@@ -203,13 +213,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 densColour[colIndex].b = density[denIndex];
                 densColour[colIndex].a = 1f;
             }
-        bothTex.SetPixels(densColour);
-        bothTex.Apply();
-        GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
-        densTex.SetPixels(bothTex.GetPixels());
+        //GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
+        bothColour = ArrayFuncs.scaleArray1Das2D<UnityEngine.Color>(densColour, scale, gridSize, gridSize);
+        densTex.SetPixels(bothColour);
         
         //Makes a texture of one colour
-
 
         int maxLength = (scale - 1) / 2;
 
@@ -220,21 +228,27 @@ class FluidSimulator : MonoBehaviour, ISimulator
         {
             for (int j = 1; j < N; j++)
             {
-                velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
-                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityY);
+                velocity.x = velocityX[i + j * N];
+                velocity.y = velocityY[i + j * N];
 
                 normalised = velocity.normalized;
 
                 xCoord = (i - 1) * scale + 2;
                 yCoord = (j - 1) * scale + 2;
-                line(ref bothTex, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground);
+                line(ref bothColour, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground, gridSize * scale, gridSize * scale);
 
             }
         }
+        bothTex.SetPixels(bothColour);
         bothTex.Apply();
     }
-    public void line(ref Texture2D tex, int x, int y, int x2, int y2, Color color)
+    public void line(ref Color[] tex, int x, int y, int x2, int y2, Color color, int width, int height)
     {
+        if (x > width || x2 > width) { return; }
+        if (x < 0 || x2 < 0) { return; }
+        if (y > height || y2 > height) {  return; }
+        if (y < 0 || y2 < 0) { return; }
+
         int w = x2 - x;
         int h = y2 - y;
         int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
@@ -253,7 +267,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
         int numerator = longest >> 1;
         for (int i = 0; i <= longest; i++)
         {
-            tex.SetPixel(x, y, color);
+            tex[x + y * width] = color;
             numerator += shortest;
             if (!(numerator < longest))
             {

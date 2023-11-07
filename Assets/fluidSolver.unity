@@ -207,7 +207,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &489610158
+--- !u!114 &680284986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods:
+  - rid: 3700166721120239628
+  - rid: 3700166721120239629
+  references:
+    version: 2
+    RefIds:
+    - rid: 3700166721120239628
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: deleteMediaFolderContents
+        buttonName: Delete Media Folder Contents
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 3700166721120239629
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: screenshot
+        buttonName: Take Single Image
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+--- !u!1 &705732637
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,93 +251,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 489610160}
-  - component: {fileID: 489610159}
-  - component: {fileID: 489610162}
-  - component: {fileID: 489610161}
+  - component: {fileID: 705732639}
+  - component: {fileID: 705732638}
   m_Layer: 0
-  m_Name: Simulator
+  m_Name: ResultDispatcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &489610159
+--- !u!114 &705732638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489610158}
+  m_GameObject: {fileID: 705732637}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08560b8ddd4116b4ca4def7e2bae0cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 015ef585aeb9f8f4db9d5ebe77509577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 32
-  scale: 5
-  viscosity: 0.1
-  diffusionRate: 0.01
-  deltaTime: 0.08
-  penSize: 3
---- !u!4 &489610160
+  simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
+  fmt: 0
+  folder: C:\dev\fluidSolver\Media\
+  name: testImage
+  time: 0
+--- !u!4 &705732639
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489610158}
+  m_GameObject: {fileID: 705732637}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.0037572, y: 2.3503973, z: 11.729141}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &489610161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489610158}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f55ee5e82c48744ca71aed864150c1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  texWidth: 32
-  texHeight: 32
-  penColor: {r: 1, g: 1, b: 1, a: 1}
-  baseColor: {r: 0, g: 0, b: 0, a: 1}
-  penSize: 1
-  drawModifier: 1000
-  viscosity: 0
-  diffusionRate: 0
-  deltaTime: 0.1
---- !u!114 &489610162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489610158}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cfbadad78b920418aa7e7c050736e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  texWidth: 32
-  texHeight: 32
-  scale: 1
-  penColor: {r: 0, g: 0, b: 0, a: 0}
-  baseColor: {r: 0, g: 0, b: 0, a: 0}
-  penSize: 1
-  drawModifier: 1
-  viscosity: 0
-  diffusionRate: 0
-  deltaTime: 0
 --- !u!1 &1828636422
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,3 +386,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1883083340
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883083342}
+  - component: {fileID: 1883083341}
+  m_Layer: 0
+  m_Name: _AEAManager
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1883083341
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883083340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac13497f3f6603147a1538f9825c4cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataDict:
+    keys:
+    - {fileID: 705732638}
+    values:
+    - {fileID: 680284986}
+  extensionEnabled: 1
+  debugMode: 0
+--- !u!4 &1883083342
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883083340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

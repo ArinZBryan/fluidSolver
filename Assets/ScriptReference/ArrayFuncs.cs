@@ -124,8 +124,8 @@ public static class ArrayFuncs
 
     public static T accessArray1DAs2D<T>(int x, int y, int width, int height, in T[] array)
     {
-        if (x >= width || x < 0) { Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates"); }
-        if (y >= height || y < 0) { Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates"); }
+        //if (x >= width || x < 0) { Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates"); }
+        //if (y >= height || y < 0) { Debug.LogError("Attempted 1D array access using out-of-bounds 2D Coordinates"); }
         return array[x + y * width];
     }
     public static T accessArray2Das1D<T>(int index, in T[,] array)
@@ -154,5 +154,35 @@ public static class ArrayFuncs
             {
                 ret[i - xStart, j - yStart] = values[i, j];
             }
+    }
+    public static T[,] scaleArray2D<T>(T[,] arr, int scale)
+    {
+        T[,] dest = new T[arr.GetLength(0) * scale, arr.GetLength(1) * scale];
+        for (int inputX = 0; inputX < arr.GetLength(0); inputX++) for (int inputY = 0; inputY < arr.GetLength(1); inputY++)
+            {
+                T item = arr[inputX, inputY];
+                for (int outputX = 0; outputX < scale; outputX++) for (int outputY = 0; outputY < scale; outputY++)
+                    {
+                        int destX = inputX * scale + outputX;
+                        int destY = inputY * scale + outputY;
+                        dest[destX, destY] = item;
+                    }
+            }
+        return dest;
+    }
+    public static T[] scaleArray1Das2D<T>(T[] arr, int scale, int originalWidth, int originalHeight)
+    {
+        T[] dest = new T[originalHeight * scale * originalWidth * scale];
+        for (int inputX = 0; inputX < originalWidth; inputX++) for (int inputY = 0; inputY < originalHeight; inputY++)
+            {
+                T item = arr[inputX + inputY * originalWidth];
+                for (int outputX = 0; outputX < scale; outputX++) for (int outputY = 0; outputY < scale; outputY++)
+                    {
+                        int destX = inputX * scale + outputX;
+                        int destY = inputY * scale + outputY;
+                        dest[destX + destY * originalWidth * scale] = item;
+                    }
+            }
+        return dest;
     }
 }
