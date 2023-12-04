@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AdvancedEditorTools.Attributes;
-using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,15 +19,18 @@ class FluidSimulator : MonoBehaviour, ISimulator
     public int penSize = 1;
     
     Texture2D densTex;
-    Color[] densColour;
+    PackedArray<Color> densColour;
     Texture2D velTex;
-    Color[] velColour;
+    PackedArray<Color> velColour;
 
     bool drawBoth = true;
     Texture2D bothTex;
-    Color[] bothColour;
+    PackedArray<Color> bothColour;
     RenderTexture renderTexture;
     
+    List<SimulationObject> objects = new List<SimulationObject>();
+    Texture2D objectTex;
+    PackedArray<Color> objectColour;
 
     Solver2D solver;
 
@@ -43,6 +45,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
         densTex = new Texture2D(gridSize * scale, gridSize * scale);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
         bothTex = new Texture2D(gridSize * scale, gridSize * scale);
+        objectTex = new Texture2D(gridSize * scale, gridSize * scale);
         renderTexture = new RenderTexture(gridSize * scale, gridSize * scale, 0);
 
         densTex.filterMode = FilterMode.Point;
@@ -50,9 +53,10 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
         solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime);
         N = gridSize + 2;
-        densColour = new Color[gridSize * gridSize];
-        velColour = new Color[gridSize * scale * gridSize * scale];
-        bothColour = new Color[gridSize * gridSize * scale * scale];
+        densColour = new PackedArray<Color>(new int[]{ gridSize, gridSize });
+        velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
+        bothColour = new PackedArray<Color>(new int[] { gridSize * gridSize, gridSize * gridSize });
+        objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
     }
 
     public RenderTexture getNextTexture()
@@ -82,12 +86,17 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
         */
 
-        if (Input.GetKey(KeyCode.V))
+        runSimulationObjects();
+        if (Input.GetKey(KeyCode.O))
+        {
+            drawSimulationObjects();
+        }
+        else if (Input.GetKey(KeyCode.V))
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                ArrayFuncs.edit1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorX, cursorY, gridSize + 2, gridSize + 2);
-                ArrayFuncs.edit1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                solver.getVelocityX()[cursorX, cursorY] = mouseVelocityX;
+                solver.getVelocityY()[cursorX, cursorY] = mouseVelocityY;
                 //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorY, cursorX, gridSize, gridSize, penSize);
             }
             if (Input.GetMouseButton(1)) //RMB
@@ -99,7 +108,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
             solver.dens_step();
 
             //zeros out prev_density - This prevents runaway densities
-            solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+            solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
             if (drawBoth)
             {
@@ -113,18 +122,18 @@ class FluidSimulator : MonoBehaviour, ISimulator
         {
             if (Input.GetMouseButton(0)) //LMB
             {
-                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                solver.getDensityPrev()[cursorX, cursorY] = drawValue;
             }
             if (Input.GetMouseButton(1)) //RMB
             {
-                ArrayFuncs.edit1DArrayAs2D(ref solver.getDensityPrev(), -drawValue, cursorX, cursorY, gridSize + 2, gridSize + 2);
+                solver.getDensityPrev()[cursorX, cursorY] = -drawValue;
             }
 
             solver.vel_step();
             solver.dens_step();
 
             //Zeros out prev_density - this prevents runaway densities
-            solver.getDensityPrev() = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+            solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
 
             if (Input.GetKey(KeyCode.Y)) drawDensity(solver.getDensityPrev(), ref densTex);
@@ -135,8 +144,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
     }
     public RenderTexture getCurrentTexture()
     {
-        ;
-        if (Input.GetKey(KeyCode.V))
+        if (Input.GetKey(KeyCode.O))
+        {
+            Graphics.Blit(objectTex, renderTexture);
+        }
+        else if (Input.GetKey(KeyCode.V))
         {
             if (drawBoth) Graphics.Blit(bothTex, renderTexture);
             else Graphics.Blit(velTex, renderTexture);
@@ -153,29 +165,31 @@ class FluidSimulator : MonoBehaviour, ISimulator
         return renderTexture;
     }
 
-    void drawDensity(in float[] density, ref Texture2D drawTex)
+    void drawDensity(in PackedArray<float> density, ref Texture2D drawTex)
     {
+        Color col;
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
                 int colIndex = (simCellX - 1) + (simCellY - 1)*gridSize;
                 int denIndex = (simCellX) +(simCellY)*(gridSize + 2);
-                densColour[colIndex].r = density[denIndex];
-                densColour[colIndex].g = density[denIndex];
-                densColour[colIndex].b = density[denIndex];
-                densColour[colIndex].a = 1f;
+                col.r = density[denIndex];
+                col.g = density[denIndex];
+                col.b = density[denIndex];
+                col.a = 1f;
+                densColour[colIndex] = col;
             }
-        drawTex.SetPixels(ArrayFuncs.scaleArray1Das2D(densColour, scale, gridSize, gridSize));
+        drawTex.SetPixels(densColour.scaleArrayAs2D(scale).data);
         drawTex.Apply();
 
     }
-    void drawVelocity(in float[] velocityX, in float[] velocityY, ref Texture2D drawTex, Color background, Color foreground)
+    void drawVelocity(in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D drawTex, Color background, Color foreground)
     {
         int maxLength = (scale - 1) / 2;
 
         //Makes a texture of one colour
-        velColour = Enumerable.Repeat(background, gridSize * scale * gridSize * scale).ToArray();
-        drawTex.SetPixels(velColour);
+        velColour.data = Enumerable.Repeat(background, gridSize * scale * gridSize * scale).ToArray();
+        drawTex.SetPixels(velColour.data);
         Vector2 normalised;
         Vector2 velocity;
         int xCoord, yCoord;
@@ -183,8 +197,8 @@ class FluidSimulator : MonoBehaviour, ISimulator
         {
             for (int j = 1; j < N; j++)
             {
-                velocity.x = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityX);
-                velocity.y = ArrayFuncs.accessArray1DAs2D(i, j, N, N, velocityY);
+                velocity.x = velocityX[i, j];
+                velocity.y = velocityY[i, j];
 
                 normalised = velocity.normalized;
 
@@ -193,29 +207,30 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 line(ref velColour, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground, gridSize * scale, gridSize * scale);
             }
         }
-        drawTex.SetPixels(velColour);
+        drawTex.SetPixels(velColour.data);
         drawTex.Apply();
     }
     /* FIXME: Use ArrayFuncs.scaleArray1Das2D
      * - Leave bothtex as the big version
      * - make new colour array for bothtex and use scaling to copy to it.
      */
-    public void drawDensityAndVelocity(in float[] density, in float[] velocityX, in float[] velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
+    public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
+        Color col;
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
                 int colIndex = (simCellX - 1) + (simCellY - 1) * gridSize;
                 int denIndex = (simCellX) + (simCellY) * (gridSize + 2);
-
-                densColour[colIndex].r = density[denIndex];
-                densColour[colIndex].g = density[denIndex];
-                densColour[colIndex].b = density[denIndex];
-                densColour[colIndex].a = 1f;
+                col.r = density[denIndex];
+                col.g = density[denIndex];
+                col.b = density[denIndex];
+                col.a = 1f;
+                densColour[colIndex] = col;
             }
         //GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
-        bothColour = ArrayFuncs.scaleArray1Das2D<UnityEngine.Color>(densColour, scale, gridSize, gridSize);
-        densTex.SetPixels(bothColour);
+        bothColour = densColour.scaleArrayAs2D(scale);
+        densTex.SetPixels(bothColour.data);
         
         //Makes a texture of one colour
 
@@ -239,10 +254,10 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
             }
         }
-        bothTex.SetPixels(bothColour);
+        bothTex.SetPixels(bothColour.data);
         bothTex.Apply();
     }
-    public void line(ref Color[] tex, int x, int y, int x2, int y2, Color color, int width, int height)
+    public void line(ref PackedArray<Color> tex, int x, int y, int x2, int y2, Color color, int width, int height)
     {
         if (x > width || x2 > width) { return; }
         if (x < 0 || x2 < 0) { return; }
@@ -283,10 +298,49 @@ class FluidSimulator : MonoBehaviour, ISimulator
         }
     }
     
+    public void runSimulationObjects()
+    {
+        foreach (SimulationObject obj in objects)
+        {
+            if (obj is VelocityForceField)
+            {
+                ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), 1, 0);
+            }
+        }
+    }
+    public void drawSimulationObjects()
+    {
+        objectColour.data = Enumerable.Repeat(Color.black, gridSize * scale * gridSize * scale).ToArray();
+        foreach (SimulationObject obj in objects)
+        {
+            //TODO: draw a coloured box for each object
+            for (int x = obj.x; x < obj.width + obj.x; x++) for (int y = obj.y; y < obj.height + obj.y; y++)
+                {
+                    for (int scaleX = 0; scaleX < scale;  scaleX++) for (int scaleY = 0; scaleY < scale; scaleY++)
+                        {
+                            int idx = ((x * scale) + scaleX) + ((y * scale) + scaleY) * (gridSize * scale);
+                            if (idx < objectColour.length)
+                            {
+                                objectColour[idx] = obj.debugColor;
+                            }
+                            
+                        }
+                }
+        }
+
+        objectTex.SetPixels(objectColour.data);
+        objectTex.Apply();
+    }
 
     /*IN-EDITOR DEBUG BUTTONS*/
     [Button("Print Density")]
-    void printDensity() { Debug.Log(ArrayFuncs.printArray2D<float>(ArrayFuncs.array1Dto2D(solver.getDensity(), gridSize + 2, gridSize + 2))); }
+    void printDensity() { Debug.Log(solver.getDensity().To2DString()); }
     [Button("Print Previous Density")]
-    void printPrevDensity() { Debug.Log(ArrayFuncs.printArray2D<float>(ArrayFuncs.array1Dto2D(solver.getDensityPrev(), gridSize + 2, gridSize + 2))); }
+    void printPrevDensity() { Debug.Log(solver.getDensityPrev().To2DString()); }
+    [Button("Add New Simulation Object (Enforce Value)")]
+    void addSimObj(int x, int y, int w, int h)
+    {
+        objects.Add(new VelocityForceField(x,y,w,h,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+    }
+
 }
