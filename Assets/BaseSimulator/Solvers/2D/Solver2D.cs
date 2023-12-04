@@ -4,12 +4,12 @@ using System.Diagnostics;
 class Solver2D
 {
     //Vector Fields
-    public float[] velocity_horizontal;
-    public float[] velocity_vertical;
-    public float[] prev_velocity_horizontal;
-    public float[] prev_velocity_vertical;
-    public float[] density;
-    public float[] prev_density;
+    public PackedArray<float> velocity_horizontal;
+    public PackedArray<float> velocity_vertical;
+    public PackedArray<float> prev_velocity_horizontal;
+    public PackedArray<float> prev_velocity_vertical;
+    public PackedArray<float> density;
+    public PackedArray<float> prev_density;
 
     //Constants
     int N;
@@ -20,12 +20,12 @@ class Solver2D
     {
         int size = (N + 2) * (N + 2);
 
-        velocity_horizontal = new float[size];          //Velocity (Horizontal)
-        velocity_vertical = new float[size];            //Velocity (Vertical)
-        prev_velocity_horizontal = new float[size];     //Previous Velocity (Horizontal)
-        prev_velocity_vertical = new float[size];       //Previous Velocity (Vertical)
-        density = new float[size];                      //Density
-        prev_density = new float[size];                 //Previous Density
+        velocity_horizontal = new PackedArray<float>(new int[] { N+2, N+2 });               //Velocity (Horizontal)
+        velocity_vertical = new PackedArray<float>(new int[] { N + 2, N + 2 });             //Velocity (Vertical)
+        prev_velocity_horizontal = new PackedArray<float>(new int[] { N + 2, N + 2 });      //Previous Velocity (Horizontal)
+        prev_velocity_vertical = new PackedArray<float>(new int[] { N + 2, N + 2 });        //Previous Velocity (Vertical)
+        density = new PackedArray<float>(new int[] { N + 2, N + 2 });                       //Density
+        prev_density = new PackedArray<float>(new int[] { N + 2, N + 2 });                  //Previous Density
 
         this.diffusion_rate = diffusionRate;
         this.viscosity = viscosity;
@@ -39,7 +39,7 @@ class Solver2D
     }
     void SWAP<T>(ref T a, ref T b) { T temp = a; a = b; b = temp; }
 
-    void add_source(int N, ref float[] x, ref float[] s, float dt)
+    void add_source(int N, ref PackedArray<float> x, ref PackedArray<float> s, float dt)
     {
         int i, size = (N + 2) * (N + 2);
         for (i = 0; i < size; i++)
@@ -48,7 +48,7 @@ class Solver2D
         }
     }
 
-    void set_bnd(int N, Boundary b, ref float[] x)
+    void set_bnd(int N, Boundary b, ref PackedArray<float> x)
     {
         int i;
 
@@ -65,7 +65,7 @@ class Solver2D
         x[((N + 1) + (N + 2) * (N + 1))] = 0.5f * (x[((N) + (N + 2) * (N + 1))] + x[((N + 1) + (N + 2) * (N))]);
     }
 
-    void lin_solve(int N, Boundary b, ref float[] x, ref float[] x0, float a, float c)
+    void lin_solve(int N, Boundary b, ref PackedArray<float> x, ref PackedArray<float> x0, float a, float c)
     {
         int i, j, k;
 
@@ -83,13 +83,13 @@ class Solver2D
         }
     }
 
-    void diffuse(int N, Boundary b, ref float[] x, ref float[] x0, float diff, float dt)
+    void diffuse(int N, Boundary b, ref PackedArray<float> x, ref PackedArray<float> x0, float diff, float dt)
     {
         float a = dt * diff * N * N;
         lin_solve(N, b, ref x, ref x0, a, 1 + 4 * a);
     }
 
-    void advect(int N, Boundary b, ref float[] d, ref float[] d0, ref float[] u, ref float[] v, float dt)
+    void advect(int N, Boundary b, ref PackedArray<float> d, ref PackedArray<float> d0, ref PackedArray<float> u, ref PackedArray<float> v, float dt)
     {
         int i, j, i0, j0, i1, j1;
         float x, y, s0, t0, s1, t1, dt0;
@@ -111,7 +111,7 @@ class Solver2D
         set_bnd(N, b, ref d);
     }
 
-    void project(int N, ref float[] u, ref float[] v, ref float[] p, ref float[] div)
+    void project(int N, ref PackedArray<float> u, ref PackedArray<float> v, ref PackedArray<float> p, ref PackedArray<float> div)
     {
         int i, j;
 
@@ -175,7 +175,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array 
     /// </summary>
     /// <returns></returns>
-    public ref float[] getDensity()
+    public ref PackedArray<float> getDensity()
     {
         return ref density;
     }
@@ -183,7 +183,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array*/
     /// </summary>
     /// <returns></returns>
-    public ref float[] getDensityPrev()
+    public ref PackedArray<float> getDensityPrev()
     {
         return ref prev_density;
     }
@@ -191,7 +191,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array*/
     /// </summary>
     /// <returns></returns>
-    public ref float[] getVelocityX()
+    public ref PackedArray<float> getVelocityX()
     {
         return ref velocity_horizontal;
     }
@@ -199,7 +199,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array*/
     /// </summary>
     /// <returns></returns>
-    public ref float[] getVelocityY()
+    public ref PackedArray<float> getVelocityY()
     {
         return ref velocity_vertical;
     }
@@ -207,7 +207,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array*/
     /// </summary>
     /// <returns></returns>
-    public ref float[] getVelocityXPrev()
+    public ref PackedArray<float> getVelocityXPrev()
     {
         return ref prev_velocity_horizontal;
     }
@@ -215,7 +215,7 @@ class Solver2D
     /// This returns the full (n+2)*(n+2) array*/
     /// </summary>
     /// <returns></returns>
-    public ref float[] getVelocityYPrev()
+    public ref PackedArray<float> getVelocityYPrev()
     {
         return ref prev_velocity_vertical;
     }
@@ -229,7 +229,7 @@ class Solver2D
     /// <param name="velocity_vertical"></param>
     /// <param name="velocity_vertical_prev"></param>
     /// <param name="N"></param>
-    public void getAll(out float[] density, out float[] density_prev, out float[] velocity_horizontal, out float[] velocity_horizontal_prev, out float[] velocity_vertical, out float[] velocity_vertical_prev, out int N)
+    public void getAll(out PackedArray<float> density, out PackedArray<float> density_prev, out PackedArray<float> velocity_horizontal, out PackedArray<float> velocity_horizontal_prev, out PackedArray<float> velocity_vertical, out PackedArray<float> velocity_vertical_prev, out int N)
     {
         density = this.density;
         density_prev = this.prev_density;
