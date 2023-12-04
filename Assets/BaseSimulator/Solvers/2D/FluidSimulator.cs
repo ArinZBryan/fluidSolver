@@ -305,6 +305,9 @@ class FluidSimulator : MonoBehaviour, ISimulator
             if (obj is VelocityForceField)
             {
                 ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), 1, 0);
+            } else if (obj is DensityEnforcer)
+            {
+                ((DensityEnforcer)obj).tick(ref solver.getDensity(), 1);
             }
         }
     }
@@ -337,10 +340,15 @@ class FluidSimulator : MonoBehaviour, ISimulator
     void printDensity() { Debug.Log(solver.getDensity().To2DString()); }
     [Button("Print Previous Density")]
     void printPrevDensity() { Debug.Log(solver.getDensityPrev().To2DString()); }
-    [Button("Add New Simulation Object (Enforce Value)")]
-    void addSimObj(int x, int y, int w, int h)
+    [Button("Add New Simulation Object (Velocity Force Field)")]
+    void addVelocityField(int x, int y, int w, int h)
     {
         objects.Add(new VelocityForceField(x,y,w,h,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+    }
+    [Button("Add New Simulation Object (Density Enforcer)")]
+    void addDensityEnforcer(int x, int y, int w, int h)
+    {
+        objects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
 
 }
