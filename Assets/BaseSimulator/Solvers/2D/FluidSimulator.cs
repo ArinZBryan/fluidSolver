@@ -179,7 +179,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 col.a = 1f;
                 densColour[colIndex] = col;
             }
-        drawTex.SetPixels(PackedArrayFuncs.scaleArrayAs2D(densColour, scale).data);
+        drawTex.SetPixels(densColour.scaleArrayAs2D(scale).data);
         drawTex.Apply();
 
     }
@@ -229,7 +229,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
                 densColour[colIndex] = col;
             }
         //GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
-        bothColour = PackedArrayFuncs.scaleArrayAs2D<UnityEngine.Color>(densColour, scale);
+        bothColour = densColour.scaleArrayAs2D(scale);
         densTex.SetPixels(bothColour.data);
         
         //Makes a texture of one colour
@@ -334,9 +334,9 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
     /*IN-EDITOR DEBUG BUTTONS*/
     [Button("Print Density")]
-    void printDensity() { Debug.Log(PackedArrayFuncs.printArray2D<float>(solver.getDensity())); }
+    void printDensity() { Debug.Log(solver.getDensity().To2DString()); }
     [Button("Print Previous Density")]
-    void printPrevDensity() { Debug.Log(PackedArrayFuncs.printArray2D<float>(solver.getDensityPrev())); }
+    void printPrevDensity() { Debug.Log(solver.getDensityPrev().To2DString()); }
     [Button("Add New Simulation Object (Enforce Value)")]
     void addSimObj(int x, int y, int w, int h)
     {
