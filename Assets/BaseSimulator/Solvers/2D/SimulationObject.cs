@@ -1,6 +1,4 @@
 ﻿using System;
-using Unity.VisualScripting;
-
 abstract class SimulationObject
 {
     public int x, y;
@@ -10,15 +8,18 @@ abstract class SimulationObject
 
 class VelocityForceField : SimulationObject
 {
-    public VelocityForceField(int x, int y, int width, int height, UnityEngine.Color debugColor)
+    float valueX, valueY;
+    public VelocityForceField(int x, int y, int width, int height, float valueX, float valueY, UnityEngine.Color debugColor)
     {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.valueX = valueX;
+        this.valueY = valueY;
         this.debugColor = debugColor;
     }
-    public void tick(ref PackedArray<float> velX, ref PackedArray<float> velY, float valueX, float valueY)
+    public void tick(ref PackedArray<float> velX, ref PackedArray<float> velY)
     {
         for (int i = x; i < width + x; i++) for (int j = y; j < height + y; j++)
             {
@@ -68,5 +69,10 @@ class PhysPoint : SimulationObject
         this.realY += dy;
         this.x = (int)Math.Round(realX);
         this.y = (int)Math.Round(realY);
+        if (this.realX > velocityX.dimensions[0]) { this.realX = velocityX.dimensions[0] - 1; }
+        if (this.realY > velocityY.dimensions[1]) { this.realY = velocityY.dimensions[1] - 1; }
+        if (this.realX < 0) { this.realX = 0; }
+        if (this.realY < 0) { this.realY = 0; }
+        UnityEngine.Debug.Log((this.realX, this.realY));
     }
 }
