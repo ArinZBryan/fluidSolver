@@ -308,6 +308,9 @@ class FluidSimulator : MonoBehaviour, ISimulator
             } else if (obj is DensityEnforcer)
             {
                 ((DensityEnforcer)obj).tick(ref solver.getDensity(), 1);
+            } else if (obj is PhysPoint)
+            {
+                ((PhysPoint)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), deltaTime);
             }
         }
     }
@@ -349,6 +352,11 @@ class FluidSimulator : MonoBehaviour, ISimulator
     void addDensityEnforcer(int x, int y, int w, int h)
     {
         objects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+    }
+    [Button("Add New Simulation Object (Physics Particle)")]
+    void addPhysParticle(int x, int y)
+    {
+        objects.Add(new PhysPoint(x, y, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
 
 }

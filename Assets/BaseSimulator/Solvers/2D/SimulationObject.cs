@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 
 abstract class SimulationObject
 {
@@ -42,5 +43,30 @@ class DensityEnforcer : SimulationObject
             {
                 density[i, j] = value;
             }
+    }
+}
+class PhysPoint : SimulationObject
+{
+    float realX, realY;
+    public PhysPoint(int x, int y, UnityEngine.Color debugColor)
+    {
+        this.x = x;
+        this.y = y;
+        this.realX = x;
+        this.realY = y;
+        this.width = 3;
+        this.height = 3;
+        this.debugColor = debugColor;
+    }
+    public void tick(ref PackedArray<float> velocityX, ref PackedArray<float> velocityY, float deltaTime)
+    {
+        float dx = velocityX[x, y] * deltaTime * 10;
+        float dy = velocityY[x, y] * deltaTime * 10;
+        if (this.realX > velocityX.dimensions[0] || this.realX < 0) { dx = -dx; }
+        if (this.realY > velocityY.dimensions[1] || this.realY < 0) { dy = -dy; }
+        this.realX += dx;
+        this.realY += dy;
+        this.x = (int)Math.Round(realX);
+        this.y = (int)Math.Round(realY);
     }
 }
