@@ -358,5 +358,10 @@ class FluidSimulator : MonoBehaviour, ISimulator
     {
         objects.Add(new PhysPoint(x, y, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
-
+    [Button("Print total volume")]
+    void printSimVolume()
+    {
+        float volume = solver.getDensity().data.Sum();
+        Debug.Log(volume * gridSize * gridSize);
+    }
 }
