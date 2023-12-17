@@ -51,7 +51,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
         densTex.filterMode = FilterMode.Point;
         velTex.filterMode = FilterMode.Point;
 
-        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime);
+        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime, false);
         N = gridSize + 2;
         densColour = new PackedArray<Color>(new int[]{ gridSize, gridSize });
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });

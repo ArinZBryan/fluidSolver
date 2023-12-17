@@ -14,9 +14,10 @@ class Solver2D
     //Constants
     int N;
     float diffusion_rate, viscosity, sim_delta_time;
+    readonly bool USE_COMPLEX_BOUNDARIES;
 
 
-    public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime)
+    public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime, bool complexBoundaries)
     {
         int size = (N + 2) * (N + 2);
 
@@ -31,11 +32,12 @@ class Solver2D
         this.viscosity = viscosity;
         this.sim_delta_time = deltaTime;
         this.N = N;
+        this.USE_COMPLEX_BOUNDARIES = complexBoundaries;
     }
 
     enum Boundary
     {
-        NONE, HORIZONTAL, VERTICAL
+        NONE, HORIZONTAL, VERTICAL, LEFT, RIGHT, UP, DOWN
     }
     void SWAP<T>(ref T a, ref T b) { T temp = a; a = b; b = temp; }
 
@@ -50,19 +52,82 @@ class Solver2D
 
     void set_bnd(int N, Boundary b, ref PackedArray<float> x)
     {
+        if (USE_COMPLEX_BOUNDARIES)
+        {
+            if (b == Boundary.HORIZONTAL) 
+            { 
+                set_bnd_complex(N, Boundary.LEFT, ref x); 
+                set_bnd_complex(N, Boundary.RIGHT, ref x); 
+            } else if (b == Boundary.VERTICAL)
+            {
+                set_bnd_complex(N, Boundary.UP, ref x); 
+                set_bnd_complex(N, Boundary.DOWN, ref x);
+            } else
+            {
+                set_bnd_complex(N, b, ref x);
+            }
+        }
+        else
+        {
+            set_bnd_compatibility(N, b, ref x);
+        }
+    }
+
+    void set_bnd_compatibility(int N, Boundary b, ref PackedArray<float> x)
+    {
         int i;
 
+        //Deals with the boundaries of the simulation.
         for (i = 1; i <= N; i++)
         {
-            x[((0) + (N + 2) * (i))] = b == Boundary.HORIZONTAL ? -x[((1) + (N + 2) * (i))] : x[((1) + (N + 2) * (i))];
-            x[((N + 1) + (N + 2) * (i))] = b == Boundary.HORIZONTAL ? -x[((N) + (N + 2) * (i))] : x[((N) + (N + 2) * (i))];
-            x[((i) + (N + 2) * (0))] = b == Boundary.VERTICAL ? -x[((i) + (N + 2) * (1))] : x[((i) + (N + 2) * (1))];
-            x[((i) + (N + 2) * (N + 1))] = b == Boundary.VERTICAL ? -x[((i) + (N + 2) * (N))] : x[((i) + (N + 2) * (N))];
+            if (b == Boundary.HORIZONTAL)
+            {
+                x[0, i] = -x[1, i];
+                x[N + 1, i] = -x[N, i];
+            }
+            else
+            {
+                x[0, i] = x[1, i];
+                x[N + 1, i] = x[N, i];
+            }
+
+            if (b == Boundary.VERTICAL)
+            {
+                x[i, 0] = -x[i, 1];
+                x[i, N + 1] = -x[i, N];
+            }
+            else
+            {
+                x[i, 0] = x[i, 1];
+                x[i, N + 1] = x[i, N];
+            }
         }
-        x[((0) + (N + 2) * (0))] = 0.5f * (x[((1) + (N + 2) * (0))] + x[((0) + (N + 2) * (1))]);
-        x[((0) + (N + 2) * (N + 1))] = 0.5f * (x[((1) + (N + 2) * (N + 1))] + x[((0) + (N + 2) * (N))]);
-        x[((N + 1) + (N + 2) * (0))] = 0.5f * (x[((N) + (N + 2) * (0))] + x[((N + 1) + (N + 2) * (1))]);
-        x[((N + 1) + (N + 2) * (N + 1))] = 0.5f * (x[((N) + (N + 2) * (N + 1))] + x[((N + 1) + (N + 2) * (N))]);
+
+        //corners are average of directly ajacent cells
+        x[0, 0] = 0.5f * (x[1, 0] + x[0, 1]);
+        x[0, N + 1] = 0.5f * (x[1, N + 1] + x[0, N]);
+        x[N + 1, 0] = 0.5f * (x[N, 0] + x[N + 1, 1]);
+        x[N + 1, N + 1] = 0.5f * (x[N, N + 1] + x[N + 1, N]);
+    }
+    void set_bnd_complex(int N, Boundary b, ref PackedArray<float> x)
+    {
+        int i;
+
+        //Deals with the boundaries of the simulation.
+        for (i = 1; i <= N; i++)
+        {
+            if (b == Boundary.LEFT)     { x[0, i] = -x[1, i];       } else { x[0, i] = x[1, i];     }
+            if (b == Boundary.RIGHT)    { x[N + 1, i] = -x[N, i];   } else { x[N + 1, i] = x[N, i]; }
+            if (b == Boundary.UP)       { x[i, 0] = -x[i, 1];       } else { x[i, 0] = x[i, 1];     }
+            if (b == Boundary.DOWN)     { x[i, N + 1] = -x[i, N];   } else { x[i, N + 1] = x[i, N]; }
+        }
+
+
+        //corners are average of directly ajacent cells
+        x[0, 0] = 0.5f * (x[1, 0] + x[0, 1]);
+        x[0, N + 1] = 0.5f * (x[1, N + 1] + x[0, N]);
+        x[N + 1, 0] = 0.5f * (x[N, 0] + x[N + 1, 1]);
+        x[N + 1, N + 1] = 0.5f * (x[N, N + 1] + x[N + 1, N]);
     }
 
     void lin_solve(int N, Boundary b, ref PackedArray<float> x, ref PackedArray<float> x0, float a, float c)
@@ -124,7 +189,8 @@ class Solver2D
             }
         }
 
-        set_bnd(N, 0, ref div); set_bnd(N, 0, ref p);
+        set_bnd_complex(N, Boundary.NONE, ref div);
+        set_bnd_complex(N, Boundary.NONE, ref p);
 
         lin_solve(N, 0, ref p, ref div, 1, 4);
 
@@ -137,7 +203,10 @@ class Solver2D
             }
         }
 
-        set_bnd(N, Boundary.HORIZONTAL, ref u); set_bnd(N, Boundary.VERTICAL, ref v);
+        set_bnd_complex(N, Boundary.LEFT, ref u);
+        set_bnd_complex(N, Boundary.RIGHT, ref u);
+        set_bnd_complex(N, Boundary.UP, ref v);
+        set_bnd_complex(N, Boundary.DOWN, ref v);
     }
 
     public void dens_step()
