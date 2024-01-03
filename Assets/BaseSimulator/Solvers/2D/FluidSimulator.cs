@@ -51,7 +51,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
         densTex.filterMode = FilterMode.Point;
         velTex.filterMode = FilterMode.Point;
 
-        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime);
+        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime, false);
         N = gridSize + 2;
         densColour = new PackedArray<Color>(new int[]{ gridSize, gridSize });
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
@@ -304,7 +304,13 @@ class FluidSimulator : MonoBehaviour, ISimulator
         {
             if (obj is VelocityForceField)
             {
-                ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), 1, 0);
+                ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY());
+            } else if (obj is DensityEnforcer)
+            {
+                ((DensityEnforcer)obj).tick(ref solver.getDensity(), 1);
+            } else if (obj is PhysPoint)
+            {
+                ((PhysPoint)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), deltaTime);
             }
         }
     }
@@ -313,7 +319,6 @@ class FluidSimulator : MonoBehaviour, ISimulator
         objectColour.data = Enumerable.Repeat(Color.black, gridSize * scale * gridSize * scale).ToArray();
         foreach (SimulationObject obj in objects)
         {
-            //TODO: draw a coloured box for each object
             for (int x = obj.x; x < obj.width + obj.x; x++) for (int y = obj.y; y < obj.height + obj.y; y++)
                 {
                     for (int scaleX = 0; scaleX < scale;  scaleX++) for (int scaleY = 0; scaleY < scale; scaleY++)
@@ -337,10 +342,47 @@ class FluidSimulator : MonoBehaviour, ISimulator
     void printDensity() { Debug.Log(solver.getDensity().To2DString()); }
     [Button("Print Previous Density")]
     void printPrevDensity() { Debug.Log(solver.getDensityPrev().To2DString()); }
-    [Button("Add New Simulation Object (Enforce Value)")]
-    void addSimObj(int x, int y, int w, int h)
+    [Button("Add New Simulation Object (Velocity Force Field)")]
+    void addVelocityField(int x, int y, int w, int h,float valX, float valY)
     {
-        objects.Add(new VelocityForceField(x,y,w,h,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
+        if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
+        if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
+        objects.Add(new VelocityForceField(x,y,w,h,valX,valY,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
-
+    [Button("Add New Simulation Object (Density Enforcer)")]
+    void addDensityEnforcer(int x, int y, int w, int h)
+    {
+        if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
+        if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
+        if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
+        objects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+    }
+    [Button("Add New Simulation Object (Physics Particle)")]
+    void addPhysParticle(int x, int y)
+    {
+        if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
+        objects.Add(new PhysPoint(x, y, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+    }
+    [Button("Add New Simulation Object (Collidable Cell")]
+    void addCollidableCell(int x, int y, int w, int h)
+    {
+        if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
+        if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
+        if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
+        CollidableCell c = new CollidableCell(x, y, w, h, 
+                                    Solver2D.Boundary.TOP | 
+                                    Solver2D.Boundary.BOTTOM | 
+                                    Solver2D.Boundary.LEFT | 
+                                    Solver2D.Boundary.RIGHT, 
+                                    UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f));
+        objects.Add(c);
+        solver.addPhysicsObject(c);
+    }
+    [Button("Print total volume")]
+    void printSimVolume()
+    {
+        float volume = solver.getDensity().data.Sum();
+        Debug.Log(volume * gridSize * gridSize);
+    }
 }
