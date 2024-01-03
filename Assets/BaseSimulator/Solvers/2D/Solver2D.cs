@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 class Solver2D
@@ -10,23 +11,26 @@ class Solver2D
     public PackedArray<float> prev_velocity_vertical;
     public PackedArray<float> density;
     public PackedArray<float> prev_density;
+    public
 
     //Constants
     int N;
     float diffusion_rate, viscosity, sim_delta_time;
     readonly bool USE_COMPLEX_BOUNDARIES;
+    List<CollidableCell> physicsObjects;
 
 
     public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime, bool complexBoundaries)
     {
         int size = (N + 2) * (N + 2);
 
-        velocity_horizontal = new PackedArray<float>(new int[] { N+2, N+2 });               //Velocity (Horizontal)
+        velocity_horizontal = new PackedArray<float>(new int[] { N + 2, N + 2 });               //Velocity (Horizontal)
         velocity_vertical = new PackedArray<float>(new int[] { N + 2, N + 2 });             //Velocity (Vertical)
         prev_velocity_horizontal = new PackedArray<float>(new int[] { N + 2, N + 2 });      //Previous Velocity (Horizontal)
         prev_velocity_vertical = new PackedArray<float>(new int[] { N + 2, N + 2 });        //Previous Velocity (Vertical)
         density = new PackedArray<float>(new int[] { N + 2, N + 2 });                       //Density
         prev_density = new PackedArray<float>(new int[] { N + 2, N + 2 });                  //Previous Density
+        physicsObjects = new List<CollidableCell>();
 
         this.diffusion_rate = diffusionRate;
         this.viscosity = viscosity;
@@ -35,9 +39,17 @@ class Solver2D
         this.USE_COMPLEX_BOUNDARIES = complexBoundaries;
     }
 
-    enum Boundary
+    [Flags] // Sets this enum to work using bitwise operations, so that we can combine multiple flags into one variable
+            // | = union, & = intersection, ^ = xor, ! = not
+    public enum Boundary
     {
-        NONE, HORIZONTAL, VERTICAL, LEFT, RIGHT, UP, DOWN
+        NONE = 0b0000_0001,
+        HORIZONTAL = 0b0000_0010,
+        VERTICAL = 0b0000_0100,
+        LEFT = 0b0000_1000,
+        RIGHT = 0b0001_0000,
+        TOP = 0b0010_0000,
+        BOTTOM = 0b0100_0000
     }
     void SWAP<T>(ref T a, ref T b) { T temp = a; a = b; b = temp; }
 
@@ -54,15 +66,17 @@ class Solver2D
     {
         if (USE_COMPLEX_BOUNDARIES)
         {
-            if (b == Boundary.HORIZONTAL) 
-            { 
-                set_bnd_complex(N, Boundary.LEFT, ref x); 
-                set_bnd_complex(N, Boundary.RIGHT, ref x); 
-            } else if (b == Boundary.VERTICAL)
+            if (b == Boundary.HORIZONTAL)
             {
-                set_bnd_complex(N, Boundary.UP, ref x); 
-                set_bnd_complex(N, Boundary.DOWN, ref x);
-            } else
+                set_bnd_complex(N, Boundary.LEFT, ref x);
+                set_bnd_complex(N, Boundary.RIGHT, ref x);
+            }
+            else if (b == Boundary.VERTICAL)
+            {
+                set_bnd_complex(N, Boundary.TOP, ref x);
+                set_bnd_complex(N, Boundary.BOTTOM, ref x);
+            }
+            else
             {
                 set_bnd_complex(N, b, ref x);
             }
@@ -116,12 +130,70 @@ class Solver2D
         //Deals with the boundaries of the simulation.
         for (i = 1; i <= N; i++)
         {
-            if (b == Boundary.LEFT)     { x[0, i] = -x[1, i];       } else { x[0, i] = x[1, i];     }
-            if (b == Boundary.RIGHT)    { x[N + 1, i] = -x[N, i];   } else { x[N + 1, i] = x[N, i]; }
-            if (b == Boundary.UP)       { x[i, 0] = -x[i, 1];       } else { x[i, 0] = x[i, 1];     }
-            if (b == Boundary.DOWN)     { x[i, N + 1] = -x[i, N];   } else { x[i, N + 1] = x[i, N]; }
+            if (b == Boundary.LEFT) { x[0, i] = -x[1, i]; } else { x[0, i] = x[1, i]; }
+            if (b == Boundary.RIGHT) { x[N + 1, i] = -x[N, i]; } else { x[N + 1, i] = x[N, i]; }
+            if (b == Boundary.TOP) { x[i, 0] = -x[i, 1]; } else { x[i, 0] = x[i, 1]; }
+            if (b == Boundary.BOTTOM) { x[i, N + 1] = -x[i, N]; } else { x[i, N + 1] = x[i, N]; }
         }
 
+
+        //Iterate through all physics objects
+        int physicsObjectX, physicsObjectY, physicsObjectWidth, physicsObjectHeight;
+        foreach (var physicsObject in physicsObjects)
+        {
+            physicsObjectX = physicsObject.x;
+            physicsObjectY = physicsObject.y;
+            physicsObjectWidth = physicsObject.width;
+            physicsObjectHeight = physicsObject.height;
+            //handle edges
+            if (physicsObject.collidableFaces.HasFlag(Boundary.LEFT))
+            {
+                for (i = physicsObjectY; i < physicsObjectY + physicsObjectHeight; i++)
+                {
+                    x[physicsObjectX, i] = -x[physicsObjectX - 1, i];
+                }
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.RIGHT))
+            {
+                for (i = physicsObjectY; i < physicsObjectY + physicsObjectHeight; i++)
+                {
+                    x[physicsObjectX + physicsObjectWidth, i] = -x[physicsObjectX + physicsObjectWidth + 1, i];
+                }
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.TOP))
+            {
+                for (i = physicsObjectX; i < physicsObjectX + physicsObjectWidth; i++)
+                {
+                    x[i, physicsObjectY] = -x[i, physicsObjectY - 1];
+                }
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.BOTTOM))
+            {
+                for (i = physicsObjectX; i < physicsObjectX + physicsObjectWidth; i++)
+                {
+                    x[i, physicsObjectY + physicsObjectHeight] = -x[i, physicsObjectY + physicsObjectHeight + 1];
+                }
+            }
+            //Handle corners by taking the average of the two directly adjacent cells
+            if (physicsObject.collidableFaces.HasFlag(Boundary.LEFT | Boundary.BOTTOM))
+            {
+                x[physicsObjectX, physicsObjectY] = 0.5f * (x[physicsObjectX - 1, physicsObjectY] + x[physicsObjectX, physicsObjectY - 1]);
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.LEFT | Boundary.TOP))
+            {
+                x[physicsObjectX, physicsObjectY + physicsObjectHeight] = 0.5f * (x[physicsObjectX - 1, physicsObjectY + physicsObjectHeight] + x[physicsObjectX, physicsObjectY + physicsObjectHeight + 1]);
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.RIGHT | Boundary.BOTTOM))
+            {
+                x[physicsObjectX + physicsObjectWidth, physicsObjectY] = 0.5f * (x[physicsObjectX + physicsObjectWidth + 1, physicsObjectY] + x[physicsObjectX + physicsObjectWidth, physicsObjectY - 1]);
+            }
+            if (physicsObject.collidableFaces.HasFlag(Boundary.RIGHT | Boundary.TOP))
+            {
+                x[physicsObjectX + physicsObjectWidth, physicsObjectY + physicsObjectHeight] = 0.5f * (x[physicsObjectX + physicsObjectWidth + 1, physicsObjectY + physicsObjectHeight] + x[physicsObjectX + physicsObjectWidth, physicsObjectY + physicsObjectHeight + 1]);
+            }
+                
+
+        }
 
         //corners are average of directly ajacent cells
         x[0, 0] = 0.5f * (x[1, 0] + x[0, 1]);
@@ -205,16 +277,16 @@ class Solver2D
 
         set_bnd_complex(N, Boundary.LEFT, ref u);
         set_bnd_complex(N, Boundary.RIGHT, ref u);
-        set_bnd_complex(N, Boundary.UP, ref v);
-        set_bnd_complex(N, Boundary.DOWN, ref v);
+        set_bnd_complex(N, Boundary.TOP, ref v);
+        set_bnd_complex(N, Boundary.BOTTOM, ref v);
     }
 
     public void dens_step()
     {
         add_source(N, ref density, ref prev_density, sim_delta_time);
-        SWAP(ref prev_density, ref density); 
+        SWAP(ref prev_density, ref density);
         diffuse(N, Boundary.NONE, ref density, ref prev_density, diffusion_rate, sim_delta_time);
-        SWAP(ref prev_density, ref density); 
+        SWAP(ref prev_density, ref density);
         advect(N, Boundary.NONE, ref density, ref prev_density, ref velocity_horizontal, ref velocity_vertical, sim_delta_time);
     }
 
@@ -227,15 +299,15 @@ class Solver2D
         diffuse(N, Boundary.HORIZONTAL, ref velocity_horizontal, ref prev_velocity_horizontal, viscosity, sim_delta_time);
         SWAP(ref prev_velocity_vertical, ref velocity_vertical);
         diffuse(N, Boundary.VERTICAL, ref velocity_vertical, ref prev_velocity_vertical, viscosity, sim_delta_time);
-        
+
         project(N, ref velocity_horizontal, ref velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical);
 
         SWAP(ref prev_velocity_horizontal, ref velocity_horizontal);
         SWAP(ref prev_velocity_vertical, ref velocity_vertical);
 
-        advect(N, Boundary.HORIZONTAL, ref velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_vertical, sim_delta_time); 
+        advect(N, Boundary.HORIZONTAL, ref velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_horizontal, ref prev_velocity_vertical, sim_delta_time);
         advect(N, Boundary.VERTICAL, ref velocity_vertical, ref prev_velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical, sim_delta_time);
-        
+
         project(N, ref velocity_horizontal, ref velocity_vertical, ref prev_velocity_horizontal, ref prev_velocity_vertical);
     }
 
@@ -308,7 +380,14 @@ class Solver2D
         velocity_vertical_prev = this.prev_velocity_vertical;
         N = this.N;
     }
-
+    public void addPhysicsObject(CollidableCell obj)
+    {
+        physicsObjects.Add(obj);
+    }
+    public void removePhysicsObject(CollidableCell obj)
+    {
+        physicsObjects.Remove(obj);
+    }
 }
 
 

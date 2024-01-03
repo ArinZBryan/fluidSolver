@@ -76,3 +76,17 @@ class PhysPoint : SimulationObject
         UnityEngine.Debug.Log((this.realX, this.realY));
     }
 }
+class CollidableCell : SimulationObject
+{
+    public Solver2D.Boundary collidableFaces;
+    public bool currentlyInSolver = false;
+    public CollidableCell(int x, int y, int width, int height, Solver2D.Boundary faces, UnityEngine.Color debugColor)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.debugColor = debugColor;
+        this.collidableFaces = faces;
+    }
+}
