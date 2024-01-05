@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class Destinations
 {
@@ -12,18 +12,16 @@ public class Destinations
 
     public class Viewport : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
+        RenderTexture texture;
+        public RawImage rawImage;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
+        public Viewport(RawImage viewport)
+        {
+            rawImage = viewport;
+        }
         public void setImage(RenderTexture img)
         {
-            if (texture == null)
-            {
-                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-            }
-            Graphics.CopyTexture(img, texture);
-            imageWidth = img.width;
-            imageHeight = img.height;
+            texture = img;
         }
         public string destroy()
         {
@@ -31,7 +29,7 @@ public class Destinations
         }
         public void renderImageNow()
         {
-            Graphics.DrawTexture(new Rect(0, 0, imageWidth, imageHeight), texture);
+            rawImage.texture = texture;
         }
     }
     public class ImageSequence : IImageDestination
