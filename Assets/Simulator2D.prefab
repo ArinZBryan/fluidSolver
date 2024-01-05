@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 64
-  scale: 6
+  scale: 8
   viscosity: 0
   diffusionRate: 0
   deltaTime: 0.1

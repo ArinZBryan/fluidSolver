@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using AdvancedEditorTools.Attributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResultDispatcher : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class ResultDispatcher : MonoBehaviour
     public string name;
     public int time;
     RenderTexture inputTex;
-
+    public RawImage viewport;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,19 @@ public class ResultDispatcher : MonoBehaviour
         simulatorGameObject = Instantiate(simulatorPrefab);
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
-        destinations.Add(new Destinations.Viewport());
+        destinations.Add(new Destinations.Viewport(viewport));
         //destinations.Add(new Destinations.TimedImageSequence(folder, name, fmt, time));
 
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
-
+        //Instantiate gameobject to use for simulation rendering if needed
+        if (doHaveViewportAsTarget)
+        {
+            int pixWidth = simulator.getSimulationSize().x * simulator.getScale();
+            int pixHeight = simulator.getSimulationSize().y * simulator.getScale();
+            RectTransform rectTransform = viewport.gameObject.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(pixWidth, pixHeight);
+            rectTransform.anchoredPosition = new Vector2(pixWidth / 2, -pixHeight / 2);
+        }
     }
 
     // Update is called once per tick
@@ -80,14 +89,11 @@ public class ResultDispatcher : MonoBehaviour
      * Some places will say you can call it in OnPostRender(), however, this function only works in URP / HDRP, not in SRP
      * (what we are using here). I tried a workaround, but it just was not doing it. So OnGUI() it is.
     */
-    void OnGUI()
+    void LateUpdate()
     {
         if (doHaveViewportAsTarget)
         {
-            if (Event.current.type == EventType.Repaint) 
-            {
-                destinations.OfType<Destinations.Viewport>().First().renderImageNow();
-            }
+            destinations.OfType<Destinations.Viewport>().First().renderImageNow();
         }
     }
 

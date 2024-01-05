@@ -210,10 +210,6 @@ class FluidSimulator : MonoBehaviour, ISimulator
         drawTex.SetPixels(velColour.data);
         drawTex.Apply();
     }
-    /* FIXME: Use ArrayFuncs.scaleArray1Das2D
-     * - Leave bothtex as the big version
-     * - make new colour array for bothtex and use scaling to copy to it.
-     */
     public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
         Color col;
@@ -297,7 +293,6 @@ class FluidSimulator : MonoBehaviour, ISimulator
             }
         }
     }
-    
     public void runSimulationObjects()
     {
         foreach (SimulationObject obj in objects)
@@ -335,6 +330,20 @@ class FluidSimulator : MonoBehaviour, ISimulator
 
         objectTex.SetPixels(objectColour.data);
         objectTex.Apply();
+    }
+
+    public int getScale()
+    {
+        return scale;
+    }
+    public int setScale(int scale)
+    {
+        this.scale = scale;
+        return scale;
+    }
+    public Vector2Int getSimulationSize()
+    {
+        return new Vector2Int(gridSize, gridSize);
     }
 
     /*IN-EDITOR DEBUG BUTTONS*/
