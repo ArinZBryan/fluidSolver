@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 1085966257304545035}
   - component: {fileID: 4909235317375309334}
   m_Layer: 5
-  m_Name: GenericNumberSetting
+  m_Name: GenericIntSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

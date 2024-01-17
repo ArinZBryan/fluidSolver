@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SettingsDispatcher : MonoBehaviour
 {
-    Canvas UICanvas;
-    GameObject IntSettingPrefab;
-    GameObject FloatSettingPrefab;
-    GameObject BoolSettingPrefab;
-    GameObject StringSettingPrefab;
-    GameObject EnumSettingPrefab;
+    public Canvas UICanvas;
+    public GameObject IntSettingPrefab;
+    public GameObject FloatSettingPrefab;
+    public GameObject BoolSettingPrefab;
+    public GameObject StringSettingPrefab;
+    public GameObject EnumSettingPrefab;
 
 
     Setting[] simulationSettings = new Setting[]
