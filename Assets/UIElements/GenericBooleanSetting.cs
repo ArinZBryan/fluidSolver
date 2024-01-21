@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 
-public class GenericBoolSetting : MonoBehaviour
+public class GenericBooleanSetting : MonoBehaviour
 {
     bool currentValue;
     bool defaultValue;

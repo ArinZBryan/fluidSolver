@@ -7,6 +7,7 @@ public class GenericEnumSetting : MonoBehaviour
 {
     //Define Setting 
     System.Type settingEnum;
+    System.Enum defaultValue;
     string settingName;
     
     //Keep track of current value
@@ -24,15 +25,19 @@ public class GenericEnumSetting : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void setup(System.Enum enumerator, string name )
+    public void setup(System.Type enumerator, System.Enum defaultValue, string name )
     {
 
         this.settingName = name;
         dropdown.options.Clear();
-        foreach (var item in System.Enum.GetValues(enumerator.GetType()))
+        foreach (var item in System.Enum.GetValues(enumerator))
         {
             dropdown.options.Add(new Dropdown.OptionData(item.ToString()));
         }
+
+        this.defaultValue = defaultValue;
+        this.currentEnum = defaultValue;
+        this.dropdown.value = dropdown.options.FindIndex((x) => x.text == defaultValue.ToString());
 
         dropdown.onValueChanged.AddListener((value) =>
         {
