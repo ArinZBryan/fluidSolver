@@ -1,38 +1,32 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System;
 
 public class GenericStringSetting : MonoBehaviour
 {
-    string settingName;
+    public string settingName;
+    public string defaultValue;
     string currentValue;
-    TextField textField;
-    Label label;
-    public delegate string? verificationFunction(string input);
-    verificationFunction verifyInput;
+    InputField textField;
+    public GameObject textFieldGameObject;
+    Text label;
+    public GameObject labelGameObject;
 
-    private void Awake()
+    public void Awake()
     {
-        label = transform.Find("SettingTitle").GetComponent<Label>();
-        textField = transform.Find("InputField").GetComponent<TextField>();
-        this.gameObject.SetActive(false);
-    }
-
-    public void setup(string defaultValue, verificationFunction f, string name )
-    {
+        textField = textFieldGameObject.GetComponent<InputField>();
+        label = labelGameObject.GetComponent<Text>();
 
         this.settingName = name;
-        textField.value = defaultValue;
+        textField.text = defaultValue;
         currentValue = defaultValue;
         label.text = settingName;
-        verifyInput = f;
-
-        textField.RegisterValueChangedCallback((evt) =>
-        {
-            currentValue = verifyInput(evt.newValue) ?? "";
-        });
 
         this.gameObject.SetActive(true);
+    }
+    public void textFieldChanged()
+    {
+        currentValue = textField.text;
     }
 
     public string getValue()
@@ -41,8 +35,13 @@ public class GenericStringSetting : MonoBehaviour
     }
     public string setValue(string value) 
     {
-        currentValue = verifyInput(value) ?? "";
-        textField.value = currentValue;
+        currentValue = value;
+        textField.text = currentValue;
         return currentValue;
+    }
+    public void invalidateValue()
+    {
+        currentValue = defaultValue;
+        textField.text = currentValue;
     }
 }

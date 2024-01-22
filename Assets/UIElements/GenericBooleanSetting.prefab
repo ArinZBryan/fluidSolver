@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 2748375382823493494}
   - component: {fileID: 8638090612800074412}
   - component: {fileID: 6210713199580046304}
+  - component: {fileID: 6555344345465227209}
   m_Layer: 5
   m_Name: GenericBooleanSetting
   m_TagString: Untagged
@@ -164,6 +165,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6555344345465227209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5037856794352213683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b406ef5447dc5b14cb0787e2f28669eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultValue: 0
+  settingName: GenericToggleSetting
+  toggleObject: {fileID: 4328898350476661729}
+  labelObject: {fileID: 7660942440316631337}
 --- !u!1 &7660942440316631337
 GameObject:
   m_ObjectHideFlags: 0

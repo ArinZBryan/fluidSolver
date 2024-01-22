@@ -1,56 +1,54 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System;
 
 public class GenericIntSetting : MonoBehaviour
 {
-    int maxValue;
-    int minValue;
+    public int maxValue;
+    public int minValue;
     int currentValue;
-    int? stepSize;
-    string settingName;
-    Label label;
+    public int? stepSize;
+    public string settingName;
+    Text label;
+    public GameObject labelGameObject;
     Slider slider;
-    TextField textField;
-    private void Awake()
-    {
-        label = transform.Find("SettingTitle").GetComponent<Label>();
-        slider = transform.Find("Slider").GetComponent<Slider>();
-        textField = transform.Find("TextField").GetComponent<TextField>();
-        this.gameObject.SetActive(false);
-    }
+    public GameObject sliderGameObject;
+    InputField textField;
+    public GameObject textFieldGameObject;
+    
 
-    public void setup(int maxValue, int minValue, int defaultValue, int? stepSize, string name)
+
+    public void Awake()
     {
-        this.maxValue = maxValue;
-        this.minValue = minValue;
-        this.currentValue = defaultValue;
-        this.stepSize = stepSize;
-        this.settingName = name;
+        label = labelGameObject.GetComponent<UnityEngine.UI.Text>();
+        slider = sliderGameObject.GetComponent<Slider>();
+        textField = textFieldGameObject.GetComponent<InputField>();
 
         label.text = settingName;
         slider.value = currentValue;
-        slider.highValue = maxValue;
-        slider.lowValue = minValue;
+        slider.maxValue = maxValue;
+        slider.minValue = minValue;
+        textField.text = currentValue.ToString();
 
-        textField.value = currentValue.ToString();
+    }
 
-        slider.RegisterValueChangedCallback((evt) =>
+    public void sliderChanged()
+    {
+        currentValue = verifyValue(slider.value);
+        textField.text = currentValue.ToString();
+    }
+
+    public void textFieldChanged()
+    {
+        if (int.TryParse(textField.text, out int result))
         {
-            currentValue = verifyValue(evt.newValue);
-            textField.value = currentValue.ToString();
-        });
-
-        textField.RegisterValueChangedCallback((evt) =>
+            currentValue = verifyValue(result);
+            slider.value = currentValue;
+        } else
         {
-            if (int.TryParse(evt.newValue, out int result))
-            {
-                currentValue = verifyValue(result);
-                slider.value = currentValue;
-            }
-        });
+            textField.text = currentValue.ToString();
+        }
 
-        this.gameObject.SetActive(true);
     }
 
     public float getValue()
@@ -61,7 +59,7 @@ public class GenericIntSetting : MonoBehaviour
     {
         currentValue = verifyValue(value);
         slider.value = currentValue;
-        textField.value = currentValue.ToString();
+        textField.text = currentValue.ToString();
     }
     int verifyValue(float value)
     {

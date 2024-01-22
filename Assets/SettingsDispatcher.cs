@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class SettingsDispatcher : MonoBehaviour
@@ -161,3 +162,4 @@ class Setting
         }
     }
 }
+*/

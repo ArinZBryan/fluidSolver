@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 1517832383375381986}
   - component: {fileID: 6298542604131777358}
   - component: {fileID: 1085966257304545035}
+  - component: {fileID: 1760132112361959986}
   m_Layer: 5
   m_Name: GenericIntSetting
   m_TagString: Untagged
@@ -192,6 +193,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1760132112361959986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441321780436460703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa860ee5b0de0a4196f4896d975f8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxValue: 20
+  minValue: 0
+  settingName: Generic Integer Setting
+  labelGameObject: {fileID: 4328918386015801041}
+  sliderGameObject: {fileID: 7746324242558675116}
+  textFieldGameObject: {fileID: 6198933165670485123}
 --- !u!1 &1833651164927469635
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +778,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1760132112361959986}
+        m_TargetAssemblyTypeName: GenericIntSetting, Assembly-CSharp
+        m_MethodName: textFieldChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
@@ -858,4 +889,16 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1760132112361959986}
+        m_TargetAssemblyTypeName: GenericIntSetting, Assembly-CSharp
+        m_MethodName: sliderChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

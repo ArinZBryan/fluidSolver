@@ -1,40 +1,34 @@
 using UnityEngine;
-using UnityEngine.UIElements;
-using System;
+using UnityEngine.UI;
 
 public class GenericBooleanSetting : MonoBehaviour
 {
     bool currentValue;
-    bool defaultValue;
-    string settingName;
+    public bool defaultValue;
+    public string settingName;
 
     Toggle toggle;
-    Label label;
-    private void Awake()
-    {
+    public GameObject toggleObject;
+    Text label;
+    public GameObject labelObject;
 
-        GameObject toggleObj = transform.Find("Toggle").gameObject;
-        toggle = toggleObj.GetComponent<Toggle>();
-        label = toggleObj.GetComponentInChildren<Label>();
-        this.gameObject.SetActive(false);
-    }
-
-    public void setup(bool defaultValue, string name)
+    public void Awake()
     {
+        toggle = toggleObject.GetComponent<Toggle>();
+        label = labelObject.GetComponent<Text>();
+
         this.currentValue = defaultValue;
         this.settingName = name;
 
         label.text = settingName;
-        toggle.value = currentValue;
+        toggle.isOn = currentValue;
 
-        toggle.RegisterValueChangedCallback((evt) =>
-        {
-            currentValue = evt.newValue;
-        });
-
-        this.gameObject.SetActive(true);
     }
 
+    public void toggleChanged()
+    {
+        currentValue = toggle.isOn;
+    }
     public bool getValue()
     {
         return currentValue;
@@ -42,7 +36,7 @@ public class GenericBooleanSetting : MonoBehaviour
     public bool setValue(bool value) 
     {
         currentValue = value;
-        toggle.value = currentValue;
+        toggle.isOn = currentValue;
         return currentValue;
     }
 }

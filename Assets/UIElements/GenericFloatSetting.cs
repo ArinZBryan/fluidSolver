@@ -1,40 +1,36 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System;
+using AdvancedEditorTools.Attributes;
 
 public class GenericFloatSetting : MonoBehaviour
 {
-    float maxValue;
-    float minValue;
+    public float maxValue;
+    public float minValue;
     float currentValue;
-    float? stepSize;
-    string settingName;
-    Label label;
+    public float stepSize;
+    public string settingName;
+    Text label;
+    public GameObject labelGameObject;
     Slider slider;
-    TextField textField;
-    private void Awake()
-    {
-        label = transform.Find("SettingTitle").GetComponent<Label>();
-        slider = transform.Find("Slider").GetComponent<Slider>();
-        textField = transform.Find("TextField").GetComponent<TextField>();
-        this.gameObject.SetActive(false);
-    }
+    public GameObject sliderGameObject;
+    InputField textField;
+    public GameObject textFieldGameObject;
 
-    public void setup(float maxValue, float minValue, float defaultValue, float? stepSize, string name)
+    public void Awake()
     {
-        this.maxValue = maxValue;
-        this.minValue = minValue;
-        this.currentValue = defaultValue;
-        this.stepSize = stepSize;
-        this.settingName = name;
+        label = labelGameObject.GetComponent<Text>();
+        slider = sliderGameObject.GetComponent<Slider>();
+        textField = textFieldGameObject.GetComponent<InputField>();
 
         label.text = settingName;
         slider.value = currentValue;
-        slider.highValue = maxValue;
-        slider.lowValue = minValue;
+        slider.maxValue = maxValue;
+        slider.minValue = minValue;
 
-        textField.value = currentValue.ToString();
+        textField.text = currentValue.ToString();
 
+        /*
         slider.RegisterValueChangedCallback((evt) =>
         {
             currentValue = verifyValue(evt.newValue);
@@ -49,23 +45,43 @@ public class GenericFloatSetting : MonoBehaviour
                 slider.value = currentValue;
             }
         });
+        */
 
-        this.gameObject.SetActive(true);
+    }
+    public void sliderChanged()
+    {
+        currentValue = verifyValue(slider.value);
+        textField.text = currentValue.ToString();
     }
 
+    public void textFieldChanged()
+    {
+        if (float.TryParse(textField.text, out float result))
+        {
+            currentValue = verifyValue(result);
+            slider.value = currentValue;
+        }
+        else
+        {
+            textField.text = currentValue.ToString();
+        }
+        
+    }
+    [Button("Get Value")]
     public float getValue()
     {
+        Debug.Log(currentValue);
         return currentValue;
     }
     public void setValue(float value) 
     {
         currentValue = verifyValue(value);
         slider.value = currentValue;
-        textField.value = currentValue.ToString();
+        textField.text = currentValue.ToString();
     }
     float verifyValue(float value)
     {
-        if (!stepSize.HasValue) //Is stepsize set?
+        if (stepSize == 0f) //Is stepsize set?
         {
             return value;
         }

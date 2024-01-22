@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Git for Unity
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 15
+  controlID: 68
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 16
+  controlID: 73
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 17
+  controlID: 74
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -189,8 +189,8 @@ MonoBehaviour:
     y: 0
     width: 578
     height: 633
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
+  m_Name: Window
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -269,13 +269,13 @@ MonoBehaviour:
     y: 0
     width: 462
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 17}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 17}
   - {fileID: 18}
-  m_Selected: 0
+  m_Selected: 1
   m_LastSelected: 0
 --- !u!114 &12
 MonoBehaviour:
@@ -338,8 +338,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 045b0000
-      m_LastClickedID: 23300
+      m_SelectedIDs: 
+      m_LastClickedID: 0
       m_ExpandedIDs: 34fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.06703741, y: 0.9134326, z: -0.16792414, w: 0.36462477}
     speed: 2
-    m_Value: {x: 0.067037314, y: 0.9134313, z: -0.1679239, w: 0.36462423}
+    m_Value: {x: 0.06703741, y: 0.9134326, z: -0.16792414, w: 0.36462474}
   m_Size:
     m_Target: 2.5907955
     speed: 2
@@ -765,7 +765,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -999,9 +999,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1401
+    x: 1458
     y: 73
-    width: 518
+    width: 461
     height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -1013,9 +1013,9 @@ MonoBehaviour:
   timeSinceLastRotation: -1
   currentBranchAndRemoteHasUpdate: 0
   currentTrackingStatusHasUpdate: 0
-  currentStatusEntriesHasUpdate: 1
-  repositoryProgressHasUpdate: 1
-  appManagerProgressHasUpdate: 1
+  currentStatusEntriesHasUpdate: 0
+  repositoryProgressHasUpdate: 0
+  appManagerProgressHasUpdate: 0
   changeTab: 3
   activeTab: 3
   initProjectView:
@@ -1142,23 +1142,29 @@ MonoBehaviour:
     localBranches: []
     remoteBranches: []
   changesView:
-    currentBranchHasUpdate: 1
-    currentStatusEntriesHasUpdate: 1
-    currentLocksHasUpdate: 1
+    currentBranchHasUpdate: 0
+    currentStatusEntriesHasUpdate: 0
+    currentLocksHasUpdate: 0
     commitBody: 
     commitMessage: 
-    currentBranch: 2D-solver-view
+    currentBranch: feature-GUI
     treeScroll: {x: 0, y: 0}
     treeChanges:
       assets:
         keys:
         - 00000000000000001000000000000000
-        - 848996256d6ba8f4d90960102d79fb07
-        - 690c37b6b37cb1949991ea888ed438b7
-        - 76bd3d0c1d13fd1468c651e1899d0b07
-        - 7f55ee5e82c48744ca71aed864150c1e
-        - a37abad350635ce40b5fd2a63023d3f3
-        - 00000000000000004000000000000000
+        - 6ea315d0fd7389c41b19996891e99ae3
+        - 9fc0d4010bbf28b4594072e72b8655ab
+        - 46998b50a6b846a41bce7da91f6ef0ea
+        - 0534e4efb2ddb8d46b4d63e53746be58
+        - 6716a247b86da704fa19a611f91fb3d0
+        - b406ef5447dc5b14cb0787e2f28669eb
+        - d45264b8390294d4f812b36641ac1389
+        - 43a0ef4170eae6849bb9262168a8882f
+        - a658d9cb58a001a4aa41b14f8e856b8b
+        - b0d8efcd0507ceb42aa6b798852d8e68
+        - 65de2b211776fde48a497b7e413f168e
+        - ff0acce70ba193c4f9970fd7fde27628
         values:
         - path: Assets
           label: Assets
@@ -1178,8 +1184,8 @@ MonoBehaviour:
             originalPath: 
             indexStatus: 0
             workTreeStatus: 0
-        - path: Assets\BaseSimulator
-          label: BaseSimulator
+        - path: Assets\Scenes
+          label: Scenes
           level: 1
           isFolder: 1
           isContainer: 0
@@ -1196,26 +1202,8 @@ MonoBehaviour:
             originalPath: 
             indexStatus: 0
             workTreeStatus: 0
-        - path: Assets\BaseSimulator\dllmain.cpp
-          label: dllmain.cpp
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\BaseSimulator\dllmain.cpp
-            fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\dllmain.cpp
-            projectPath: Assets\BaseSimulator\dllmain.cpp
-            originalPath: 
-            indexStatus: 1
-            workTreeStatus: 1
-        - path: Assets\BaseSimulator\FluidSimulator2D.cs
-          label: FluidSimulator2D.cs
+        - path: Assets\Scenes\SampleScene.unity
+          label: SampleScene.unity
           level: 2
           isFolder: 0
           isContainer: 0
@@ -1223,53 +1211,17 @@ MonoBehaviour:
           isHidden: 0
           isActive: 0
           treeIsCheckable: 1
-          checkState: 0
+          checkState: 1
           isLocked: 0
           gitStatusEntry:
-            path: Assets\BaseSimulator\FluidSimulator2D.cs
-            fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D.cs
-            projectPath: Assets\BaseSimulator\FluidSimulator2D.cs
+            path: Assets\Scenes\SampleScene.unity
+            fullPath: C:\dev\fluidSolver\Assets\Scenes\SampleScene.unity
+            projectPath: Assets\Scenes\SampleScene.unity
             originalPath: 
-            indexStatus: 0
-            workTreeStatus: 3
-        - path: Assets\BaseSimulator\FluidSimulator2D2.cs
-          label: FluidSimulator2D2.cs
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\BaseSimulator\FluidSimulator2D2.cs
-            fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D2.cs
-            projectPath: Assets\BaseSimulator\FluidSimulator2D2.cs
-            originalPath: 
-            indexStatus: 1
-            workTreeStatus: 1
-        - path: Assets\BaseSimulator\Solver2D2.cs
-          label: Solver2D2.cs
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\BaseSimulator\Solver2D2.cs
-            fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\Solver2D2.cs
-            projectPath: Assets\BaseSimulator\Solver2D2.cs
-            originalPath: 
-            indexStatus: 1
-            workTreeStatus: 1
-        - path: ProjectSettings\ProjectSettings.asset
-          label: ProjectSettings.asset
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\SettingsDispatcher.cs
+          label: SettingsDispatcher.cs
           level: 1
           isFolder: 0
           isContainer: 0
@@ -1277,21 +1229,182 @@ MonoBehaviour:
           isHidden: 0
           isActive: 0
           treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\SettingsDispatcher.cs
+            fullPath: C:\dev\fluidSolver\Assets\SettingsDispatcher.cs
+            projectPath: Assets\SettingsDispatcher.cs
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\SettingsPanel.cs
+          label: SettingsPanel.cs
+          level: 1
+          isFolder: 0
+          isContainer: 1
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\SettingsPanel.cs
+            fullPath: C:\dev\fluidSolver\Assets\SettingsPanel.cs
+            projectPath: Assets\SettingsPanel.cs
+            originalPath: 
+            indexStatus: 4
+            workTreeStatus: 0
+        - path: Assets\UIElements
+          label: UIElements
+          level: 1
+          isFolder: 1
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
           checkState: 0
           isLocked: 0
           gitStatusEntry:
-            path: ProjectSettings\ProjectSettings.asset
-            fullPath: C:\dev\fluidSolver\ProjectSettings\ProjectSettings.asset
-            projectPath: ProjectSettings\ProjectSettings.asset
+            path: 
+            fullPath: 
+            projectPath: 
             originalPath: 
             indexStatus: 0
-            workTreeStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericBooleanSetting.cs
+          label: GenericBooleanSetting.cs
+          level: 2
+          isFolder: 0
+          isContainer: 1
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericBooleanSetting.cs
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.cs
+            projectPath: Assets\UIElements\GenericBooleanSetting.cs
+            originalPath: Assets\UIElements\GenericBoolSetting.cs
+            indexStatus: 6
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericBooleanSetting.prefab
+          label: GenericBooleanSetting.prefab
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericBooleanSetting.prefab
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.prefab
+            projectPath: Assets\UIElements\GenericBooleanSetting.prefab
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericEnumSetting.cs
+          label: GenericEnumSetting.cs
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericEnumSetting.cs
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.cs
+            projectPath: Assets\UIElements\GenericEnumSetting.cs
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericEnumSetting.prefab
+          label: GenericEnumSetting.prefab
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericEnumSetting.prefab
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.prefab
+            projectPath: Assets\UIElements\GenericEnumSetting.prefab
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericFloatSetting.prefab
+          label: GenericFloatSetting.prefab
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericFloatSetting.prefab
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericFloatSetting.prefab
+            projectPath: Assets\UIElements\GenericFloatSetting.prefab
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericIntSetting.prefab
+          label: GenericIntSetting.prefab
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericIntSetting.prefab
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericIntSetting.prefab
+            projectPath: Assets\UIElements\GenericIntSetting.prefab
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
+        - path: Assets\UIElements\GenericStringSetting.prefab
+          label: GenericStringSetting.prefab
+          level: 2
+          isFolder: 0
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 1
+          checkState: 1
+          isLocked: 0
+          gitStatusEntry:
+            path: Assets\UIElements\GenericStringSetting.prefab
+            fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericStringSetting.prefab
+            projectPath: Assets\UIElements\GenericStringSetting.prefab
+            originalPath: 
+            indexStatus: 3
+            workTreeStatus: 0
       folders:
         keys:
         - Assets
-        - Assets\BaseSimulator
-        - Packages
-        - ProjectSettings
+        - Assets\Scenes
+        - Assets\UIElements
         - UserSettings
         - UserSettings\Layouts
         values:
@@ -1313,8 +1426,8 @@ MonoBehaviour:
             originalPath: 
             indexStatus: 0
             workTreeStatus: 0
-        - path: Assets\BaseSimulator
-          label: BaseSimulator
+        - path: Assets\Scenes
+          label: Scenes
           level: 1
           isFolder: 1
           isContainer: 0
@@ -1331,27 +1444,9 @@ MonoBehaviour:
             originalPath: 
             indexStatus: 0
             workTreeStatus: 0
-        - path: Packages
-          label: Packages
-          level: 0
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: ProjectSettings
-          label: ProjectSettings
-          level: 0
+        - path: Assets\UIElements
+          label: UIElements
+          level: 1
           isFolder: 1
           isContainer: 0
           isCollapsed: 0
@@ -1449,8 +1544,8 @@ MonoBehaviour:
           originalPath: 
           indexStatus: 0
           workTreeStatus: 0
-      - path: Assets\BaseSimulator
-        label: BaseSimulator
+      - path: Assets\Scenes
+        label: Scenes
         level: 1
         isFolder: 1
         isContainer: 0
@@ -1467,44 +1562,62 @@ MonoBehaviour:
           originalPath: 
           indexStatus: 0
           workTreeStatus: 0
-      - path: Assets\BaseSimulator\dllmain.cpp
-        label: dllmain.cpp
+      - path: Assets\Scenes\SampleScene.unity
+        label: SampleScene.unity
         level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\Scenes\SampleScene.unity
+          fullPath: C:\dev\fluidSolver\Assets\Scenes\SampleScene.unity
+          projectPath: Assets\Scenes\SampleScene.unity
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\SettingsDispatcher.cs
+        label: SettingsDispatcher.cs
+        level: 1
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\SettingsDispatcher.cs
+          fullPath: C:\dev\fluidSolver\Assets\SettingsDispatcher.cs
+          projectPath: Assets\SettingsDispatcher.cs
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\SettingsPanel.cs
+        label: SettingsPanel.cs
+        level: 1
         isFolder: 0
         isContainer: 1
         isCollapsed: 0
         isHidden: 0
         isActive: 0
         treeIsCheckable: 1
-        checkState: 0
+        checkState: 1
         isLocked: 0
         gitStatusEntry:
-          path: Assets\BaseSimulator\dllmain.cpp
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\dllmain.cpp
-          projectPath: Assets\BaseSimulator\dllmain.cpp
+          path: Assets\SettingsPanel.cs
+          fullPath: C:\dev\fluidSolver\Assets\SettingsPanel.cs
+          projectPath: Assets\SettingsPanel.cs
           originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\BaseSimulator\dllmain.cpp.meta
-        label: dllmain.cpp.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\BaseSimulator\dllmain.cpp.meta
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\dllmain.cpp.meta
-          projectPath: Assets\BaseSimulator\dllmain.cpp.meta
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\BaseSimulator\FluidSimulator2D.cs
-        label: FluidSimulator2D.cs
+          indexStatus: 4
+          workTreeStatus: 0
+      - path: Assets\SettingsPanel.cs.meta
+        label: SettingsPanel.cs.meta
         level: 2
         isFolder: 0
         isContainer: 0
@@ -1512,90 +1625,18 @@ MonoBehaviour:
         isHidden: 0
         isActive: 0
         treeIsCheckable: 1
-        checkState: 0
+        checkState: 1
         isLocked: 0
         gitStatusEntry:
-          path: Assets\BaseSimulator\FluidSimulator2D.cs
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D.cs
-          projectPath: Assets\BaseSimulator\FluidSimulator2D.cs
+          path: Assets\SettingsPanel.cs.meta
+          fullPath: C:\dev\fluidSolver\Assets\SettingsPanel.cs.meta
+          projectPath: Assets\SettingsPanel.cs.meta
           originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Assets\BaseSimulator\FluidSimulator2D2.cs
-        label: FluidSimulator2D2.cs
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\BaseSimulator\FluidSimulator2D2.cs
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D2.cs
-          projectPath: Assets\BaseSimulator\FluidSimulator2D2.cs
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-        label: FluidSimulator2D2.cs.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-          projectPath: Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\BaseSimulator\Solver2D2.cs
-        label: Solver2D2.cs
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\BaseSimulator\Solver2D2.cs
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\Solver2D2.cs
-          projectPath: Assets\BaseSimulator\Solver2D2.cs
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\BaseSimulator\Solver2D2.cs.meta
-        label: Solver2D2.cs.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\BaseSimulator\Solver2D2.cs.meta
-          fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\Solver2D2.cs.meta
-          projectPath: Assets\BaseSimulator\Solver2D2.cs.meta
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Packages
-        label: Packages
-        level: 0
+          indexStatus: 4
+          workTreeStatus: 0
+      - path: Assets\UIElements
+        label: UIElements
+        level: 1
         isFolder: 1
         isContainer: 0
         isCollapsed: 0
@@ -1611,78 +1652,150 @@ MonoBehaviour:
           originalPath: 
           indexStatus: 0
           workTreeStatus: 0
-      - path: Packages\manifest.json
-        label: manifest.json
-        level: 1
+      - path: Assets\UIElements\GenericBooleanSetting.cs
+        label: GenericBooleanSetting.cs
+        level: 2
         isFolder: 0
-        isContainer: 0
+        isContainer: 1
         isCollapsed: 0
         isHidden: 0
         isActive: 0
         treeIsCheckable: 1
-        checkState: 0
+        checkState: 1
         isLocked: 0
         gitStatusEntry:
-          path: Packages\manifest.json
-          fullPath: C:\dev\fluidSolver\Packages\manifest.json
-          projectPath: Packages\manifest.json
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Packages\packages-lock.json
-        label: packages-lock.json
-        level: 1
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Packages\packages-lock.json
-          fullPath: C:\dev\fluidSolver\Packages\packages-lock.json
-          projectPath: Packages\packages-lock.json
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: ProjectSettings
-        label: ProjectSettings
-        level: 0
-        isFolder: 1
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: 
-          fullPath: 
-          projectPath: 
-          originalPath: 
-          indexStatus: 0
+          path: Assets\UIElements\GenericBooleanSetting.cs
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.cs
+          projectPath: Assets\UIElements\GenericBooleanSetting.cs
+          originalPath: Assets\UIElements\GenericBoolSetting.cs
+          indexStatus: 6
           workTreeStatus: 0
-      - path: ProjectSettings\ProjectSettings.asset
-        label: ProjectSettings.asset
-        level: 1
+      - path: Assets\UIElements\GenericBooleanSetting.cs.meta
+        label: GenericBooleanSetting.cs.meta
+        level: 3
         isFolder: 0
         isContainer: 0
         isCollapsed: 0
         isHidden: 0
         isActive: 0
         treeIsCheckable: 1
-        checkState: 0
+        checkState: 1
         isLocked: 0
         gitStatusEntry:
-          path: ProjectSettings\ProjectSettings.asset
-          fullPath: C:\dev\fluidSolver\ProjectSettings\ProjectSettings.asset
-          projectPath: ProjectSettings\ProjectSettings.asset
+          path: Assets\UIElements\GenericBooleanSetting.cs.meta
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.cs.meta
+          projectPath: Assets\UIElements\GenericBooleanSetting.cs.meta
+          originalPath: Assets\UIElements\GenericBoolSetting.cs.meta
+          indexStatus: 6
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericBooleanSetting.prefab
+        label: GenericBooleanSetting.prefab
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericBooleanSetting.prefab
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.prefab
+          projectPath: Assets\UIElements\GenericBooleanSetting.prefab
           originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericEnumSetting.cs
+        label: GenericEnumSetting.cs
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericEnumSetting.cs
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.cs
+          projectPath: Assets\UIElements\GenericEnumSetting.cs
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericEnumSetting.prefab
+        label: GenericEnumSetting.prefab
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericEnumSetting.prefab
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.prefab
+          projectPath: Assets\UIElements\GenericEnumSetting.prefab
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericFloatSetting.prefab
+        label: GenericFloatSetting.prefab
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericFloatSetting.prefab
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericFloatSetting.prefab
+          projectPath: Assets\UIElements\GenericFloatSetting.prefab
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericIntSetting.prefab
+        label: GenericIntSetting.prefab
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericIntSetting.prefab
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericIntSetting.prefab
+          projectPath: Assets\UIElements\GenericIntSetting.prefab
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
+      - path: Assets\UIElements\GenericStringSetting.prefab
+        label: GenericStringSetting.prefab
+        level: 2
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 1
+        isLocked: 0
+        gitStatusEntry:
+          path: Assets\UIElements\GenericStringSetting.prefab
+          fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericStringSetting.prefab
+          projectPath: Assets\UIElements\GenericStringSetting.prefab
+          originalPath: 
+          indexStatus: 3
+          workTreeStatus: 0
       - path: UserSettings
         label: UserSettings
         level: 0
@@ -1728,15 +1841,15 @@ MonoBehaviour:
         isHidden: 0
         isActive: 0
         treeIsCheckable: 1
-        checkState: 0
+        checkState: 1
         isLocked: 0
         gitStatusEntry:
           path: UserSettings\Layouts\default-2021.dwlt
           fullPath: C:\dev\fluidSolver\UserSettings\Layouts\default-2021.dwlt
           projectPath: UserSettings\Layouts\default-2021.dwlt
           originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
+          indexStatus: 3
+          workTreeStatus: 0
       selectedNode:
         path: 
         label: 
@@ -1757,81 +1870,93 @@ MonoBehaviour:
           indexStatus: 0
           workTreeStatus: 0
     gitStatusEntries:
-    - path: Assets\BaseSimulator\dllmain.cpp
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\dllmain.cpp
-      projectPath: Assets\BaseSimulator\dllmain.cpp
+    - path: Assets\Scenes\SampleScene.unity
+      fullPath: C:\dev\fluidSolver\Assets\Scenes\SampleScene.unity
+      projectPath: Assets\Scenes\SampleScene.unity
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\BaseSimulator\dllmain.cpp.meta
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\dllmain.cpp.meta
-      projectPath: Assets\BaseSimulator\dllmain.cpp.meta
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\SettingsDispatcher.cs
+      fullPath: C:\dev\fluidSolver\Assets\SettingsDispatcher.cs
+      projectPath: Assets\SettingsDispatcher.cs
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\BaseSimulator\FluidSimulator2D.cs
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D.cs
-      projectPath: Assets\BaseSimulator\FluidSimulator2D.cs
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\SettingsPanel.cs
+      fullPath: C:\dev\fluidSolver\Assets\SettingsPanel.cs
+      projectPath: Assets\SettingsPanel.cs
       originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Assets\BaseSimulator\FluidSimulator2D2.cs
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D2.cs
-      projectPath: Assets\BaseSimulator\FluidSimulator2D2.cs
+      indexStatus: 4
+      workTreeStatus: 0
+    - path: Assets\SettingsPanel.cs.meta
+      fullPath: C:\dev\fluidSolver\Assets\SettingsPanel.cs.meta
+      projectPath: Assets\SettingsPanel.cs.meta
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\FluidSimulator2D2.cs.meta
-      projectPath: Assets\BaseSimulator\FluidSimulator2D2.cs.meta
+      indexStatus: 4
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericBooleanSetting.cs
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.cs
+      projectPath: Assets\UIElements\GenericBooleanSetting.cs
+      originalPath: Assets\UIElements\GenericBoolSetting.cs
+      indexStatus: 6
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericBooleanSetting.cs.meta
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.cs.meta
+      projectPath: Assets\UIElements\GenericBooleanSetting.cs.meta
+      originalPath: Assets\UIElements\GenericBoolSetting.cs.meta
+      indexStatus: 6
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericBooleanSetting.prefab
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericBooleanSetting.prefab
+      projectPath: Assets\UIElements\GenericBooleanSetting.prefab
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\BaseSimulator\Solver2D2.cs
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\Solver2D2.cs
-      projectPath: Assets\BaseSimulator\Solver2D2.cs
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericEnumSetting.cs
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.cs
+      projectPath: Assets\UIElements\GenericEnumSetting.cs
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\BaseSimulator\Solver2D2.cs.meta
-      fullPath: C:\dev\fluidSolver\Assets\BaseSimulator\Solver2D2.cs.meta
-      projectPath: Assets\BaseSimulator\Solver2D2.cs.meta
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericEnumSetting.prefab
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericEnumSetting.prefab
+      projectPath: Assets\UIElements\GenericEnumSetting.prefab
       originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Packages\manifest.json
-      fullPath: C:\dev\fluidSolver\Packages\manifest.json
-      projectPath: Packages\manifest.json
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericFloatSetting.prefab
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericFloatSetting.prefab
+      projectPath: Assets\UIElements\GenericFloatSetting.prefab
       originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Packages\packages-lock.json
-      fullPath: C:\dev\fluidSolver\Packages\packages-lock.json
-      projectPath: Packages\packages-lock.json
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericIntSetting.prefab
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericIntSetting.prefab
+      projectPath: Assets\UIElements\GenericIntSetting.prefab
       originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: ProjectSettings\ProjectSettings.asset
-      fullPath: C:\dev\fluidSolver\ProjectSettings\ProjectSettings.asset
-      projectPath: ProjectSettings\ProjectSettings.asset
+      indexStatus: 3
+      workTreeStatus: 0
+    - path: Assets\UIElements\GenericStringSetting.prefab
+      fullPath: C:\dev\fluidSolver\Assets\UIElements\GenericStringSetting.prefab
+      projectPath: Assets\UIElements\GenericStringSetting.prefab
       originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
+      indexStatus: 3
+      workTreeStatus: 0
     - path: UserSettings\Layouts\default-2021.dwlt
       fullPath: C:\dev\fluidSolver\UserSettings\Layouts\default-2021.dwlt
       projectPath: UserSettings\Layouts\default-2021.dwlt
       originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    changedFilesText: 11 changed files
+      indexStatus: 3
+      workTreeStatus: 0
+    changedFilesText: 13 changed files
     lastCurrentBranchChangedEvent:
-      updatedTimeString: 2024-01-18T12:17:46.352+00:00
+      updatedTimeString: 2024-01-21T22:43:00.258+00:00
       cacheType: 1
     lastStatusEntriesChangedEvent:
-      updatedTimeString: 2024-01-18T12:17:48.602+00:00
+      updatedTimeString: 2024-01-21T22:43:37.675+00:00
       cacheType: 6
     lastLocksChangedEvent:
-      updatedTimeString: 2024-01-18T12:17:48.349+00:00
+      updatedTimeString: 2024-01-21T22:43:02.383+00:00
       cacheType: 7
   historyView:
     currentLogHasUpdate: 0
@@ -3902,7 +4027,7 @@ MonoBehaviour:
   currentRemoteUrl: https://github.com/ArinZBryan/fluidSolver.git
   statusAhead: 0
   statusBehind: 0
-  hasItemsToCommit: 1
+  hasItemsToCommit: 0
   isTrackingRemoteBranch: 1
   currentBranchContent:
     m_Text: 2D-solver-view
@@ -3916,10 +4041,10 @@ MonoBehaviour:
     updatedTimeString: 2023-09-14T14:16:13.913+01:00
     cacheType: 1
   lastTrackingStatusChangedEvent:
-    updatedTimeString: 2023-09-14T14:16:14.147+01:00
+    updatedTimeString: 2024-01-21T22:43:37.682+00:00
     cacheType: 5
   lastStatusEntriesChangedEvent:
-    updatedTimeString: 2023-09-14T14:17:31.561+01:00
+    updatedTimeString: 2024-01-21T22:43:37.675+00:00
     cacheType: 6
   pullButtonContent:
     m_Text: Pull
