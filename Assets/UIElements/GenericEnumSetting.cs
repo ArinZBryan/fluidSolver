@@ -1,65 +1,53 @@
-using UnityEngine;
-using UnityEngine.UIElements;
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GenericEnumSetting : MonoBehaviour
 {
     //Define Setting 
-    System.Type settingEnum;
-    System.Enum defaultValue;
-    string settingName;
-    
+    public string[] enumerator;
+    public string defaultValue;
+    public string settingName;
+
     //Keep track of current value
     string currentValue;
-    object currentEnum;
 
     //UI Elements
-    Label label;
+    Text label;
+    public GameObject labelObject;
     Dropdown dropdown;
+    public GameObject dropdownObject;
 
     private void Awake()
     {
-        label = transform.Find("SettingTitle").GetComponent<Label>();
-        dropdown = transform.Find("Dropdown").GetComponent<Dropdown>();
-        this.gameObject.SetActive(false);
-    }
-
-    public void setup(System.Type enumerator, System.Enum defaultValue, string name )
-    {
-
-        this.settingName = name;
+        label = labelObject.GetComponent<Text>();
+        dropdown = dropdownObject.GetComponent<Dropdown>();
+        label.text = settingName;
         dropdown.options.Clear();
-        foreach (var item in System.Enum.GetValues(enumerator))
+        foreach (string item in enumerator)
         {
-            dropdown.options.Add(new Dropdown.OptionData(item.ToString()));
+            dropdown.options.Add(new Dropdown.OptionData(item));
         }
-
-        this.defaultValue = defaultValue;
-        this.currentEnum = defaultValue;
-        this.dropdown.value = dropdown.options.FindIndex((x) => x.text == defaultValue.ToString());
-
-        dropdown.onValueChanged.AddListener((value) =>
-        {
-            dropdown.options[value].text = currentValue;
-        });
-
-        this.gameObject.SetActive(true);
+        this.currentValue = defaultValue;
+        this.dropdown.value = Array.IndexOf(enumerator, defaultValue);
     }
 
-    public object getValue()
+    public void dropdownChanged()
     {
-        object res;
-        System.Enum.TryParse(settingEnum.GetType(), currentValue, out res);
-        return res;
+        currentValue = dropdown.options[dropdown.value].text;
+    }
+
+    public string getValue()
+    {
+        return currentValue;
     }
     public string setValue(string value) 
     {
-        object e;
-        if (System.Enum.TryParse(settingEnum.GetType(), value, out e)) { return ""; }
-        currentEnum = e;
-        currentValue = value;
-        dropdown.value = dropdown.options.FindIndex((x) => x.text == currentValue);
-        return value;
+        if (Array.Exists(enumerator, (x) => x == value)) {
+            currentValue = value;
+            dropdown.value = Array.IndexOf(enumerator, value);
+            return value;
+        }
+        return "";
     }
 }
