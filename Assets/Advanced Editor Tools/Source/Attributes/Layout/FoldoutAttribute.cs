@@ -6,7 +6,7 @@ namespace AdvancedEditorTools.Attributes
     public class BeginFoldoutAttribute : FoldoutAttribute
     {
         public string label;
-        /// <param name="label">Label that will be displayed along the foldout button</param>
+        /// <param fileName="label">Label that will be displayed along the foldout button</param>
         public BeginFoldoutAttribute(string label)
         {
             this.label = label;
