@@ -15,10 +15,10 @@ public class GPUTextureScaler
     /// <summary>
     ///     Returns a scaled copy of given texture.
     /// </summary>
-    /// <param name="tex">Source texure to scale</param>
-    /// <param name="width">Destination texture width</param>
-    /// <param name="height">Destination texture height</param>
-    /// <param name="mode">Filtering mode</param>
+    /// <param fileName="tex">Source texure to scale</param>
+    /// <param fileName="width">Destination texture width</param>
+    /// <param fileName="height">Destination texture height</param>
+    /// <param fileName="mode">Filtering mode</param>
     public static Texture2D Scaled(Texture2D src, int width, int height, FilterMode mode = FilterMode.Trilinear)
     {
         Rect texR = new(0, 0, width, height);
@@ -35,10 +35,10 @@ public class GPUTextureScaler
     /// <summary>
     ///     Scales the texture data of the given texture.
     /// </summary>
-    /// <param name="tex">Texure to scale</param>
-    /// <param name="width">New width</param>
-    /// <param name="height">New height</param>
-    /// <param name="mode">Filtering mode</param>
+    /// <param fileName="tex">Texure to scale</param>
+    /// <param fileName="width">New width</param>
+    /// <param fileName="height">New height</param>
+    /// <param fileName="mode">Filtering mode</param>
     public static void Scale(Texture2D tex, int width, int height, FilterMode mode = FilterMode.Trilinear)
     {
         Rect texR = new(0, 0, width, height);

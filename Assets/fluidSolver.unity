@@ -123,6 +123,26 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &163102187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d1b95d1c9debe4fbda4b18874d14c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SerializedField:
+    fieldName: frames
+    fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    isUsingRealContainer: 0
+    isUsingRealTarget: 0
+    target: {fileID: 163102187}
+    containerTarget: {fileID: 163102187}
+  value: 50
 --- !u!1 &297492803
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,12 +436,13 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 3700166861341065242
-  - rid: 3700166861341065243
+  - rid: 4731041814889889837
+  - rid: 4731041814889889838
+  - rid: 4731041814889889839
   references:
     version: 2
     RefIds:
-    - rid: 3700166861341065242
+    - rid: 4731041814889889837
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -429,7 +450,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 3700166861341065243
+    - rid: 4731041814889889838
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -437,3 +458,17 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
+    - rid: 4731041814889889839
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: beginRecording
+        buttonName: Begin Recording
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: frames
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 163102187}
+          containerTarget: {fileID: 163102187}

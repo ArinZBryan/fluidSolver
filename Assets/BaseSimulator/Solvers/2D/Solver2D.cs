@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-class Solver2D
+public class Solver2D
 {
     //Vector Fields
     public PackedArray<float> velocity_horizontal;
@@ -11,7 +11,6 @@ class Solver2D
     public PackedArray<float> prev_velocity_vertical;
     public PackedArray<float> density;
     public PackedArray<float> prev_density;
-    public
 
     //Constants
     int N;
@@ -61,7 +60,6 @@ class Solver2D
             x[i] += dt * s[i];
         }
     }
-
     void set_bnd(int N, Boundary b, ref PackedArray<float> x)
     {
         if (USE_COMPLEX_BOUNDARIES)
@@ -86,7 +84,6 @@ class Solver2D
             set_bnd_compatibility(N, b, ref x);
         }
     }
-
     void set_bnd_compatibility(int N, Boundary b, ref PackedArray<float> x)
     {
         int i;
@@ -137,7 +134,7 @@ class Solver2D
         }
 
 
-        //Iterate through all physics objects
+        //Iterate through all physics simulationObjects
         int physicsObjectX, physicsObjectY, physicsObjectWidth, physicsObjectHeight;
         foreach (var physicsObject in physicsObjects)
         {
@@ -201,7 +198,6 @@ class Solver2D
         x[N + 1, 0] = 0.5f * (x[N, 0] + x[N + 1, 1]);
         x[N + 1, N + 1] = 0.5f * (x[N, N + 1] + x[N + 1, N]);
     }
-
     void lin_solve(int N, Boundary b, ref PackedArray<float> x, ref PackedArray<float> x0, float a, float c)
     {
         int i, j, k;
@@ -219,13 +215,11 @@ class Solver2D
             set_bnd(N, b, ref x);
         }
     }
-
     void diffuse(int N, Boundary b, ref PackedArray<float> x, ref PackedArray<float> x0, float diff, float dt)
     {
         float a = dt * diff * N * N;
         lin_solve(N, b, ref x, ref x0, a, 1 + 4 * a);
     }
-
     void advect(int N, Boundary b, ref PackedArray<float> d, ref PackedArray<float> d0, ref PackedArray<float> u, ref PackedArray<float> v, float dt)
     {
         int i, j, i0, j0, i1, j1;
@@ -247,7 +241,6 @@ class Solver2D
 
         set_bnd(N, b, ref d);
     }
-
     void project(int N, ref PackedArray<float> u, ref PackedArray<float> v, ref PackedArray<float> p, ref PackedArray<float> div)
     {
         int i, j;
@@ -280,7 +273,6 @@ class Solver2D
         set_bnd_complex(N, Boundary.TOP, ref v);
         set_bnd_complex(N, Boundary.BOTTOM, ref v);
     }
-
     public void dens_step()
     {
         add_source(N, ref density, ref prev_density, sim_delta_time);
@@ -289,7 +281,6 @@ class Solver2D
         SWAP(ref prev_density, ref density);
         advect(N, Boundary.NONE, ref density, ref prev_density, ref velocity_horizontal, ref velocity_vertical, sim_delta_time);
     }
-
     public void vel_step()
     {
         add_source(N, ref velocity_horizontal, ref prev_velocity_horizontal, sim_delta_time);
@@ -363,14 +354,19 @@ class Solver2D
     /// <summary>
     /// This returns the full (n+2)*(n+2) array
     /// </summary>
-    /// <param name="density"></param>
-    /// <param name="density_prev"></param>
-    /// <param name="velocity_horizontal"></param>
-    /// <param name="velocity_horizontal_prev"></param>
-    /// <param name="velocity_vertical"></param>
-    /// <param name="velocity_vertical_prev"></param>
-    /// <param name="N"></param>
-    public void getAll(out PackedArray<float> density, out PackedArray<float> density_prev, out PackedArray<float> velocity_horizontal, out PackedArray<float> velocity_horizontal_prev, out PackedArray<float> velocity_vertical, out PackedArray<float> velocity_vertical_prev, out int N)
+    /// <param fileName="density"></param>
+    /// <param fileName="density_prev"></param>
+    /// <param fileName="velocity_horizontal"></param>
+    /// <param fileName="velocity_horizontal_prev"></param>
+    /// <param fileName="velocity_vertical"></param>
+    /// <param fileName="velocity_vertical_prev"></param>
+    /// <param fileName="N"></param>
+    public void getAll( out PackedArray<float> density, 
+                        out PackedArray<float> density_prev, 
+                        out PackedArray<float> velocity_horizontal, 
+                        out PackedArray<float> velocity_horizontal_prev, 
+                        out PackedArray<float> velocity_vertical, 
+                        out PackedArray<float> velocity_vertical_prev)
     {
         density = this.density;
         density_prev = this.prev_density;
@@ -378,7 +374,22 @@ class Solver2D
         velocity_vertical = this.velocity_vertical;
         velocity_horizontal_prev = this.prev_velocity_horizontal;
         velocity_vertical_prev = this.prev_velocity_vertical;
-        N = this.N;
+    }
+    public void getCurrent( out PackedArray<float> density, 
+                            out PackedArray<float> velocity_horizontal,
+                            out PackedArray<float> velocity_vertical)
+    {
+        density = this.density;
+        velocity_horizontal = this.velocity_horizontal;
+        velocity_vertical = this.velocity_vertical;
+    }
+    public (float, float, float, float) getConstants()
+    {
+        return (diffusion_rate, viscosity, sim_delta_time, N);
+    }
+    public List<CollidableCell> getPhysicsObjects()
+    {
+        return physicsObjects;
     }
     public void addPhysicsObject(CollidableCell obj)
     {
@@ -388,8 +399,8 @@ class Solver2D
     {
         physicsObjects.Remove(obj);
     }
+    public void setPhysicsObjects(IEnumerable<CollidableCell> objs)
+    {
+        physicsObjects = new List<CollidableCell>(objs);
+    }
 }
-
-
-
-
