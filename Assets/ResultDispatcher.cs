@@ -27,7 +27,7 @@ public class ResultDispatcher : MonoBehaviour
     int playbackFrameNo;
 
     KeyFrame firstFrame;
-    bool writingToSaveFile = true;
+    bool writingToSaveFile = false;
     bool readingFromSaveFile = false;
 
 
@@ -211,6 +211,7 @@ public class ResultDispatcher : MonoBehaviour
     [Button("Begin Recording")]
     void beginRecording()
     {
+        writingToSaveFile = true;
         if (playbackFrames != null)
         {
             return;
@@ -250,4 +251,12 @@ public class ResultDispatcher : MonoBehaviour
         writingToSaveFile = false;
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
     }
+    [Button("Force End Loading From Save File")]
+    void forceEndLoadingFromSaveFile()
+    {
+        readingFromSaveFile = false;
+        playbackFrames = null;
+        playbackFrameNo = 0;
+    }
+
 }
