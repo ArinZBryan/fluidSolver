@@ -247,7 +247,7 @@ public class ResultDispatcher : MonoBehaviour
 
         destinations.Add(new Destinations.Viewport());
         readingFromSaveFile = true;
-       
+        writingToSaveFile = false;
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
     }
 }
