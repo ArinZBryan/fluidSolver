@@ -1,12 +1,13 @@
 ﻿using System;
-abstract class SimulationObject
+[System.Serializable]
+public abstract class SimulationObject
 {
     public int x, y;
     public int width, height;
     public UnityEngine.Color debugColor;
 }
-
-class VelocityForceField : SimulationObject
+[System.Serializable]
+public class VelocityForceField : SimulationObject
 {
     float valueX, valueY;
     public VelocityForceField(int x, int y, int width, int height, float valueX, float valueY, UnityEngine.Color debugColor)
@@ -28,7 +29,8 @@ class VelocityForceField : SimulationObject
             }
     }
 }
-class DensityEnforcer : SimulationObject
+[System.Serializable]
+public class DensityEnforcer : SimulationObject
 {
     public DensityEnforcer(int x, int y, int width, int height, UnityEngine.Color debugColor)
     {
@@ -46,7 +48,8 @@ class DensityEnforcer : SimulationObject
             }
     }
 }
-class PhysPoint : SimulationObject
+[System.Serializable]
+public class PhysPoint : SimulationObject
 {
     float realX, realY;
     public PhysPoint(int x, int y, UnityEngine.Color debugColor)
@@ -76,7 +79,8 @@ class PhysPoint : SimulationObject
         UnityEngine.Debug.Log((this.realX, this.realY));
     }
 }
-class CollidableCell : SimulationObject
+[System.Serializable]
+public class CollidableCell : SimulationObject
 {
     public Solver2D.Boundary collidableFaces;
     public bool currentlyInSolver = false;
