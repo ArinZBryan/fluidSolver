@@ -123,26 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &163102187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d1b95d1c9debe4fbda4b18874d14c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SerializedField:
-    fieldName: frames
-    fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    isUsingRealContainer: 0
-    isUsingRealTarget: 0
-    target: {fileID: 163102187}
-    containerTarget: {fileID: 163102187}
-  value: 50
 --- !u!1 &297492803
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +217,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &672993349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &848673429
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +267,7 @@ MonoBehaviour:
   simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
   fmt: 0
   folder: 
-  name: 
+  fileName: 
   time: 0
 --- !u!4 &848673431
 Transform:
@@ -402,8 +400,12 @@ MonoBehaviour:
   dataDict:
     keys:
     - {fileID: 848673430}
+    - {fileID: 0}
+    - {fileID: 0}
     values:
     - {fileID: 2144015805}
+    - {fileID: 672993349}
+    - {fileID: 1680454056}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &1235083817
@@ -421,6 +423,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1680454056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1850023230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b4b0fd2cb21744884b0d449ed4c9fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SerializedField:
+    fieldName: path
+    fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    isUsingRealContainer: 0
+    isUsingRealTarget: 0
+    target: {fileID: 1850023230}
+    containerTarget: {fileID: 1850023230}
+  value: ./saves/save.simsave
 --- !u!114 &2144015805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,13 +476,16 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 4731041814889889837
-  - rid: 4731041814889889838
-  - rid: 4731041814889889839
+  - rid: 8696460808681160704
+  - rid: 8696460808681160705
+  - rid: 8696460808681160706
+  - rid: 8696460808681160707
+  - rid: 8696460808681160708
+  - rid: 8696460808681160709
   references:
     version: 2
     RefIds:
-    - rid: 4731041814889889837
+    - rid: 8696460808681160704
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -450,7 +493,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4731041814889889838
+    - rid: 8696460808681160705
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -458,17 +501,41 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4731041814889889839
+    - rid: 8696460808681160706
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: beginRecording
         buttonName: Begin Recording
         foldout: 1
         buttonSize: 12
+        parameters: []
+    - rid: 8696460808681160707
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecording
+        buttonName: Stop Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460808681160708
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecordingJson
+        buttonName: Stop Recording (JSON)
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460808681160709
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: loadSaveFile
+        buttonName: Load Save File
+        foldout: 1
+        buttonSize: 12
         parameters:
-        - fieldName: frames
-          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        - fieldName: path
+          fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           isUsingRealContainer: 0
           isUsingRealTarget: 0
-          target: {fileID: 163102187}
-          containerTarget: {fileID: 163102187}
+          target: {fileID: 1850023230}
+          containerTarget: {fileID: 1850023230}

@@ -399,8 +399,8 @@ public class Solver2D
     {
         physicsObjects.Remove(obj);
     }
-    public void setPhysicsObjects(IEnumerable<CollidableCell> objs)
+    public void setPhysicsObjects(List<CollidableCell> objs)
     {
-        physicsObjects = new List<CollidableCell>(objs);
+        physicsObjects = objs;
     }
 }

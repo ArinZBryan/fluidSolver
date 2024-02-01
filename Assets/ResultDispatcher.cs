@@ -24,7 +24,8 @@ public class ResultDispatcher : MonoBehaviour
     RenderTexture inputTex;
     
     List<PlaybackFrame>? playbackFrames;
-    IEnumerator<PlaybackFrame>? playbackFramesEnumerator;
+    int playbackFrameNo;
+
     KeyFrame firstFrame;
     bool writingToSaveFile = true;
     bool readingFromSaveFile = false;
@@ -52,12 +53,18 @@ public class ResultDispatcher : MonoBehaviour
         if (playbackFrames != null && readingFromSaveFile)
         {
             // Apply simulation objects to the simulator and solver
-            simulator.simulationObjects = playbackFramesEnumerator.Current.objects;
-            simulator.solver.setPhysicsObjects(playbackFramesEnumerator.Current.objects.OfType<CollidableCell>());
+            simulator.simulationObjects = playbackFrames[playbackFrameNo].objects;
+            simulator.solver.setPhysicsObjects(playbackFrames[playbackFrameNo].objects.OfType<CollidableCell>().ToList());
             
             // Step the simulation with loaded input
-            inputTex = simulator.computeNextTexture(playbackFramesEnumerator.Current.input);
-            playbackFramesEnumerator.MoveNext();
+            inputTex = simulator.computeNextTexture(playbackFrames[playbackFrameNo].input);
+            playbackFrameNo++;
+            if (playbackFrameNo >= playbackFrames.Count())
+            {
+                readingFromSaveFile = false;
+                playbackFrames = null;
+                playbackFrameNo = 0;
+            }
         } else
         {
             //remap xy coords to be same as screen UV coords
@@ -232,17 +239,14 @@ public class ResultDispatcher : MonoBehaviour
         var b = new BinaryFormatter();                              
         PlaybackFile p = (PlaybackFile)b.Deserialize(f);            //Deserialise the save file 
         playbackFrames = p.frames.ToList();                         //Grab the update frames
-        foreach (var frame in playbackFrames)
-        {
-            Debug.Log(frame.input.Count);
-        }
         firstFrame = p.startFrame;                                  //Grab the first frame (the keyframe)
-        playbackFramesEnumerator = playbackFrames.GetEnumerator();  //Make an enumerator for the update frames
+        playbackFrameNo = 0;
         if (simulatorGameObject != null) { Destroy(simulatorGameObject); }  //Destroy exising simulator if it exists
         simulatorGameObject = Instantiate(simulatorPrefab);
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
         destinations.Add(new Destinations.Viewport());
+        readingFromSaveFile = true;
        
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
     }
