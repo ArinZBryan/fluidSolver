@@ -22,8 +22,9 @@ public class ResultDispatcher : MonoBehaviour
     public int time;
 
     RenderTexture inputTex;
-    
+#nullable enable
     List<PlaybackFrame>? playbackFrames;
+#nullable disable
     int playbackFrameNo;
 
     KeyFrame firstFrame;
