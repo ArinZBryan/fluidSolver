@@ -217,24 +217,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &672993349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseInspectorFoldout: 0
-  layoutInfos: []
-  buttonMethods: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &848673429
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,9 +248,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
   fmt: 0
-  folder: 
-  fileName: 
-  time: 0
+  folder: c:\dev\fluidSolver\Media
+  fileName: img
+  time: 300
 --- !u!4 &848673431
 Transform:
   m_ObjectHideFlags: 0
@@ -400,12 +382,8 @@ MonoBehaviour:
   dataDict:
     keys:
     - {fileID: 848673430}
-    - {fileID: 0}
-    - {fileID: 0}
     values:
     - {fileID: 2144015805}
-    - {fileID: 672993349}
-    - {fileID: 1680454056}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &1235083817
@@ -423,24 +401,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1680454056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseInspectorFoldout: 0
-  layoutInfos: []
-  buttonMethods: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &1850023230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,16 +436,17 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 8696460808681160704
-  - rid: 8696460808681160705
-  - rid: 8696460808681160706
-  - rid: 8696460808681160707
-  - rid: 8696460808681160708
-  - rid: 8696460808681160709
+  - rid: 8696460900792271016
+  - rid: 8696460900792271017
+  - rid: 8696460900792271018
+  - rid: 8696460900792271019
+  - rid: 8696460900792271020
+  - rid: 8696460900792271021
+  - rid: 8696460900792271022
   references:
     version: 2
     RefIds:
-    - rid: 8696460808681160704
+    - rid: 8696460900792271016
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -493,7 +454,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 8696460808681160705
+    - rid: 8696460900792271017
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -501,7 +462,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 8696460808681160706
+    - rid: 8696460900792271018
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: beginRecording
@@ -509,7 +470,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 8696460808681160707
+    - rid: 8696460900792271019
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecording
@@ -517,7 +478,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 8696460808681160708
+    - rid: 8696460900792271020
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecordingJson
@@ -525,7 +486,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 8696460808681160709
+    - rid: 8696460900792271021
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: loadSaveFile
@@ -539,3 +500,11 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 1850023230}
           containerTarget: {fileID: 1850023230}
+    - rid: 8696460900792271022
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: forceEndLoadingFromSaveFile
+        buttonName: Force End Loading From Save File
+        foldout: 1
+        buttonSize: 12
+        parameters: []
