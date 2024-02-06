@@ -22,8 +22,9 @@ public class ResultDispatcher : MonoBehaviour
     public int time;
 
     RenderTexture inputTex;
-    
+#nullable enable
     List<PlaybackFrame>? playbackFrames;
+#nullable disable
     int playbackFrameNo;
 
     KeyFrame firstFrame;
@@ -39,7 +40,7 @@ public class ResultDispatcher : MonoBehaviour
         simulator = simulatorGameObject.GetComponent<FluidSimulator>();
 
         destinations.Add(new Destinations.Viewport());
-        //destinations.Add(new Destinations.TimedImageSequence(folder, fileName, fmt, time));
+        destinations.Add(new Destinations.Video(folder, fileName, 30, Destinations.FileFormat.MP4, "C:\\Users\\arinb\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-6.1.1-full_build\\bin\\ffmpeg.exe"));
 
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
 

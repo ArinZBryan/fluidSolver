@@ -35,11 +35,6 @@ class FluidSimulator : MonoBehaviour
 
     public Solver2D solver;
 
-    float mouseX = 0;
-    float mouseY = 0;
-    float mouseVelocityX = 0;
-    float mouseVelocityY = 0;
-
 
     private void Awake()
     {
