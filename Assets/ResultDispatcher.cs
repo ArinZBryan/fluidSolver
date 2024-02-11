@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using AdvancedEditorTools.Attributes;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ResultDispatcher : MonoBehaviour
 {
     public GameObject simulatorPrefab;
-    GameObject simulatorGameObject;
-    ISimulator simulator;
+    FluidSimulator simulator;
+    public SettingsPanel settingsPanel;
     public List<IImageDestination> destinations = new List<IImageDestination>();
     bool doHaveViewportAsTarget = false;
     public Destinations.FileFormat fmt;
@@ -17,14 +17,27 @@ public class ResultDispatcher : MonoBehaviour
     public string name;
     public int time;
     RenderTexture inputTex;
-    public RawImage viewport;
+    public UnityEngine.UI.RawImage viewport;
 
     // Start is called before the first frame update
     void Start()
     {
-        simulatorGameObject = Instantiate(simulatorPrefab);
-        simulator = simulatorGameObject.GetComponent<FluidSimulator>();
-
+        simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
+        simulator.init();
+#nullable enable
+        settingsPanel.settingsPanel.gameObject.SetActive(true);
+        Button? maybe_restart_button = (Button?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/action_restart");
+        if (maybe_restart_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else
+        {
+            maybe_restart_button.clicked += () => 
+                {
+                    Debug.Log("Resetting Simulation");
+                    makeSimulatorFromSettings();
+                };
+        }
+        settingsPanel.settingsPanel.gameObject.SetActive(false);
+#nullable disable
         destinations.Add(new Destinations.Viewport(viewport));
         //destinations.Add(new Destinations.TimedImageSequence(folder, name, fmt, time));
 
@@ -39,7 +52,6 @@ public class ResultDispatcher : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(pixWidth / 2, -pixHeight / 2);
         }
     }
-
     // Update is called once per tick
     void Update()
     {
@@ -66,7 +78,6 @@ public class ResultDispatcher : MonoBehaviour
         }
 
     }
-
     private void OnDestroy()
     {
         foreach (IImageDestination dest in destinations)
@@ -74,21 +85,6 @@ public class ResultDispatcher : MonoBehaviour
             dest.destroy();
         }
     }
-
-    /* Becuase of the way that Graphics.DrawTexture works, it can only be called in OnGUI() because 
-     * it draws the texture immediately. This means it will not make it to the screen if it is called before the drawing step.
-     * 
-     * This means that the Destinations.Viewport class cannot have setImage() also draw the image to the screen
-     * as it happens during FixedUpdate().
-     * 
-     * So, as a quick fix, during Start() we set a flag if we are rendering to a Destinations.Viewport(), and if that is set
-     * during the OnGUI(), we call a unique renderImageNow() function on Destinations.Viewport(). This just calls 
-     * Graphics.DrawTexture(...) with the currently stored RenderTexture.
-     * 
-     * -- Note --
-     * Some places will say you can call it in OnPostRender(), however, this function only works in URP / HDRP, not in SRP
-     * (what we are using here). I tried a workaround, but it just was not doing it. So OnGUI() it is.
-    */
     void LateUpdate()
     {
         if (doHaveViewportAsTarget)
@@ -97,7 +93,29 @@ public class ResultDispatcher : MonoBehaviour
         }
     }
 
+    public void makeSimulatorFromSettings()
+    {
+        DestroyImmediate(simulator.gameObject);
+        simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
+#nullable enable
+        SliderInt? field_size =        (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/field_size");
+        SliderInt? tick_rate  =        (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/tick_rate");
+        Slider? fluid_viscosity =         (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_viscosity");
+        Slider? fluid_diffusion_rate =    (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_diffusion_rate");
+        Slider? mouse_density =           (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_density");
+        Slider? mouse_force =             (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_force");
+        SliderInt? mouse_brush_size =  (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_brush_size");
+#nullable disable
+        simulator.gridSize = field_size?.value ?? simulator.gridSize;
+        simulator.deltaTime = 1f/tick_rate?.value ?? simulator.deltaTime;
+        simulator.viscosity = fluid_viscosity?.value ?? simulator.viscosity;
+        simulator.diffusionRate = fluid_diffusion_rate?.value ?? simulator.diffusionRate;
+        simulator.drawValue = mouse_density?.value ?? simulator.drawValue;
+        simulator.force = mouse_force?.value ?? simulator.force;
+        simulator.penSize = mouse_brush_size?.value ?? simulator.penSize;
 
+        simulator.init();
+    }
     [Button("Delete Media Folder Contents")]
     void deleteMediaFolderContents()
     {

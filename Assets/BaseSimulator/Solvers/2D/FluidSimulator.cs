@@ -40,7 +40,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
     float mouseVelocityY = 0;
 
 
-    private void Awake()
+    public void init()
     {
         densTex = new Texture2D(gridSize * scale, gridSize * scale);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);

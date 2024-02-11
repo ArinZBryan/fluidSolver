@@ -447,12 +447,12 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 6918323273778855942
-  - rid: 6918323273778855943
+  - rid: 5272592832774275096
+  - rid: 5272592832774275097
   references:
     version: 2
     RefIds:
-    - rid: 6918323273778855942
+    - rid: 5272592832774275096
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -460,7 +460,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 6918323273778855943
+    - rid: 5272592832774275097
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -816,6 +816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
+  settingsPanel: {fileID: 2089203182}
   fmt: 0
   folder: 
   name: 
