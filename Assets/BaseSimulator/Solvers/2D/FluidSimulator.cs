@@ -5,7 +5,7 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-class FluidSimulator : MonoBehaviour
+class FluidSimulator : MonoBehaviour, ISimulator
 {
     public int gridSize = 32;
     int N;
