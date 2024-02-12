@@ -28,15 +28,20 @@ class FluidSimulator : MonoBehaviour
     Texture2D bothTex;
     PackedArray<Color> bothColour;
     RenderTexture renderTexture;
-    
-    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
+    public RectTransform viewport;
+
+    List<SimulationObject> objects = new List<SimulationObject>();
     Texture2D objectTex;
     PackedArray<Color> objectColour;
 
-    public Solver2D solver;
+    Solver2D solver;
 
+    float mouseX = 0;
+    float mouseY = 0;
+    float mouseVelocityX = 0;
+    float mouseVelocityY = 0;
 
-    private void Awake()
+    public void init()
     {
         densTex = new Texture2D(gridSize * scale, gridSize * scale);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
@@ -53,10 +58,39 @@ class FluidSimulator : MonoBehaviour
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
         bothColour = new PackedArray<Color>(new int[] { gridSize * gridSize, gridSize * gridSize });
         objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
+
     }
 
     public RenderTexture computeNextTexture(List<UserInput> userInputs)
     {
+
+        //remap xy coords to be same as screen UV coords
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(viewport, Input.mousePosition, null, out Vector2 localPoint);
+        mouseX = localPoint.x;
+        mouseY = localPoint.y;
+        mouseX = Math.Clamp(mouseX, -viewport.rect.width/ 2, viewport.rect.width/ 2);
+        mouseY = Math.Clamp(mouseY, -viewport.rect.height/ 2, viewport.rect.height/ 2);
+        mouseX += viewport.rect.width / 2;
+        mouseY += viewport.rect.height / 2;
+        Debug.Log("c: " + (mouseX, mouseY).ToString());
+
+        //get grid pos of cursor
+        int cursorX = (int)(mouseX * gridSize / viewport.rect.width);
+        int cursorY = (int)(mouseY * gridSize / viewport.rect.width);
+
+        //get mouse velocity
+        mouseVelocityX = Input.GetAxis("Mouse X") * force;
+        mouseVelocityY = Input.GetAxis("Mouse Y") * force;
+
+        /*
+         * 
+         * This can be a bit funky with detecting the toggle, and I rarely use the ability to draw only velocity
+        if (Input.GetKeyUp(KeyCode.T))
+        {
+            drawBoth = !drawBoth;
+        }
+        */
+
         runSimulationObjects();
 
         foreach (UserInput i in userInputs)
@@ -170,10 +204,6 @@ class FluidSimulator : MonoBehaviour
         drawTex.SetPixels(velColour.data);
         drawTex.Apply();
     }
-    /* FIXME: Use ArrayFuncs.scaleArray1Das2D
-     * - Leave bothtex as the big version
-     * - make new colour array for bothtex and use scaling to copy to it.
-     */
     public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
         Color col;
@@ -257,7 +287,6 @@ class FluidSimulator : MonoBehaviour
             }
         }
     }
-    
     public void runSimulationObjects()
     {
         foreach (SimulationObject obj in simulationObjects)
@@ -295,6 +324,20 @@ class FluidSimulator : MonoBehaviour
 
         objectTex.SetPixels(objectColour.data);
         objectTex.Apply();
+    }
+
+    public int getScale()
+    {
+        return scale;
+    }
+    public int setScale(int scale)
+    {
+        this.scale = scale;
+        return scale;
+    }
+    public Vector2Int getSimulationSize()
+    {
+        return new Vector2Int(gridSize, gridSize);
     }
 
     /*IN-EDITOR DEBUG BUTTONS*/
