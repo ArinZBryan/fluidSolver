@@ -310,9 +310,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
   fmt: 0
-  folder: 
-  name: 
-  time: 0
+  folder: c:\dev\fluidSolver\Media
+  fileName: img
+  time: 300
   viewport: {fileID: 1911642997}
 --- !u!4 &848673431
 Transform:
@@ -926,6 +926,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+  SerializedField:
+    fieldName: path
+    fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    isUsingRealContainer: 0
+    isUsingRealTarget: 0
+    target: {fileID: 1850023230}
+    containerTarget: {fileID: 1850023230}
+  value: ./saves/save.simsave
 --- !u!114 &2144015805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,6 +955,17 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4731041517739180032
+  - rid: 8696460900792271016
+  - rid: 8696460900792271017
+  - rid: 8696460900792271018
+  - rid: 8696460900792271019
+  - rid: 8696460900792271020
+  - rid: 8696460900792271021
+  - rid: 8696460900792271022
+  references:
+    version: 2
+    RefIds:
+    - rid: 8696460900792271016
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -959,6 +978,52 @@ MonoBehaviour:
       data:
         methodName: screenshot
         buttonName: Take Single Image
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460900792271018
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: beginRecording
+        buttonName: Begin Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460900792271019
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecording
+        buttonName: Stop Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460900792271020
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecordingJson
+        buttonName: Stop Recording (JSON)
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 8696460900792271021
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: loadSaveFile
+        buttonName: Load Save File
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: path
+          fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1850023230}
+          containerTarget: {fileID: 1850023230}
+    - rid: 8696460900792271022
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: forceEndLoadingFromSaveFile
+        buttonName: Force End Loading From Save File
         foldout: 1
         buttonSize: 12
         parameters: []

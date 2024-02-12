@@ -8,7 +8,7 @@ namespace AdvancedEditorTools.Attributes
     {
         public int spacing;
 
-        /// <param name="spacing">Space in pixels between the previous property and the next one. The line will be painted in the middle.</param>
+        /// <param fileName="spacing">Space in pixels between the previous property and the next one. The line will be painted in the middle.</param>
         public LineSeparatorAttribute(int spacing = 10) { this.spacing = spacing; }
     }
 }
