@@ -23,6 +23,7 @@ public class ResultDispatcher : MonoBehaviour
     void Start()
     {
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
+        simulator.viewport = viewport.rectTransform;    
         simulator.init();
 #nullable enable
         settingsPanel.settingsPanel.gameObject.SetActive(true);
@@ -113,6 +114,8 @@ public class ResultDispatcher : MonoBehaviour
         simulator.drawValue = mouse_density?.value ?? simulator.drawValue;
         simulator.force = mouse_force?.value ?? simulator.force;
         simulator.penSize = mouse_brush_size?.value ?? simulator.penSize;
+
+        simulator.viewport = viewport.rectTransform;
 
         simulator.init();
     }

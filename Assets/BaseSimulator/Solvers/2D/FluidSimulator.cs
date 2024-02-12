@@ -27,7 +27,8 @@ class FluidSimulator : MonoBehaviour, ISimulator
     Texture2D bothTex;
     PackedArray<Color> bothColour;
     RenderTexture renderTexture;
-    
+    public RectTransform viewport;
+
     List<SimulationObject> objects = new List<SimulationObject>();
     Texture2D objectTex;
     PackedArray<Color> objectColour;
@@ -38,7 +39,7 @@ class FluidSimulator : MonoBehaviour, ISimulator
     float mouseY = 0;
     float mouseVelocityX = 0;
     float mouseVelocityY = 0;
-
+   
 
     public void init()
     {
@@ -57,21 +58,25 @@ class FluidSimulator : MonoBehaviour, ISimulator
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
         bothColour = new PackedArray<Color>(new int[] { gridSize * gridSize, gridSize * gridSize });
         objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
+
     }
 
     public RenderTexture getNextTexture()
     {
-        //remap xy coords to be same as screen UV coords
-        mouseX = Input.mousePosition.x;
-        mouseY = Screen.height - Input.mousePosition.y;
 
-        //clamp to area of simulation
-        mouseX = Math.Clamp(mouseX, 0, gridSize * scale - 1);
-        mouseY = Math.Clamp(mouseY, 0, gridSize * scale - 1);
+        //remap xy coords to be same as screen UV coords
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(viewport, Input.mousePosition, null, out Vector2 localPoint);
+        mouseX = localPoint.x;
+        mouseY = localPoint.y;
+        mouseX = Math.Clamp(mouseX, -viewport.rect.width/ 2, viewport.rect.width/ 2);
+        mouseY = Math.Clamp(mouseY, -viewport.rect.height/ 2, viewport.rect.height/ 2);
+        mouseX += viewport.rect.width / 2;
+        mouseY += viewport.rect.height / 2;
+        Debug.Log("c: " + (mouseX, mouseY).ToString());
 
         //get grid pos of cursor
-        int cursorX = (int)(mouseX / scale);
-        int cursorY = gridSize - (int)(mouseY / scale) - 1;
+        int cursorX = (int)(mouseX * gridSize / viewport.rect.width);
+        int cursorY = (int)(mouseY * gridSize / viewport.rect.width);
 
         //get mouse velocity
         mouseVelocityX = Input.GetAxis("Mouse X") * force;
