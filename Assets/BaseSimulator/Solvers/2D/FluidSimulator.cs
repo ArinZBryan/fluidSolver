@@ -5,7 +5,7 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-class FluidSimulator : MonoBehaviour
+class FluidSimulator : MonoBehaviour, ISimulator
 {
     public int gridSize = 32;
     int N;
@@ -29,13 +29,17 @@ class FluidSimulator : MonoBehaviour
     RenderTexture renderTexture;
     public RectTransform viewport;
 
-    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
+    List<SimulationObject> objects = new List<SimulationObject>();
     Texture2D objectTex;
     PackedArray<Color> objectColour;
 
-    public Solver2D solver;
+    Solver2D solver;
 
-
+    float mouseX = 0;
+    float mouseY = 0;
+    float mouseVelocityX = 0;
+    float mouseVelocityY = 0;
+   
 
     public void init()
     {
@@ -57,40 +61,60 @@ class FluidSimulator : MonoBehaviour
 
     }
 
-    public RenderTexture computeNextTexture(List<UserInput> userInputs)
+    public RenderTexture getNextTexture()
     {
 
-        runSimulationObjects();
+        //remap xy coords to be same as screen UV coords
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(viewport, Input.mousePosition, null, out Vector2 localPoint);
+        mouseX = localPoint.x;
+        mouseY = localPoint.y;
+        mouseX = Math.Clamp(mouseX, -viewport.rect.width/ 2, viewport.rect.width/ 2);
+        mouseY = Math.Clamp(mouseY, -viewport.rect.height/ 2, viewport.rect.height/ 2);
+        mouseX += viewport.rect.width / 2;
+        mouseY += viewport.rect.height / 2;
+        Debug.Log("c: " + (mouseX, mouseY).ToString());
 
-        foreach (UserInput i in userInputs)
+        //get grid pos of cursor
+        int cursorX = (int)(mouseX * gridSize / viewport.rect.width);
+        int cursorY = (int)(mouseY * gridSize / viewport.rect.width);
+
+        //get mouse velocity
+        mouseVelocityX = Input.GetAxis("Mouse X") * force;
+        mouseVelocityY = Input.GetAxis("Mouse Y") * force;
+
+        /*
+         * 
+         * This can be a bit funky with detecting the toggle, and I rarely use the ability to draw only velocity
+        if (Input.GetKeyUp(KeyCode.T))
         {
-            if (i.field == UserInput.fieldToWriteTo.VELX)
-            {
-                solver.getVelocityX()[i.x, i.y] = i.value;
-            }
-            else if (i.field == UserInput.fieldToWriteTo.VELY)
-            {
-                solver.getVelocityY()[i.x, i.y] = i.value;
-            }
-            else if (i.field == UserInput.fieldToWriteTo.DENS)
-            {
-                solver.getDensity()[i.x, i.y] = i.value;
-            }
+            drawBoth = !drawBoth;
         }
+        */
 
-        solver.vel_step();
-        solver.dens_step();
-
-        //zeros out prev_density - This prevents runaway densities
-        solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
-
-
+        runSimulationObjects();
         if (Input.GetKey(KeyCode.O))
         {
             drawSimulationObjects();
-        } 
+        }
         else if (Input.GetKey(KeyCode.V))
-        {   
+        {
+            if (Input.GetMouseButton(0)) //LMB
+            {
+                solver.getVelocityX()[cursorX, cursorY] = mouseVelocityX;
+                solver.getVelocityY()[cursorX, cursorY] = mouseVelocityY;
+                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityX(), mouseVelocityX, cursorY, cursorX, gridSize, gridSize, penSize);
+            }
+            if (Input.GetMouseButton(1)) //RMB
+            {
+                //ArrayFuncs.paintTo1DArrayAs2D(ref solver.getVelocityY(), mouseVelocityY, cursorY, cursorX, gridSize, gridSize, penSize);
+            }
+
+            solver.vel_step();
+            solver.dens_step();
+
+            //zeros out prev_density - This prevents runaway densities
+            solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+
             if (drawBoth)
             {
                 drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, ref densTex, Color.green);
@@ -101,7 +125,25 @@ class FluidSimulator : MonoBehaviour
         }
         else
         {
-            drawDensity(solver.getDensity(), ref densTex);
+            if (Input.GetMouseButton(0)) //LMB
+            {
+                solver.getDensityPrev()[cursorX, cursorY] = drawValue;
+            }
+            if (Input.GetMouseButton(1)) //RMB
+            {
+                solver.getDensityPrev()[cursorX, cursorY] = -drawValue;
+            }
+
+            solver.vel_step();
+            solver.dens_step();
+
+            //Zeros out prev_density - this prevents runaway densities
+            solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
+
+
+            if (Input.GetKey(KeyCode.Y)) drawDensity(solver.getDensityPrev(), ref densTex);
+            else drawDensity(solver.getDensity(), ref densTex);
+
         }
         return getCurrentTexture();
     }
@@ -258,7 +300,7 @@ class FluidSimulator : MonoBehaviour
     }
     public void runSimulationObjects()
     {
-        foreach (SimulationObject obj in simulationObjects)
+        foreach (SimulationObject obj in objects)
         {
             if (obj is VelocityForceField)
             {
@@ -275,7 +317,7 @@ class FluidSimulator : MonoBehaviour
     public void drawSimulationObjects()
     {
         objectColour.data = Enumerable.Repeat(Color.black, gridSize * scale * gridSize * scale).ToArray();
-        foreach (SimulationObject obj in simulationObjects)
+        foreach (SimulationObject obj in objects)
         {
             for (int x = obj.x; x < obj.width + obj.x; x++) for (int y = obj.y; y < obj.height + obj.y; y++)
                 {
@@ -320,7 +362,7 @@ class FluidSimulator : MonoBehaviour
         if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
         if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
-        simulationObjects.Add(new VelocityForceField(x,y,w,h,valX,valY,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        objects.Add(new VelocityForceField(x,y,w,h,valX,valY,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Density Enforcer)")]
     void addDensityEnforcer(int x, int y, int w, int h)
@@ -328,13 +370,13 @@ class FluidSimulator : MonoBehaviour
         if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
         if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
-        simulationObjects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        objects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Physics Particle)")]
     void addPhysParticle(int x, int y)
     {
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
-        simulationObjects.Add(new PhysPoint(x, y, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        objects.Add(new PhysPoint(x, y, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Collidable Cell")]
     void addCollidableCell(int x, int y, int w, int h)
@@ -348,7 +390,7 @@ class FluidSimulator : MonoBehaviour
                                     Solver2D.Boundary.LEFT | 
                                     Solver2D.Boundary.RIGHT, 
                                     UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f));
-        simulationObjects.Add(c);
+        objects.Add(c);
         solver.addPhysicsObject(c);
     }
     [Button("Print total volume")]

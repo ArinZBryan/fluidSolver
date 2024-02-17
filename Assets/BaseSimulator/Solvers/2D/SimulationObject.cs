@@ -1,13 +1,12 @@
 ﻿using System;
-[System.Serializable]
-public abstract class SimulationObject
+abstract class SimulationObject
 {
     public int x, y;
     public int width, height;
     public UnityEngine.Color debugColor;
 }
-[System.Serializable]
-public class VelocityForceField : SimulationObject
+
+class VelocityForceField : SimulationObject
 {
     float valueX, valueY;
     public VelocityForceField(int x, int y, int width, int height, float valueX, float valueY, UnityEngine.Color debugColor)
@@ -24,13 +23,12 @@ public class VelocityForceField : SimulationObject
     {
         for (int i = x; i < width + x; i++) for (int j = y; j < height + y; j++)
             {
-                velX[i, j] = valueX;
-                velY[i, j] = valueY;
+                velX[i,j] = valueX;
+                velY[i,j] = valueY;
             }
     }
 }
-[System.Serializable]
-public class DensityEnforcer : SimulationObject
+class DensityEnforcer : SimulationObject
 {
     public DensityEnforcer(int x, int y, int width, int height, UnityEngine.Color debugColor)
     {
@@ -42,14 +40,13 @@ public class DensityEnforcer : SimulationObject
     }
     public void tick(ref PackedArray<float> density, float value)
     {
-        for (int i = x; i < width + x; i++) for (int j = y; j < height + y; j++)
+        for (int i = x; i < width + x; i++) for (int j = y; j< height + y; j++)
             {
                 density[i, j] = value;
             }
     }
 }
-[System.Serializable]
-public class PhysPoint : SimulationObject
+class PhysPoint : SimulationObject
 {
     float realX, realY;
     public PhysPoint(int x, int y, UnityEngine.Color debugColor)
@@ -79,8 +76,7 @@ public class PhysPoint : SimulationObject
         UnityEngine.Debug.Log((this.realX, this.realY));
     }
 }
-[System.Serializable]
-public class CollidableCell : SimulationObject
+class CollidableCell : SimulationObject
 {
     public Solver2D.Boundary collidableFaces;
     public bool currentlyInSolver = false;
