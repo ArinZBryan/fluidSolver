@@ -30,11 +30,11 @@ class FluidSimulator : MonoBehaviour
     RenderTexture renderTexture;
     public RectTransform viewport;
 
-    List<SimulationObject> objects = new List<SimulationObject>();
+    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
     Texture2D objectTex;
     PackedArray<Color> objectColour;
 
-    Solver2D solver;
+    public Solver2D solver;
 
     float mouseX = 0;
     float mouseY = 0;

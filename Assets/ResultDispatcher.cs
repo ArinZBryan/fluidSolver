@@ -75,7 +75,7 @@ public class ResultDispatcher : MonoBehaviour
         //If currently reading from save file
         if (playbackFrames != null && readingFromSaveFile)
         {
-            // Apply simulation objects to the simulator and solver
+            // Apply simulation simulationObjects to the simulator and solver
             simulator.simulationObjects = playbackFrames[playbackFrameNo].objects;
             simulator.solver.setPhysicsObjects(playbackFrames[playbackFrameNo].objects.OfType<CollidableCell>().ToList());
             
@@ -271,11 +271,10 @@ public class ResultDispatcher : MonoBehaviour
         playbackFrames = p.frames.ToList();                         //Grab the update frames
         firstFrame = p.startFrame;                                  //Grab the first frame (the keyframe)
         playbackFrameNo = 0;
-        if (simulatorGameObject != null) { Destroy(simulatorGameObject); }  //Destroy exising simulator if it exists
-        simulatorGameObject = Instantiate(simulatorPrefab);
-        simulator = simulatorGameObject.GetComponent<FluidSimulator>();
+        Destroy(simulator.gameObject);   //Destroy exising simulator if it exists
+        simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
 
-        destinations.Add(new Destinations.Viewport());
+        destinations.Add(new Destinations.Viewport(viewport));
         readingFromSaveFile = true;
         writingToSaveFile = false;
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
