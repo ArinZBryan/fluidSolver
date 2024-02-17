@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+[System.Serializable]
 public struct PackedArray<T> : IEnumerable<T>
 {
     public T[] data;

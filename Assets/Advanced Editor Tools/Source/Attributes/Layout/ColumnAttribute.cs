@@ -15,7 +15,7 @@ namespace AdvancedEditorTools.Attributes
         public float? columnWidth = null;
 
         public BeginColumnAreaAttribute() { }
-        /// <param name="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
+        /// <param fileName="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
         public BeginColumnAreaAttribute(float columnWidth)
         {
             this.columnWidth = columnWidth;
@@ -27,20 +27,20 @@ namespace AdvancedEditorTools.Attributes
         public float? columnWidth = null;
 
         public NewColumnAttribute() { }
-        /// <param name="columnStyle">Style this column will display</param>
+        /// <param fileName="columnStyle">Style this column will display</param>
         public NewColumnAttribute(LayoutStyle columnStyle)
         {
             this.columnStyle = columnStyle;
         }
 
-        /// <param name="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
+        /// <param fileName="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
         public NewColumnAttribute(float columnWidth)
         {
             this.columnWidth = columnWidth;
         }
 
-        /// <param name="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
-        /// <param name="columnStyle">Style this column will display</param>
+        /// <param fileName="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
+        /// <param fileName="columnStyle">Style this column will display</param>
         public NewColumnAttribute(float columnWidth, LayoutStyle columnStyle)
         {
             this.columnWidth = columnWidth;
@@ -51,7 +51,7 @@ namespace AdvancedEditorTools.Attributes
     {
         public float columnWidth = 0.1f;
         public NewEmptyColumnAttribute() { }
-        /// <param name="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
+        /// <param fileName="columnWidth">Proportion of the inspector width the column will fill, in range [0,1]</param>
         public NewEmptyColumnAttribute(float columnWidth)
         {
             this.columnWidth = columnWidth;
