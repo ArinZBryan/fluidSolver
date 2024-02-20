@@ -24,9 +24,9 @@
             </ui:Foldout>
             <ui:Foldout text="Playback Settings" name="savefile_settings">
                 <ui:TextField picking-mode="Ignore" label="File Path" value="filler text" text="filler text" name="file_path" />
-                <ui:SliderInt picking-mode="Ignore" label="Recording Time" value="1" high-value="500" name="recording_time" show-input-field="true" low-value="1" />
                 <ui:Button text="Load Playback" display-tooltip-when-elided="true" name="action_load_file" />
-                <ui:Button text="Save Playback" display-tooltip-when-elided="true" name="action_save_file" />
+                <ui:Button text="Start Playback Recording" display-tooltip-when-elided="true" name="action_save_file_start" />
+                <ui:Button text="End Playback Recording" display-tooltip-when-elided="true" name="action_save_file_end" />
             </ui:Foldout>
         </ui:ScrollView>
     </ui:VisualElement>

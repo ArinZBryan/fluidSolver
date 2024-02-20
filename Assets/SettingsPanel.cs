@@ -30,12 +30,51 @@ public class SettingsPanel : MonoBehaviour
             {
                 Button? maybe_restart_button = (Button?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/action_restart");
                 if (maybe_restart_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
-                else
-                {
+                else {
                     maybe_restart_button.clicked += () =>
                     {
                         Debug.Log("Resetting Simulation");
                         simulation.GetComponent<ResultDispatcher>().makeSimulatorFromSettings();
+                    };
+                }
+                
+                Button? maybe_load_button = (Button?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/savefile_settings/action_load_file");
+                if (maybe_load_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else {
+                    maybe_load_button.clicked += () =>
+                    {
+                        Debug.Log("Loading File");
+                        TextField? maybe_file_path = (TextField?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/savefile_settings/file_path");
+                        if (maybe_file_path == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                        else
+                        {
+                            simulation.GetComponent<ResultDispatcher>().loadSaveFile(maybe_file_path.value);
+                        }
+                    };
+                }
+                
+                Button? maybe_start_save_button = (Button?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/savefile_settings/action_save_file_start");
+                if (maybe_start_save_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else {
+                    maybe_start_save_button.clicked += () =>
+                    {
+                        Debug.Log("Beginning Playback Recording");
+                        simulation.GetComponent<ResultDispatcher>().beginRecording();
+                    };
+                }
+                
+                Button? maybe_end_save_button = (Button?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/savefile_settings/action_save_file_end");
+                if (maybe_end_save_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else {
+                    maybe_end_save_button.clicked += () =>
+                    {
+                        Debug.Log("Ending Playback Recording");
+                        TextField? maybe_file_path = (TextField?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/savefile_settings/file_path");
+                        if (maybe_file_path == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                        else
+                        {
+                            simulation.GetComponent<ResultDispatcher>().stopRecording();
+                        }
                     };
                 }
             }

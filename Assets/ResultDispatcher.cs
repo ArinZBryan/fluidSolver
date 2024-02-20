@@ -93,8 +93,8 @@ public class ResultDispatcher : MonoBehaviour
                 playbackFrames = null;
                 playbackFrameNo = 0;
             }
-        } else
-        {
+        } 
+        else {
             //remap xy coords to be same as screen UV coords
             RectTransform rectTransform = viewport.rectTransform;
 
@@ -246,7 +246,7 @@ public class ResultDispatcher : MonoBehaviour
         destinations.Add(image);
     }
     [Button("Begin Recording")]
-    void beginRecording()
+    public void beginRecording()
     {
         writingToSaveFile = true;
         if (playbackFrames != null)
@@ -256,7 +256,7 @@ public class ResultDispatcher : MonoBehaviour
         playbackFrames = new List<PlaybackFrame>();
     }
     [Button("Stop Recording")]
-    void stopRecording()
+    public void stopRecording()
     {
         writingToSaveFile = false;
         saveFile("./saves/save.simsave");
@@ -271,7 +271,7 @@ public class ResultDispatcher : MonoBehaviour
         playbackFrames = null;
     }
     [Button("Load Save File")]
-    void loadSaveFile(string path = "./saves/save.simsave")
+    public void loadSaveFile(string path = "./saves/save.simsave")
     {
         var f = System.IO.File.Open(path, FileMode.Open);           //Open the file
         var b = new BinaryFormatter();                              

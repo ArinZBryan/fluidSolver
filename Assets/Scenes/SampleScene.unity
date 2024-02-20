@@ -221,6 +221,26 @@ MonoBehaviour:
     target: {fileID: 345980197}
     containerTarget: {fileID: 345980197}
   value: 0
+--- !u!114 &356404145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b4b0fd2cb21744884b0d449ed4c9fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SerializedField:
+    fieldName: path
+    fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    isUsingRealContainer: 0
+    isUsingRealTarget: 0
+    target: {fileID: 356404145}
+    containerTarget: {fileID: 356404145}
+  value: c:\dev\fluidSolver\saves\save64.simsave
 --- !u!114 &444839763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,12 +467,17 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 5272592832774275096
-  - rid: 5272592832774275097
+  - rid: 5272593035582767307
+  - rid: 5272593035582767308
+  - rid: 5272593035582767309
+  - rid: 5272593035582767310
+  - rid: 5272593035582767311
+  - rid: 5272593035582767312
+  - rid: 5272593035582767313
   references:
     version: 2
     RefIds:
-    - rid: 5272592832774275096
+    - rid: 5272593035582767307
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -460,11 +485,57 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 5272592832774275097
+    - rid: 5272593035582767308
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
         buttonName: Take Single Image
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767309
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: beginRecording
+        buttonName: Begin Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767310
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecording
+        buttonName: Stop Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767311
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecordingJson
+        buttonName: Stop Recording (JSON)
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767312
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: loadSaveFile
+        buttonName: Load Save File
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: path
+          fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 356404145}
+          containerTarget: {fileID: 356404145}
+    - rid: 5272593035582767313
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: forceEndLoadingFromSaveFile
+        buttonName: Force End Loading From Save File
         foldout: 1
         buttonSize: 12
         parameters: []
@@ -819,7 +890,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 2089203182}
   fmt: 0
   folder: 
-  name: 
+  fileName: 
   time: 0
   viewport: {fileID: 2132755181}
 --- !u!4 &1594036559
@@ -1049,17 +1120,17 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 6918323008369590342
-  - rid: 6918323008369590343
-  - rid: 6918323008369590344
-  - rid: 6918323008369590345
-  - rid: 6918323008369590346
-  - rid: 6918323008369590347
-  - rid: 6918323008369590348
+  - rid: 5272593035582767202
+  - rid: 5272593035582767203
+  - rid: 5272593035582767204
+  - rid: 5272593035582767205
+  - rid: 5272593035582767206
+  - rid: 5272593035582767207
+  - rid: 5272593035582767208
   references:
     version: 2
     RefIds:
-    - rid: 6918323008369590342
+    - rid: 5272593035582767202
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: printDensity
@@ -1067,7 +1138,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 6918323008369590343
+    - rid: 5272593035582767203
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: printPrevDensity
@@ -1075,7 +1146,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 6918323008369590344
+    - rid: 5272593035582767204
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: addVelocityField
@@ -1119,7 +1190,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 21805980}
           containerTarget: {fileID: 21805980}
-    - rid: 6918323008369590345
+    - rid: 5272593035582767205
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: addDensityEnforcer
@@ -1151,7 +1222,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 1303423565}
           containerTarget: {fileID: 1303423565}
-    - rid: 6918323008369590346
+    - rid: 5272593035582767206
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: addPhysParticle
@@ -1171,7 +1242,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 79516674}
           containerTarget: {fileID: 79516674}
-    - rid: 6918323008369590347
+    - rid: 5272593035582767207
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: addCollidableCell
@@ -1203,7 +1274,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 2042442221}
           containerTarget: {fileID: 2042442221}
-    - rid: 6918323008369590348
+    - rid: 5272593035582767208
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: printSimVolume
