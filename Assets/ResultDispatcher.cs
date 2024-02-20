@@ -7,6 +7,7 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
+using System.Threading;
 
 
 public class ResultDispatcher : MonoBehaviour
@@ -32,6 +33,10 @@ public class ResultDispatcher : MonoBehaviour
     bool writingToSaveFile = false;
     bool readingFromSaveFile = false;
 
+    float mouseX = 0;
+    float mouseY = 0;
+    float mouseVelocityX = 0;
+    float mouseVelocityY = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -91,20 +96,23 @@ public class ResultDispatcher : MonoBehaviour
         } else
         {
             //remap xy coords to be same as screen UV coords
-            float mouseX = Input.mousePosition.x;
-            float mouseY = Screen.height - Input.mousePosition.y;
+            RectTransform rectTransform = viewport.rectTransform;
 
-            //clamp to area of simulation
-            mouseX = Math.Clamp(mouseX, 0, simulator.gridSize * simulator.scale - 1);
-            mouseY = Math.Clamp(mouseY, 0, simulator.gridSize * simulator.scale - 1);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, Input.mousePosition, null, out Vector2 localPoint);
+            mouseX = localPoint.x;
+            mouseY = localPoint.y;
+            mouseX = Math.Clamp(mouseX, -rectTransform.rect.width / 2, rectTransform.rect.width / 2);
+            mouseY = Math.Clamp(mouseY, -rectTransform.rect.height / 2, rectTransform.rect.height / 2);
+            mouseX += rectTransform.rect.width / 2;
+            mouseY += rectTransform.rect.height / 2;
 
             //get grid pos of cursor
-            int cursorX = (int)(mouseX / simulator.scale);
-            int cursorY = simulator.gridSize - (int)(mouseY / simulator.scale) - 1;
+            int cursorX = (int)(mouseX * simulator.gridSize / rectTransform.rect.width);
+            int cursorY = (int)(mouseY * simulator.gridSize / rectTransform.rect.width);
 
             //get mouse velocity
-            float mouseVelocityX = Input.GetAxis("Mouse X") * simulator.force;
-            float mouseVelocityY = Input.GetAxis("Mouse Y") * simulator.force;
+            mouseVelocityX = Input.GetAxis("Mouse X") * simulator.force;
+            mouseVelocityY = Input.GetAxis("Mouse Y") * simulator.force;
 
 
             if (Input.GetKey(KeyCode.V) && Input.GetMouseButton(0)) 
@@ -273,7 +281,8 @@ public class ResultDispatcher : MonoBehaviour
         playbackFrameNo = 0;
         Destroy(simulator.gameObject);   //Destroy exising simulator if it exists
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
-
+        simulator.init();
+        simulator.viewport = viewport.rectTransform;
         destinations.Add(new Destinations.Viewport(viewport));
         readingFromSaveFile = true;
         writingToSaveFile = false;

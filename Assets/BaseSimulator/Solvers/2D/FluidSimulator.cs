@@ -36,10 +36,7 @@ class FluidSimulator : MonoBehaviour
 
     public Solver2D solver;
 
-    float mouseX = 0;
-    float mouseY = 0;
-    float mouseVelocityX = 0;
-    float mouseVelocityY = 0;
+
 
     public void init()
     {
@@ -63,33 +60,6 @@ class FluidSimulator : MonoBehaviour
 
     public RenderTexture computeNextTexture(List<UserInput> userInputs)
     {
-
-        //remap xy coords to be same as screen UV coords
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(viewport, Input.mousePosition, null, out Vector2 localPoint);
-        mouseX = localPoint.x;
-        mouseY = localPoint.y;
-        mouseX = Math.Clamp(mouseX, -viewport.rect.width/ 2, viewport.rect.width/ 2);
-        mouseY = Math.Clamp(mouseY, -viewport.rect.height/ 2, viewport.rect.height/ 2);
-        mouseX += viewport.rect.width / 2;
-        mouseY += viewport.rect.height / 2;
-        Debug.Log("c: " + (mouseX, mouseY).ToString());
-
-        //get grid pos of cursor
-        int cursorX = (int)(mouseX * gridSize / viewport.rect.width);
-        int cursorY = (int)(mouseY * gridSize / viewport.rect.width);
-
-        //get mouse velocity
-        mouseVelocityX = Input.GetAxis("Mouse X") * force;
-        mouseVelocityY = Input.GetAxis("Mouse Y") * force;
-
-        /*
-         * 
-         * This can be a bit funky with detecting the toggle, and I rarely use the ability to draw only velocity
-        if (Input.GetKeyUp(KeyCode.T))
-        {
-            drawBoth = !drawBoth;
-        }
-        */
 
         runSimulationObjects();
 
