@@ -36,7 +36,17 @@ class FluidSimulator : MonoBehaviour
 
     public Solver2D solver;
 
-
+    public void initFromKeyframe(KeyFrame k)
+    {
+        gridSize = k.N;
+        init();
+        solver.density = k.density;
+        solver.velocity_horizontal = k.velocity_horizontal;
+        solver.velocity_vertical = k.velocity_vertical;
+        solver.prev_density = k.prev_density;
+        solver.prev_velocity_horizontal = k.prev_velocity_horizontal;
+        solver.prev_velocity_vertical = k.prev_velocity_vertical;
+    }
 
     public void init()
     {
@@ -58,7 +68,7 @@ class FluidSimulator : MonoBehaviour
 
     }
 
-    public RenderTexture computeNextTexture(List<UserInput> userInputs)
+    public RenderTexture computeNextTexture(List<UserInput> userInputs) 
     {
 
         runSimulationObjects();

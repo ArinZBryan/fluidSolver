@@ -28,21 +28,21 @@ public class PlaybackFrame
 [System.Serializable]
 public class KeyFrame
 {
-    float N;
-    float diffusion_rate;
-    float viscosity;
-    float sim_delta_time;
-    PackedArray<float> velocity_horizontal;
-    PackedArray<float> velocity_vertical;
-    PackedArray<float> prev_velocity_horizontal;
-    PackedArray<float> prev_velocity_vertical;
-    PackedArray<float> density;
-    PackedArray<float> prev_density;
-    List<CollidableCell> physicsObjects;
+    public int N;
+    public float diffusion_rate;
+    public float viscosity;
+    public float sim_delta_time;
+    public PackedArray<float> velocity_horizontal;
+    public PackedArray<float> velocity_vertical;
+    public PackedArray<float> prev_velocity_horizontal;
+    public PackedArray<float> prev_velocity_vertical;
+    public PackedArray<float> density;
+    public PackedArray<float> prev_density;
+    public List<CollidableCell> physicsObjects;
     public KeyFrame(Solver2D solver)
     {
         solver.getAll(out density, out prev_density, out velocity_horizontal, out prev_velocity_horizontal, out velocity_vertical, out prev_velocity_vertical);
-        (N, diffusion_rate, viscosity, sim_delta_time) = solver.getConstants();
+        (diffusion_rate, viscosity, sim_delta_time, N) = solver.getConstants();
         physicsObjects = solver.getPhysicsObjects();
     }
 }

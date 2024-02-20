@@ -281,7 +281,7 @@ public class ResultDispatcher : MonoBehaviour
         playbackFrameNo = 0;
         Destroy(simulator.gameObject);   //Destroy exising simulator if it exists
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
-        simulator.init();
+        simulator.initFromKeyframe(firstFrame);
         simulator.viewport = viewport.rectTransform;
         destinations.Add(new Destinations.Viewport(viewport));
         readingFromSaveFile = true;
