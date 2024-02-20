@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
 
-class FluidSimulator : MonoBehaviour
+public class FluidSimulator : MonoBehaviour
 {
     public int gridSize = 32;
     int N;
@@ -39,6 +39,7 @@ class FluidSimulator : MonoBehaviour
     public void initFromKeyframe(KeyFrame k)
     {
         gridSize = k.N;
+        deltaTime = k.sim_delta_time;
         init();
         solver.density = k.density;
         solver.velocity_horizontal = k.velocity_horizontal;

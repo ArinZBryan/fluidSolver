@@ -13,7 +13,7 @@
             <ui:Foldout text="Interaction Settings" name="interaction_settings">
                 <ui:Slider picking-mode="Ignore" label="Density Brush" value="10" high-value="100" name="mouse_density" show-input-field="true" />
                 <ui:Slider picking-mode="Ignore" label="Force Brush" value="10" high-value="100" name="mouse_force" show-input-field="true" />
-                <ui:SliderInt picking-mode="Ignore" label="Brush Size" value="1" high-value="25" name="mouse_brush_size" show-input-field="true" low-value="1" />
+                <ui:SliderInt picking-mode="Ignore" label="Brush Size" value="1" high-value="25" name="mouse_brush_size" show-input-field="true" low-value="1" inverted="false" focusable="true" />
             </ui:Foldout>
             <ui:Foldout text="Export Settings" name="export_settings">
                 <ui:DropdownField label="File Format" index="0" choices="PNG,JPEG,TGA,GIF,MP4,MOV" name="file_format" />

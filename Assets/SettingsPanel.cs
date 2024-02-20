@@ -28,6 +28,8 @@ public class SettingsPanel : MonoBehaviour
 
             if (showSettings)
             {
+                initialiseMenuValues();
+
                 Button? maybe_restart_button = (Button?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/action_restart");
                 if (maybe_restart_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
                 else {
@@ -49,6 +51,7 @@ public class SettingsPanel : MonoBehaviour
                         else
                         {
                             simulation.GetComponent<ResultDispatcher>().loadSaveFile(maybe_file_path.value);
+                            initialiseMenuValues();
                         }
                     };
                 }
@@ -77,6 +80,22 @@ public class SettingsPanel : MonoBehaviour
                         }
                     };
                 }
+
+                Slider? maybe_mouse_density = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_density");
+                if (maybe_mouse_density == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else { maybe_mouse_density.RegisterValueChangedCallback((e) => { simulation.GetComponent<ResultDispatcher>().simulator.drawValue = e.newValue; }); }
+                
+                Slider? maybe_mouse_force = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_force");
+                if (maybe_mouse_force == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else { maybe_mouse_force.RegisterValueChangedCallback((e) => { simulation.GetComponent<ResultDispatcher>().simulator.force = e.newValue; }); }
+                
+                /*
+                 * This currently does not work, as the feature has not been implemented yet
+                 * When it has (if it has), this will need to be uncommented
+                SliderInt? maybe_mouse_brush_size = (SliderInt?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_brush_size");
+                if (maybe_mouse_brush_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
+                else { maybe_mouse_brush_size.RegisterValueChangedCallback((e) => { simulation.GetComponent<ResultDispatcher>().simulator.penSize = e.newValue; }); }
+                */
             }
         }
     }
@@ -127,6 +146,32 @@ public class SettingsPanel : MonoBehaviour
         settingsPanel.SetActive(showSettings);
         return rootElement;
     }
+    void initialiseMenuValues()
+    {
+        var (diffusion_rate, viscosity, sim_delta_time, N) = simulation.GetComponent<ResultDispatcher>().simulator.solver.getConstants();
+        SliderInt? maybe_field_size = (SliderInt?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/field_size");
+        if (maybe_field_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_field_size.value = N; }
+        SliderInt? maybe_tick_rate = (SliderInt?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/tick_rate");
+        if (maybe_tick_rate == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_tick_rate.value = (int)(1f / sim_delta_time) + 1; } //This is a wierd bug, and I can't be bothered to fix that it consistantly reports 1 less than it should be
+        Slider? maybe_fluid_viscosity = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/fluid_viscosity");
+        if (maybe_fluid_viscosity == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_fluid_viscosity.value = viscosity; }
+        Slider? maybe_fluid_diffusion_rate = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/simulation_settings/fluid_diffusion_rate");
+        if (maybe_fluid_diffusion_rate == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_fluid_diffusion_rate.value = diffusion_rate; }
+        Slider? maybe_mouse_density = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_density");
+        if (maybe_mouse_density == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_mouse_density.value = simulation.GetComponent<ResultDispatcher>().simulator.drawValue; }
+        Slider? maybe_mouse_force = (Slider?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_force");
+        if (maybe_mouse_force == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_mouse_force.value = simulation.GetComponent<ResultDispatcher>().simulator.force; }
+        SliderInt? maybe_mouse_brush_size = (SliderInt?)getElementByRelativeNamePathLogged(getRootElement(), "root/scroll_menu/interaction_settings/mouse_brush_size");
+        if (maybe_mouse_brush_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        else { maybe_mouse_brush_size.value = simulation.GetComponent<ResultDispatcher>().simulator.penSize; }
+    }
+
 }
 
 /* root
@@ -153,7 +198,7 @@ public class SettingsPanel : MonoBehaviour
  *      |
  *      |-> savefile_settings
  *      |   |-> file_path
- *      |   |-> SliderInt recording_time
  *      |   |-> action_load_file
- *      |   |-> action_save_file
+ *      |   |-> action_save_file_start
+ *      |   |-> action_save_file_end
  */

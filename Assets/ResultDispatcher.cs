@@ -13,7 +13,7 @@ using System.Threading;
 public class ResultDispatcher : MonoBehaviour
 {
     public GameObject simulatorPrefab;
-    FluidSimulator simulator;
+    public FluidSimulator simulator;
     public SettingsPanel settingsPanel;
     public List<IImageDestination> destinations = new List<IImageDestination>();
     bool doHaveViewportAsTarget = false;
