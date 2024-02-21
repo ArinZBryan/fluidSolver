@@ -42,7 +42,7 @@ public class ResultDispatcher : MonoBehaviour
     void Start()
     {
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
-        simulator.viewport = viewport.rectTransform;    
+        simulator.viewport = viewport.rectTransform;
         simulator.init();
 #nullable enable
         settingsPanel.settingsPanel.gameObject.SetActive(true);
@@ -50,11 +50,11 @@ public class ResultDispatcher : MonoBehaviour
         if (maybe_restart_button == null) { Debug.LogError("An error occured while connecting to the UI"); }
         else
         {
-            maybe_restart_button.clicked += () => 
-                {
-                    Debug.Log("Resetting Simulation");
-                    makeSimulatorFromSettings();
-                };
+            maybe_restart_button.clicked += () =>
+            {
+                Debug.Log("Resetting Simulation");
+                makeSimulatorFromSettings();
+            };
         }
         settingsPanel.settingsPanel.gameObject.SetActive(false);
 #nullable disable
@@ -83,7 +83,7 @@ public class ResultDispatcher : MonoBehaviour
             // Apply simulation simulationObjects to the simulator and solver
             simulator.simulationObjects = playbackFrames[playbackFrameNo].objects;
             simulator.solver.setPhysicsObjects(playbackFrames[playbackFrameNo].objects.OfType<CollidableCell>().ToList());
-            
+
             // Step the simulation with loaded input
             inputTex = simulator.computeNextTexture(playbackFrames[playbackFrameNo].input);
             playbackFrameNo++;
@@ -93,8 +93,9 @@ public class ResultDispatcher : MonoBehaviour
                 playbackFrames = null;
                 playbackFrameNo = 0;
             }
-        } 
-        else {
+        }
+        else
+        {
             //remap xy coords to be same as screen UV coords
             RectTransform rectTransform = viewport.rectTransform;
 
@@ -115,14 +116,16 @@ public class ResultDispatcher : MonoBehaviour
             mouseVelocityY = Input.GetAxis("Mouse Y") * simulator.force;
 
 
-            if (Input.GetKey(KeyCode.V) && Input.GetMouseButton(0)) 
-            { 
+            if (Input.GetKey(KeyCode.V) && Input.GetMouseButton(0))
+            {
                 inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityX, fieldToWriteTo.VELX));
                 inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityY, fieldToWriteTo.VELY));
-            } else if (Input.GetMouseButton(0))
+            }
+            else if (Input.GetMouseButton(0))
             {
                 inputThisFrame.Add(new UserInput(cursorX, cursorY, simulator.drawValue, fieldToWriteTo.DENS));
-            } else if (Input.GetMouseButton(1))
+            }
+            else if (Input.GetMouseButton(1))
             {
                 inputThisFrame.Add(new UserInput(cursorX, cursorY, -simulator.drawValue, fieldToWriteTo.DENS));
             }
@@ -131,7 +134,7 @@ public class ResultDispatcher : MonoBehaviour
             inputTex = simulator.computeNextTexture(inputThisFrame);
         }
 
-        
+
         //If currently saving to a file
         if (playbackFrames != null && writingToSaveFile)
         {
@@ -140,7 +143,7 @@ public class ResultDispatcher : MonoBehaviour
                 firstFrame = new KeyFrame(simulator.solver);
             }
             playbackFrames.Add(new PlaybackFrame(inputThisFrame, simulator.simulationObjects));
-            
+
         }
 
 
@@ -166,16 +169,16 @@ public class ResultDispatcher : MonoBehaviour
         DestroyImmediate(simulator.gameObject);
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
 #nullable enable
-        SliderInt? field_size =        (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/field_size");
-        SliderInt? tick_rate  =        (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/tick_rate");
-        Slider? fluid_viscosity =         (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_viscosity");
-        Slider? fluid_diffusion_rate =    (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_diffusion_rate");
-        Slider? mouse_density =           (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_density");
-        Slider? mouse_force =             (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_force");
-        SliderInt? mouse_brush_size =  (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_brush_size");
+        SliderInt? field_size = (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/field_size");
+        SliderInt? tick_rate = (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/tick_rate");
+        Slider? fluid_viscosity = (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_viscosity");
+        Slider? fluid_diffusion_rate = (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/simulation_settings/fluid_diffusion_rate");
+        Slider? mouse_density = (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_density");
+        Slider? mouse_force = (Slider?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_force");
+        SliderInt? mouse_brush_size = (SliderInt?)settingsPanel.getElementByRelativeNamePathLogged(settingsPanel.getRootElement(), "root/scroll_menu/interaction_settings/mouse_brush_size");
 #nullable disable
         simulator.gridSize = field_size?.value ?? simulator.gridSize;
-        simulator.deltaTime = 1f/tick_rate?.value ?? simulator.deltaTime;
+        simulator.deltaTime = 1f / tick_rate?.value ?? simulator.deltaTime;
         simulator.viscosity = fluid_viscosity?.value ?? simulator.viscosity;
         simulator.diffusionRate = fluid_diffusion_rate?.value ?? simulator.diffusionRate;
         simulator.drawValue = mouse_density?.value ?? simulator.drawValue;
@@ -242,7 +245,7 @@ public class ResultDispatcher : MonoBehaviour
     [Button("Take Single Image")]
     void screenshot()
     {
-        Destinations.Image image = new Destinations.Image(folder, fileName, fmt);
+        Destinations.Image image = new Destinations.Image(folder, fileName, fmt, 1);
         destinations.Add(image);
     }
     [Button("Begin Recording")]
@@ -274,7 +277,7 @@ public class ResultDispatcher : MonoBehaviour
     public void loadSaveFile(string path = "./saves/save.simsave")
     {
         var f = System.IO.File.Open(path, FileMode.Open);           //Open the file
-        var b = new BinaryFormatter();                              
+        var b = new BinaryFormatter();
         PlaybackFile p = (PlaybackFile)b.Deserialize(f);            //Deserialise the save file 
         playbackFrames = p.frames.ToList();                         //Grab the update frames
         firstFrame = p.startFrame;                                  //Grab the first frame (the keyframe)
