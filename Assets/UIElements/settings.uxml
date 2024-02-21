@@ -1,8 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/settings.uss?fileID=7433441132597879392&amp;guid=e390967fc45251143896954ffe988424&amp;type=3#settings" />
+    <Style src="project://database/Assets/UIElements/settings.uss?fileID=7433441132597879392&amp;guid=e390967fc45251143896954ffe988424&amp;type=3#settings" />
     <ui:VisualElement name="root" style="background-color: rgba(56, 56, 56, 0); width: auto; flex-direction: row;">
         <ui:VisualElement name="padding" style="flex-direction: row; width: 30%; height: 100%;" />
         <ui:ScrollView name="scroll_menu" mouse-wheel-scroll-size="200" style="background-color: rgb(56, 56, 56); flex-grow: 1;">
+            <ui:Label text="2D Fluid Simulator" display-tooltip-when-elided="true" name="title" style="font-size: 24px; -unity-font-style: bold; color: rgb(0, 113, 255); padding-left: 5px;" />
+            <ui:Label text="A Coursework by Arin Bryan" display-tooltip-when-elided="true" name="subtitle" style="-unity-font-style: italic; color: rgb(111, 111, 111); translate: 0 -50%; padding-left: 5px;" />
             <ui:Foldout text="Simulation Settings" name="simulation_settings">
                 <ui:SliderInt picking-mode="Ignore" label="Simulation Size" value="32" high-value="100" show-input-field="true" name="field_size" />
                 <ui:SliderInt picking-mode="Ignore" label="Tick Rate" value="30" high-value="100" show-input-field="true" inverted="false" name="tick_rate" />
