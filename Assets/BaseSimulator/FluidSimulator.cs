@@ -19,21 +19,23 @@ public class FluidSimulator : MonoBehaviour
     public float force = 100f;
     public float drawValue = 100f;
     public int penSize = 1;
-    
-    Texture2D densTex;
+
+    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
+    public Texture2D objectTex;
+    PackedArray<Color> objectColour;
+
+    public Texture2D densTex;
     PackedArray<Color> densColour;
-    Texture2D velTex;
+    public Texture2D velTex;
     PackedArray<Color> velColour;
 
     bool drawBoth = true;
-    Texture2D bothTex;
+    public Texture2D bothTex;
     PackedArray<Color> bothColour;
-    RenderTexture renderTexture;
+    public RenderTexture renderTexture;
     public RectTransform viewport;
 
-    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
-    Texture2D objectTex;
-    PackedArray<Color> objectColour;
+   
 
     public Solver2D solver;
 
