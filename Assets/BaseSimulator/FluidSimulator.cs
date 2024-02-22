@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdvancedEditorTools.Attributes;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
@@ -35,6 +36,9 @@ public class FluidSimulator : MonoBehaviour
     PackedArray<Color> objectColour;
 
     public Solver2D solver;
+
+    public bool showVelocityTexture = false;
+    public bool showObjectTexture = false;
 
     public void initFromKeyframe(KeyFrame k)
     {
@@ -97,11 +101,11 @@ public class FluidSimulator : MonoBehaviour
         solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
 
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.O) || showObjectTexture)
         {
             drawSimulationObjects();
         } 
-        else if (Input.GetKey(KeyCode.V))
+        else if (Input.GetKey(KeyCode.V) || showVelocityTexture)
         {   
             if (drawBoth)
             {
@@ -119,11 +123,11 @@ public class FluidSimulator : MonoBehaviour
     }
     public RenderTexture getCurrentTexture()
     {
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.O) || showObjectTexture)
         {
             Graphics.Blit(objectTex, renderTexture);
         }
-        else if (Input.GetKey(KeyCode.V))
+        else if (Input.GetKey(KeyCode.V) || showVelocityTexture)
         {
             if (drawBoth) Graphics.Blit(bothTex, renderTexture);
             else Graphics.Blit(velTex, renderTexture);
