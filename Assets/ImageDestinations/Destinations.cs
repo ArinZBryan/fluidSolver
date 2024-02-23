@@ -2,7 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class Destinations
 {
@@ -13,16 +13,18 @@ public class Destinations
 
     public class Viewport : IImageDestination
     {
-        RenderTexture texture;
-        public RawImage rawImage;
+        Texture2D texture;
+        int imageWidth, imageHeight;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
-        public Viewport(RawImage viewport)
-        {
-            rawImage = viewport;
-        }
         public void setImage(RenderTexture img)
         {
-            texture = img;
+            if (texture == null)
+            {
+                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
+            }
+            Graphics.CopyTexture(img, texture);
+            imageWidth = img.width;
+            imageHeight = img.height;
         }
         public string destroy()
         {
@@ -30,7 +32,7 @@ public class Destinations
         }
         public void renderImageNow()
         {
-            rawImage.texture = texture;
+            Graphics.DrawTexture(new Rect(0, 0, imageWidth, imageHeight), texture);
         }
     }
     public class ImageSequence : IImageDestination
