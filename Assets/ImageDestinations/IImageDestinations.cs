@@ -2,7 +2,7 @@
 
 public interface IImageDestination
 {
-    public void setImage(RenderTexture img);
+    public void setImage(Texture2D img);
     public string destroy();
     public int lifetimeRemaining { get; }
 }

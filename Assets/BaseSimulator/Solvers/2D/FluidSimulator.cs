@@ -18,25 +18,28 @@ class FluidSimulator : MonoBehaviour
     public float force = 100f;
     public float drawValue = 100f;
     public int penSize = 1;
-    
-    Texture2D densTex;
+
+    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
+    public Texture2D objectTex;
+    PackedArray<Color> objectColour;
+
+    public Texture2D densTex;
     PackedArray<Color> densColour;
-    Texture2D velTex;
+    public Texture2D velTex;
     PackedArray<Color> velColour;
 
     bool drawBoth = true;
-    Texture2D bothTex;
+    public Texture2D bothTex;
     PackedArray<Color> bothColour;
-    RenderTexture renderTexture;
+    public RenderTexture renderTexture;
     
-    public List<SimulationObject> simulationObjects = new List<SimulationObject>();
-    Texture2D objectTex;
-    PackedArray<Color> objectColour;
-
     public Solver2D solver;
 
+    public bool drawVelocityField = false;
+    public bool drawObjectField = false;
 
-    private void Awake()
+
+    public void init()
     {
         densTex = new Texture2D(gridSize * scale, gridSize * scale);
         velTex = new Texture2D(gridSize * scale, gridSize * scale);
@@ -55,7 +58,7 @@ class FluidSimulator : MonoBehaviour
         objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
     }
 
-    public RenderTexture computeNextTexture(List<UserInput> userInputs)
+    public Texture2D computeNextTexture(List<UserInput> userInputs)
     {
         runSimulationObjects();
 
@@ -82,11 +85,11 @@ class FluidSimulator : MonoBehaviour
         solver.getDensityPrev().data = Enumerable.Repeat(0f, (gridSize + 2) * (gridSize + 2)).ToArray();
 
 
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.O) || drawObjectField)
         {
             drawSimulationObjects();
         } 
-        else if (Input.GetKey(KeyCode.V))
+        else if (Input.GetKey(KeyCode.V) || drawVelocityField)
         {   
             if (drawBoth)
             {
@@ -102,27 +105,25 @@ class FluidSimulator : MonoBehaviour
         }
         return getCurrentTexture();
     }
-    public RenderTexture getCurrentTexture()
+    public Texture2D getCurrentTexture()
     {
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.O) || drawObjectField)
         {
-            Graphics.Blit(objectTex, renderTexture);
+            return objectTex;
         }
-        else if (Input.GetKey(KeyCode.V))
+        else if (Input.GetKey(KeyCode.V) || drawVelocityField)
         {
-            if (drawBoth) Graphics.Blit(bothTex, renderTexture);
-            else Graphics.Blit(velTex, renderTexture);
+            if (drawBoth) return bothTex;
+            else return velTex;
         }
         else
         {
-            Graphics.Blit(densTex, renderTexture);
+            return densTex;
         }
-        return renderTexture;
     }
-    public RenderTexture getGurrentExportableTexture()
+    public Texture2D getGurrentExportableTexture()
     {
-        Graphics.Blit(densTex, renderTexture);
-        return renderTexture;
+        return densTex;
     }
 
     void drawDensity(in PackedArray<float> density, ref Texture2D drawTex)

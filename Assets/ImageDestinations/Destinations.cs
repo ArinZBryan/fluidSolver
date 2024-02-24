@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class Destinations
@@ -13,18 +15,17 @@ public class Destinations
 
     public class Viewport : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
+        RenderTexture texture;
+        public RawImage rawImage;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
-        public void setImage(RenderTexture img)
+        public Viewport(RawImage viewport, int texSize)
         {
-            if (texture == null)
-            {
-                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-            }
-            Graphics.CopyTexture(img, texture);
-            imageWidth = img.width;
-            imageHeight = img.height;
+            rawImage = viewport;
+            texture = new RenderTexture(texSize, texSize, 0);
+        }
+        public void setImage(Texture2D img)
+        {
+            Graphics.Blit(img, texture);
         }
         public string destroy()
         {
@@ -32,17 +33,14 @@ public class Destinations
         }
         public void renderImageNow()
         {
-            Graphics.DrawTexture(new Rect(0, 0, imageWidth, imageHeight), texture);
+            rawImage.texture = texture;
         }
     }
     public class ImageSequence : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
         Destinations.FileFormat fmt;
         string folder, name;
         List<byte[]> unsavedImages = new List<byte[]>();
-        RenderTexture tempRT;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
         public ImageSequence(string folder, string name, Destinations.FileFormat format)
         {
@@ -51,27 +49,13 @@ public class Destinations
             this.fmt = format;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
-            if (texture == null)
-            {
-                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-            }
-
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
-
-            imageWidth = img.width;
-            imageHeight = img.height;
             switch (fmt)
             {
-                case FileFormat.PNG: unsavedImages.Add(texture.EncodeToPNG()); break;
-                case FileFormat.JPG: unsavedImages.Add(texture.EncodeToJPG()); break;
-                case FileFormat.TGA: unsavedImages.Add(texture.EncodeToTGA()); break;
+                case FileFormat.PNG: unsavedImages.Add(img.EncodeToPNG()); break;
+                case FileFormat.JPG: unsavedImages.Add(img.EncodeToJPG()); break;
+                case FileFormat.TGA: unsavedImages.Add(img.EncodeToTGA()); break;
                 default: UnityEngine.Debug.LogError("Cannot Use Fileformat with ImageSequence"); break;
             }
         }
@@ -94,12 +78,9 @@ public class Destinations
     }
     public class TimedImageSequence : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
         Destinations.FileFormat fmt;
         string folder, name;
         List<byte[]> unsavedImages = new List<byte[]>();
-        RenderTexture tempRT;
         public int lifetimeRemaining { get; set; } = 0;
         public TimedImageSequence(string folder, string name, Destinations.FileFormat format, int lifetime)
         {
@@ -109,29 +90,16 @@ public class Destinations
             lifetimeRemaining = lifetime + 1;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
             if (lifetimeRemaining <= 0) { return; }
             
-            if (texture == null)
-            {
-                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-            }
 
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
-
-            imageWidth = img.width;
-            imageHeight = img.height;
             switch (fmt)
             {
-                case FileFormat.PNG: unsavedImages.Add(texture.EncodeToPNG()); break;
-                case FileFormat.JPG: unsavedImages.Add(texture.EncodeToJPG()); break;
-                case FileFormat.TGA: unsavedImages.Add(texture.EncodeToTGA()); break;
+                case FileFormat.PNG: unsavedImages.Add(img.EncodeToPNG()); break;
+                case FileFormat.JPG: unsavedImages.Add(img.EncodeToJPG()); break;
+                case FileFormat.TGA: unsavedImages.Add(img.EncodeToTGA()); break;
                 default: UnityEngine.Debug.LogError("Cannot Use Fileformat with ImageSequence"); break;
             }
             lifetimeRemaining--;
@@ -155,10 +123,8 @@ public class Destinations
     }
     public class Image : IImageDestination
     {
-        Texture2D texture;
         Destinations.FileFormat fmt;
         string folder, name;
-        RenderTexture tempRT;
 
         public int lifetimeRemaining { get; set; } = 2;
 
@@ -169,23 +135,16 @@ public class Destinations
             this.fmt = format;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
 
-            texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
             string path = folder + name;
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, img.width, img.height), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
 
             switch (fmt)
             {
-                case FileFormat.PNG: File.WriteAllBytesAsync(path + ".png", texture.EncodeToPNG()); break;
-                case FileFormat.JPG: File.WriteAllBytesAsync(path + ".jpg", texture.EncodeToJPG()); break;
-                case FileFormat.TGA: File.WriteAllBytesAsync(path + ".tga", texture.EncodeToTGA()); break;
+                case FileFormat.PNG: File.WriteAllBytesAsync(path + ".png", img.EncodeToPNG()); break;
+                case FileFormat.JPG: File.WriteAllBytesAsync(path + ".jpg", img.EncodeToJPG()); break;
+                case FileFormat.TGA: File.WriteAllBytesAsync(path + ".tga", img.EncodeToTGA()); break;
                 default: UnityEngine.Debug.LogError("Cannot Use Fileformat with ImageSequence"); break;
             }
             lifetimeRemaining--;
@@ -198,12 +157,9 @@ public class Destinations
     }
     public class DeferredImageSequence : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
         Destinations.FileFormat fmt;
         string folder, name;
         List<Texture2D> unsavedImages = new List<Texture2D>();
-        RenderTexture tempRT;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
         public DeferredImageSequence(string folder, string name, Destinations.FileFormat format)
         {
@@ -212,23 +168,10 @@ public class Destinations
             this.fmt = format;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
-            if (texture == null)
-            {
-                texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-            }
 
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
-
-            imageWidth = img.width;
-            imageHeight = img.height;
-            unsavedImages.Add(texture);
+            unsavedImages.Add(img);
         }
         public string destroy()
         {
@@ -262,13 +205,10 @@ public class Destinations
     }
     public class Video : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
         Destinations.FileFormat fmt;
         int frameRate;
         string folder, filename, ffmpegPath;
         List<Texture2D> unsavedImages = new List<Texture2D>();
-        RenderTexture tempRT;
         public int lifetimeRemaining { get; set; } = int.MaxValue;
         public Video(string Folder, string Filename, int Framerate, Destinations.FileFormat Format, string ffmpegPath)
         {
@@ -279,21 +219,9 @@ public class Destinations
             this.ffmpegPath = ffmpegPath;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
-
-            Texture2D texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
-
-            imageWidth = img.width;
-            imageHeight = img.height;
-            unsavedImages.Add(texture);
+            unsavedImages.Add(img);
         }
         public string destroy()
         {
@@ -349,14 +277,10 @@ public class Destinations
     }
     public class TimedVideo : IImageDestination
     {
-        Texture2D texture;
-        int imageWidth, imageHeight;
         Destinations.FileFormat fmt;
         int frameRate;
         string folder, filename, ffmpegPath;
         List<Texture2D> unsavedImages = new List<Texture2D>();
-        RenderTexture tempRT;
-        int time;
         public int lifetimeRemaining { get; set; } = 0;
         public TimedVideo(string Folder, string Filename, int Framerate, int Time, Destinations.FileFormat Format, string ffmpegPath)
         {
@@ -368,22 +292,11 @@ public class Destinations
             this.lifetimeRemaining = Time + 1;
         }
 
-        public void setImage(RenderTexture img)
+        public void setImage(Texture2D img)
         {
             if (lifetimeRemaining <= 0) { return; }
 
-            Texture2D texture = new Texture2D(img.width, img.height, TextureFormat.RGBA32, 1, true);
-
-            //This might be a bit slow;
-            tempRT = RenderTexture.active;
-            RenderTexture.active = img;
-            texture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-            texture.Apply();
-            RenderTexture.active = tempRT;
-
-            imageWidth = img.width;
-            imageHeight = img.height;
-            unsavedImages.Add(texture);
+            unsavedImages.Add(img);
 
             lifetimeRemaining--;
         }
