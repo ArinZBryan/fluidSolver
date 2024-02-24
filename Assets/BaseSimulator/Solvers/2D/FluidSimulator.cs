@@ -32,12 +32,14 @@ class FluidSimulator : MonoBehaviour
     public Texture2D bothTex;
     PackedArray<Color> bothColour;
     public RenderTexture renderTexture;
-    
+    public RectTransform viewport;
     public Solver2D solver;
 
     public bool drawVelocityField = false;
     public bool drawObjectField = false;
 
+
+   
 
     public void init()
     {
@@ -60,7 +62,6 @@ class FluidSimulator : MonoBehaviour
 
     public Texture2D computeNextTexture(List<UserInput> userInputs)
     {
-        runSimulationObjects();
 
         foreach (UserInput i in userInputs)
         {
@@ -171,10 +172,6 @@ class FluidSimulator : MonoBehaviour
         drawTex.SetPixels(velColour.data);
         drawTex.Apply();
     }
-    /* FIXME: Use ArrayFuncs.scaleArray1Das2D
-     * - Leave bothtex as the big version
-     * - make new colour array for bothtex and use scaling to copy to it.
-     */
     public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
     {
         Color col;
