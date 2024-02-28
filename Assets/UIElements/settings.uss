@@ -47,18 +47,12 @@ TextField > TextInput {
 	border-color: #144e7a;
 }
 
-
 .unity-base-slider__tracker {
 	height: 3px;
-	margin-top: -1.5px;
 	border-radius:1px;
 	background-color: #5e5e5e;
 	border-color: #5e5e5e;
 }	
-.unity-base-slider__tracler {
-	background-color: #144e7a;
-	border-color: #144e7a;
-}
 .unity-scroller {
 	width: 15px;
 }
@@ -80,7 +74,4 @@ TextField > TextInput {
 .unity-scroller .unity-base-slider__tracker {
 	width: 15px;
 	margin: -3px;
-}
-.unity-base-slider__text-field {
-	top: 20%;
 }

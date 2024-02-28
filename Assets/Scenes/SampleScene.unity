@@ -325,6 +325,13 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
+  - rid: 5272593035582767328
+  - rid: 5272593035582767329
+  - rid: 5272593035582767330
+  - rid: 5272593035582767331
+  - rid: 5272593035582767332
+  - rid: 5272593035582767333
+  - rid: 5272593035582767334
   - rid: 5272593101276315851
   - rid: 5272593101276315852
   - rid: 5272593101276315853
@@ -335,6 +342,68 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 5272593035582767328
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: deleteMediaFolderContents
+        buttonName: Delete Media Folder Contents
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767329
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: screenshot
+        buttonName: Take Single Image
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767330
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: beginRecording
+        buttonName: Begin Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767331
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecording
+        buttonName: Stop Recording
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767332
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: stopRecordingJson
+        buttonName: Stop Recording (JSON)
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767333
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: loadSaveFile
+        buttonName: Load Save File
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: path
+          fieldType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 356404145}
+          containerTarget: {fileID: 356404145}
+    - rid: 5272593035582767334
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: forceEndLoadingFromSaveFile
+        buttonName: Force End Loading From Save File
+        foldout: 1
+        buttonSize: 12
+        parameters: []
     - rid: 5272593101276315851
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
@@ -527,7 +596,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 5c26b237bd248f2468e0bbc7525b5005, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 6c521f53c1f21ef479a85baf04bb2f25, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 6c521f53c1f21ef479a85baf04bb2f25,
+    type: 3}
   m_SortingOrder: 0
 --- !u!1 &1148636453
 GameObject:
@@ -760,7 +830,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 5c26b237bd248f2468e0bbc7525b5005, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 6c521f53c1f21ef479a85baf04bb2f25, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 6c521f53c1f21ef479a85baf04bb2f25,
+    type: 3}
   m_SortingOrder: 0
 --- !u!1 &1486533904
 GameObject:
@@ -864,7 +935,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015ef585aeb9f8f4db9d5ebe77509577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f, type: 3}
+  simulatorPrefab: {fileID: 37952202799183120, guid: cf08aa488d36c83489a71ce39cdc103f,
+    type: 3}
+  simulator: {fileID: 0}
   settingsPanel: {fileID: 1171497017}
   fmt: 0
   folder: c:\dev\fluidSolve\Media
@@ -921,11 +994,170 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
+  - rid: 5272593035582767321
+  - rid: 5272593035582767322
+  - rid: 5272593035582767323
+  - rid: 5272593035582767324
+  - rid: 5272593035582767325
+  - rid: 5272593035582767326
+  - rid: 5272593035582767327
   - rid: 3783564197189386242
   - rid: 3783564197189386243
   references:
     version: 2
     RefIds:
+    - rid: 5272593035582767321
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printDensity
+        buttonName: Print Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767322
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printPrevDensity
+        buttonName: Print Previous Density
+        foldout: 1
+        buttonSize: 12
+        parameters: []
+    - rid: 5272593035582767323
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: addVelocityField
+        buttonName: Add New Simulation Object (Velocity Force Field)
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: x
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1874131632}
+          containerTarget: {fileID: 1874131632}
+        - fieldName: y
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1818178035}
+          containerTarget: {fileID: 1818178035}
+        - fieldName: w
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 137100081}
+          containerTarget: {fileID: 137100081}
+        - fieldName: h
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1965156416}
+          containerTarget: {fileID: 1965156416}
+        - fieldName: valX
+          fieldType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 2141163254}
+          containerTarget: {fileID: 2141163254}
+        - fieldName: valY
+          fieldType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 21805980}
+          containerTarget: {fileID: 21805980}
+    - rid: 5272593035582767324
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: addDensityEnforcer
+        buttonName: Add New Simulation Object (Density Enforcer)
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: x
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1239843375}
+          containerTarget: {fileID: 1239843375}
+        - fieldName: y
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1322814856}
+          containerTarget: {fileID: 1322814856}
+        - fieldName: w
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 539742411}
+          containerTarget: {fileID: 539742411}
+        - fieldName: h
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1303423565}
+          containerTarget: {fileID: 1303423565}
+    - rid: 5272593035582767325
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: addPhysParticle
+        buttonName: Add New Simulation Object (Physics Particle)
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: x
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 444839763}
+          containerTarget: {fileID: 444839763}
+        - fieldName: y
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 79516674}
+          containerTarget: {fileID: 79516674}
+    - rid: 5272593035582767326
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: addCollidableCell
+        buttonName: Add New Simulation Object (Collidable Cell
+        foldout: 1
+        buttonSize: 12
+        parameters:
+        - fieldName: x
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 345980197}
+          containerTarget: {fileID: 345980197}
+        - fieldName: y
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1563515572}
+          containerTarget: {fileID: 1563515572}
+        - fieldName: w
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 1501096709}
+          containerTarget: {fileID: 1501096709}
+        - fieldName: h
+          fieldType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          isUsingRealContainer: 0
+          isUsingRealTarget: 0
+          target: {fileID: 2042442221}
+          containerTarget: {fileID: 2042442221}
+    - rid: 5272593035582767327
+      type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
+      data:
+        methodName: printSimVolume
+        buttonName: Print total volume
+        foldout: 1
+        buttonSize: 12
+        parameters: []
     - rid: 3783564197189386242
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:

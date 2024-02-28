@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
 
-class FluidSimulator : MonoBehaviour
+public class FluidSimulator : MonoBehaviour
 {
     public int gridSize = 32;
     int N;
@@ -39,7 +39,24 @@ class FluidSimulator : MonoBehaviour
     public bool drawObjectField = false;
 
 
-   
+    float mouseX = 0;
+    float mouseY = 0;
+    float mouseVelocityX = 0;
+    float mouseVelocityY = 0;
+
+    public void initFromKeyframe(KeyFrame k)
+    {
+        gridSize = k.N;
+        deltaTime = k.sim_delta_time;
+        init();
+        solver.density = k.density;
+        solver.velocity_horizontal = k.velocity_horizontal;
+        solver.velocity_vertical = k.velocity_vertical;
+        solver.prev_density = k.prev_density;
+        solver.prev_velocity_horizontal = k.prev_velocity_horizontal;
+        solver.prev_velocity_vertical = k.prev_velocity_vertical;
+    }
+    
 
     public void init()
     {
@@ -54,14 +71,15 @@ class FluidSimulator : MonoBehaviour
 
         solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime, false);
         N = gridSize + 2;
-        densColour = new PackedArray<Color>(new int[]{ gridSize, gridSize });
+        densColour = new PackedArray<Color>(new int[] { gridSize, gridSize });
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
         bothColour = new PackedArray<Color>(new int[] { gridSize * gridSize, gridSize * gridSize });
-        objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
     }
 
-    public Texture2D computeNextTexture(List<UserInput> userInputs)
+    public Texture2D computeNextTexture(List<UserInput> userInputs) 
     {
+
+        runSimulationObjects();
 
         foreach (UserInput i in userInputs)
         {

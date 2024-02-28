@@ -383,7 +383,7 @@ public class Solver2D
         velocity_horizontal = this.velocity_horizontal;
         velocity_vertical = this.velocity_vertical;
     }
-    public (float, float, float, float) getConstants()
+    public (float, float, float, int) getConstants()
     {
         return (diffusion_rate, viscosity, sim_delta_time, N);
     }
