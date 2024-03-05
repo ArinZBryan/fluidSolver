@@ -74,6 +74,7 @@ public class FluidSimulator : MonoBehaviour
         densColour = new PackedArray<Color>(new int[] { gridSize, gridSize });
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
         bothColour = new PackedArray<Color>(new int[] { gridSize * gridSize, gridSize * gridSize });
+        objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
     }
 
     public Texture2D computeNextTexture(List<UserInput> userInputs) 
@@ -283,7 +284,7 @@ public class FluidSimulator : MonoBehaviour
                 ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY());
             } else if (obj is DensityEnforcer)
             {
-                ((DensityEnforcer)obj).tick(ref solver.getDensity(), 1);
+                ((DensityEnforcer)obj).tick(ref solver.getDensity());
             } else if (obj is PhysPoint)
             {
                 ((PhysPoint)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), deltaTime);
@@ -327,12 +328,12 @@ public class FluidSimulator : MonoBehaviour
         simulationObjects.Add(new VelocityForceField(x,y,w,h,valX,valY,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Density Enforcer)")]
-    void addDensityEnforcer(int x, int y, int w, int h)
+    void addDensityEnforcer(int x, int y, int w, int h, float v)
     {
         if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
         if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
-        simulationObjects.Add(new DensityEnforcer(x, y, w, h, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        simulationObjects.Add(new DensityEnforcer(x, y, w, h, v, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Physics Particle)")]
     void addPhysParticle(int x, int y)

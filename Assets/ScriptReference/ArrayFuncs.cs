@@ -6,7 +6,7 @@ using System.Text;
 public struct PackedArray<T> : IEnumerable<T>
 {
     public T[] data;
-    public int length;
+    public readonly int length;
     public int[] dimensions;
     public PackedArray(int[] Dimensions)
     {

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" style="flex-direction: row;">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="name" style="flex-grow: 1;" />
+        <ui:Button text="Remove Element" display-tooltip-when-elided="true" name="action_remove" />
+    </ui:VisualElement>
+</ui:UXML>

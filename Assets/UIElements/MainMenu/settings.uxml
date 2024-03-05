@@ -1,7 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UIElements/settings.uss?fileID=7433441132597879392&amp;guid=e390967fc45251143896954ffe988424&amp;type=3#settings" />
-    <ui:VisualElement name="root" style="background-color: rgba(56, 56, 56, 0); width: auto; flex-direction: row;">
-        <ui:VisualElement name="padding" style="flex-direction: row; width: 30%; height: 100%;" />
+    <Style src="project://database/Assets/UIElements/MainMenu/settings.uss?fileID=7433441132597879392&amp;guid=ac69eb0ab4c578a43b6c6d6de0b9b662&amp;type=3#settings" />
+    <ui:VisualElement name="root" style="background-color: rgba(56, 56, 56, 0); width: 100%; flex-direction: row; flex-shrink: 0; height: 100%;">
+        <ui:VisualElement name="padding" style="flex-direction: column; width: 40%; height: 100%; flex-shrink: 0;">
+            <ui:VisualElement name="padding" style="flex-grow: 1;" />
+            <ui:Foldout text="View Keybinds" name="keybind_box" style="background-color: rgb(56, 56, 56); color: rgb(255, 255, 255);">
+                <ui:Label text="[V] to view velocities&#10;[O] to view active objects&#10;[Esc] to toggle this menu&#10;[LMB] to use brushes additively&#10;[RMB] to use brushes subtractively" display-tooltip-when-elided="true" style="flex-grow: 1; white-space: normal; -unity-text-align: upper-left;" />
+            </ui:Foldout>
+        </ui:VisualElement>
         <ui:ScrollView name="scroll_menu" mouse-wheel-scroll-size="200" style="background-color: rgb(56, 56, 56); flex-grow: 1;">
             <ui:Label text="2D Fluid Simulator" display-tooltip-when-elided="true" name="title" style="font-size: 24px; -unity-font-style: bold; color: rgb(0, 113, 255); padding-left: 5px;" />
             <ui:Label text="A Coursework by Arin Bryan" display-tooltip-when-elided="true" name="subtitle" style="-unity-font-style: italic; color: rgb(111, 111, 111); translate: 0 -50%; padding-left: 5px;" />
@@ -30,6 +35,7 @@
                 <ui:Button text="Start Playback Recording" display-tooltip-when-elided="true" name="action_save_file_start" />
                 <ui:Button text="End Playback Recording" display-tooltip-when-elided="true" name="action_save_file_end" />
             </ui:Foldout>
+            <ui:Button text="Add / Remove Physics Objects" display-tooltip-when-elided="true" name="action_open_physObj_settings" />
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

@@ -77,61 +77,12 @@ public class Destinations
             return folder;
         }
     }
-    public class DeferredImageSequence : IImageDestination
-    {
-        Destinations.FileFormat fmt;
-        string folder, name;
-        List<Texture2D> unsavedImages = new List<Texture2D>();
-        public int lifetimeRemaining { get; set; } = int.MaxValue;
-        public DeferredImageSequence(string folder, string name, Destinations.FileFormat format, int lifetime)
-        {
-            this.folder = folder;
-            this.name = name;
-            this.fmt = format;
-            this.lifetimeRemaining = lifetime;
-        }
-
-        public void setImage(Texture2D img)
-        {
-
-            unsavedImages.Add(img);
-        }
-        public string destroy()
-        {
-            byte[] image;
-            for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
-            {
-                string path = folder + name + (imageIndex - 1).ToString().PadLeft(4, '0');
-                switch (fmt)
-                {
-                    case FileFormat.PNG:
-                        path += ".png";
-                        image = ImageConversion.EncodeToPNG(unsavedImages[imageIndex]);
-                        break;
-                    case FileFormat.JPG:
-                        path += ".jpg";
-                        image = ImageConversion.EncodeToJPG(unsavedImages[imageIndex]);
-                        break;
-                    case FileFormat.TGA:
-                        path += ".tga";
-                        image = ImageConversion.EncodeToTGA(unsavedImages[imageIndex]);
-                        break;
-                    default:
-                        UnityEngine.Debug.LogError("Why? You changed the file format during execution, and now it's all fucked. i_i");
-                        image = new byte[1];
-                        break;
-                }
-                File.WriteAllBytes(path, image);
-            }
-            return folder;
-        }
-    }
     public class Video : IImageDestination
     {
         Destinations.FileFormat fmt;
         int frameRate;
         string folder, filename, ffmpegPath;
-        List<Texture2D> unsavedImages = new List<Texture2D>();
+        List<byte[]> unsavedImages = new List<byte[]>();
         public int lifetimeRemaining { get; set; } = int.MaxValue;
         public Video(string Folder, string Filename, int Framerate, int lifetime, Destinations.FileFormat Format, string ffmpegPath)
         {
@@ -145,7 +96,7 @@ public class Destinations
 
         public void setImage(Texture2D img)
         {
-            unsavedImages.Add(img);
+            unsavedImages.Add(img.EncodeToPNG());
         }
         public string destroy()
         {
@@ -173,8 +124,7 @@ public class Destinations
             string path = folder + "\\imgsequence\\" + filename;
             for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
             {
-                byte[] image = unsavedImages[imageIndex].EncodeToPNG();
-                File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", image);
+                File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", unsavedImages[imageIndex]);
             }
 
             ProcessStartInfo startInfo = new ProcessStartInfo();

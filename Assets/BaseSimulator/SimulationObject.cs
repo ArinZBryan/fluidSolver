@@ -2,6 +2,7 @@
 [System.Serializable]
 public abstract class SimulationObject
 {
+    public string name = "Unknown Simulation Object";
     public int x, y;
     public int width, height;
     public UnityEngine.Color debugColor;
@@ -12,6 +13,7 @@ public class VelocityForceField : SimulationObject
     float valueX, valueY;
     public VelocityForceField(int x, int y, int width, int height, float valueX, float valueY, UnityEngine.Color debugColor)
     {
+        this.name = "Force Field";
         this.x = x;
         this.y = y;
         this.width = width;
@@ -32,15 +34,18 @@ public class VelocityForceField : SimulationObject
 [System.Serializable]
 public class DensityEnforcer : SimulationObject
 {
-    public DensityEnforcer(int x, int y, int width, int height, UnityEngine.Color debugColor)
+    float value;
+    public DensityEnforcer(int x, int y, int width, int height, float value, UnityEngine.Color debugColor)
     {
+        this.name = "Density Enforcer";
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.debugColor = debugColor;
+        this.value = value;
     }
-    public void tick(ref PackedArray<float> density, float value)
+    public void tick(ref PackedArray<float> density)
     {
         for (int i = x; i < width + x; i++) for (int j = y; j< height + y; j++)
             {
@@ -54,6 +59,7 @@ public class PhysPoint : SimulationObject
     float realX, realY;
     public PhysPoint(int x, int y, UnityEngine.Color debugColor)
     {
+        this.name = "Physics Point";
         this.x = x;
         this.y = y;
         this.realX = x;
@@ -86,6 +92,7 @@ public class CollidableCell : SimulationObject
     public bool currentlyInSolver = false;
     public CollidableCell(int x, int y, int width, int height, Solver2D.Boundary faces, UnityEngine.Color debugColor)
     {
+        this.name = "Collidable Cell";
         this.x = x;
         this.y = y;
         this.width = width;

@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root">
+        <ui:VisualElement name="position" style="flex-direction: row; justify-content: flex-end; min-width: auto; width: 100%; align-items: flex-start; flex-wrap: nowrap; visibility: visible; overflow: visible; flex-basis: initial;">
+            <ui:Label text="Position" display-tooltip-when-elided="true" name="setting_title" style="flex-grow: 0; flex-shrink: 1;" />
+            <ui:Label text="(" display-tooltip-when-elided="true" name="left_bracket" style="translate: 2px 2px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="x" style="width: 36px;" />
+            <ui:Label text="," display-tooltip-when-elided="true" name="comma" style="translate: -1px 2px; width: 3px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="y" style="width: 36px;" />
+            <ui:Label text=")" display-tooltip-when-elided="true" name="right_bracket" style="translate: -2px 2px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="width" style="flex-direction: row; justify-content: flex-end; width: 100%;">
+            <ui:Label text="Width / Height" display-tooltip-when-elided="true" name="setting_title" style="flex-grow: 0; flex-shrink: 1;" />
+            <ui:Label text="(" display-tooltip-when-elided="true" name="left_bracket" style="translate: 2px 2px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="x" style="width: 36px;" />
+            <ui:Label text="," display-tooltip-when-elided="true" name="comma" style="translate: -1px 2px; width: 3px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="y" style="width: 36px;" />
+            <ui:Label text=")" display-tooltip-when-elided="true" name="right_bracket" style="translate: -2px 2px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="value" style="flex-direction: row; justify-content: flex-end; width: 100%;">
+            <ui:Label text="Value (x/y component)" display-tooltip-when-elided="true" name="setting_title" style="flex-grow: 0; flex-shrink: 1;" />
+            <ui:Label text="(" display-tooltip-when-elided="true" name="left_bracket" style="translate: 2px 2px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="x" style="width: 36px;" />
+            <ui:Label text="," display-tooltip-when-elided="true" name="comma" style="translate: -1px 2px; width: 3px;" />
+            <ui:TextField picking-mode="Ignore" value="0" text="0" max-length="3" name="y" style="width: 36px;" />
+            <ui:Label text=")" display-tooltip-when-elided="true" name="right_bracket" style="translate: -2px 2px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

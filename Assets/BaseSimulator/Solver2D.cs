@@ -42,13 +42,13 @@ public class Solver2D
             // | = union, & = intersection, ^ = xor, ! = not
     public enum Boundary
     {
-        NONE = 0b0000_0001,
-        HORIZONTAL = 0b0000_0010,
-        VERTICAL = 0b0000_0100,
-        LEFT = 0b0000_1000,
-        RIGHT = 0b0001_0000,
-        TOP = 0b0010_0000,
-        BOTTOM = 0b0100_0000
+        NONE = 0b0000_0000,
+        HORIZONTAL = 0b0000_0001,
+        VERTICAL = 0b0000_0010,
+        LEFT = 0b0000_0100,
+        RIGHT = 0b0000_1000,
+        TOP = 0b0001_0000,
+        BOTTOM = 0b0010_0000
     }
     void SWAP<T>(ref T a, ref T b) { T temp = a; a = b; b = temp; }
 
