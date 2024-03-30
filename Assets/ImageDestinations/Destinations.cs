@@ -4,7 +4,8 @@ using System.Diagnostics;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using Unity.VisualScripting;
+using System;
 
 public class Destinations
 {
@@ -57,7 +58,9 @@ public class Destinations
                 case FileFormat.PNG: unsavedImages.Add(img.EncodeToPNG()); break;
                 case FileFormat.JPG: unsavedImages.Add(img.EncodeToJPG()); break;
                 case FileFormat.TGA: unsavedImages.Add(img.EncodeToTGA()); break;
-                default: UnityEngine.Debug.LogError("Cannot Use Fileformat with ImageSequence"); break;
+                default:
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Warn("Invalid file format used for this ImageDestination");
+                    break;
             }
         }
         public string destroy()
@@ -70,9 +73,38 @@ public class Destinations
                     case FileFormat.PNG: path += ".png"; break;
                     case FileFormat.JPG: path += ".jpg"; break;
                     case FileFormat.TGA: path += ".tga"; break;
-                    default: UnityEngine.Debug.LogError("Why? You changed the file format during execution, and now it's all fucked. i_i"); break;
+                    default: 
+                        GameObject.Find("Messages").GetComponent<MessageManager>().Error("File format changed during save process... Files may be corrupted");
+                        break;
                 }
-                File.WriteAllBytes(path, unsavedImages[imageIndex]);
+                try
+                {
+                    File.WriteAllBytes(path, unsavedImages[imageIndex]);
+                }
+                catch (ArgumentException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Calculated file path is not valid");
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Directory not found");
+                }
+                catch (PathTooLongException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path too long");
+                }
+                catch (IOException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("IO Error");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Unauthorized Access");
+                }
+                catch (NotSupportedException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path is in an invalid format");
+                }
             }
             return folder;
         }
@@ -117,14 +149,49 @@ public class Destinations
                     return "";
             }
 
-            if (Directory.Exists(folder + "\\imgsequence")) Directory.Delete(folder + "\\imgsequence", true);
-            if (File.Exists(folder + "\\" + filename + format)) File.Delete(folder + "\\" + filename + format);
+            if (Directory.Exists(folder + "\\imgsequence"))
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Warn("Detected directory with same name as temporary directory, deleting...");
+                Directory.Delete(folder + "\\imgsequence", true);
+            }
+            if (File.Exists(folder + "\\" + filename + format))
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("File with same path as output file detected, deleting...");
+                File.Delete(folder + "\\" + filename + format);
+            }
 
             Directory.CreateDirectory(folder + "\\imgsequence");
             string path = folder + "\\imgsequence\\" + filename;
             for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
             {
-                File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", unsavedImages[imageIndex]);
+                try
+                {
+                    File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", unsavedImages[imageIndex]);
+                }
+                catch (ArgumentException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Calculated file path is not valid");
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Directory not found");
+                }
+                catch (PathTooLongException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path too long");
+                }
+                catch (IOException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("IO Error");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Unauthorized Access");
+                }
+                catch (NotSupportedException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path is in an invalid format");
+                }
             }
 
             ProcessStartInfo startInfo = new ProcessStartInfo();

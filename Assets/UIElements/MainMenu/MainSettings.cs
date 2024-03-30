@@ -104,6 +104,8 @@ public class MainSettings : Menu
                 SliderInt? maybe_frame_rate = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/simulation_settings/tick_rate");
                 if (maybe_frame_rate == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
 
+                if (maybe_file_folder.value.EndsWith('/') || maybe_file_folder.value.EndsWith("\\")) { maybe_file_folder.value = maybe_file_folder.value.Substring(0, maybe_file_folder.value.Length - 1); }
+
                 int lifetime = maybe_file_time.value;
                 if (maybe_file_time.value == 0) { lifetime = int.MaxValue; }
 
