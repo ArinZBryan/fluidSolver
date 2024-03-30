@@ -243,6 +243,24 @@ MonoBehaviour:
     target: {fileID: 496911285}
     containerTarget: {fileID: 496911285}
   value: 
+--- !u!114 &606921307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &771651728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,17 +276,17 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 4193275797215641614
-  - rid: 4193275797215641615
-  - rid: 4193275797215641616
-  - rid: 4193275797215641617
-  - rid: 4193275797215641618
-  - rid: 4193275797215641619
-  - rid: 4193275797215641620
+  - rid: 4193276365003292735
+  - rid: 4193276365003292736
+  - rid: 4193276365003292737
+  - rid: 4193276365003292738
+  - rid: 4193276365003292739
+  - rid: 4193276365003292740
+  - rid: 4193276365003292741
   references:
     version: 2
     RefIds:
-    - rid: 4193275797215641614
+    - rid: 4193276365003292735
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -276,7 +294,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193275797215641615
+    - rid: 4193276365003292736
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -284,7 +302,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193275797215641616
+    - rid: 4193276365003292737
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: beginRecording
@@ -292,7 +310,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193275797215641617
+    - rid: 4193276365003292738
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecording
@@ -300,7 +318,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193275797215641618
+    - rid: 4193276365003292739
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecordingJson
@@ -308,7 +326,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193275797215641619
+    - rid: 4193276365003292740
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: loadSaveFile
@@ -322,7 +340,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 496911285}
           containerTarget: {fileID: 496911285}
-    - rid: 4193275797215641620
+    - rid: 4193276365003292741
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: forceEndLoadingFromSaveFile
@@ -450,12 +468,16 @@ MonoBehaviour:
     - {fileID: 1171497018}
     - {fileID: 1482909112}
     - {fileID: 61852268}
+    - {fileID: -2663187775335547616, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
+    - {fileID: 1228502740}
     values:
     - {fileID: 771651728}
     - {fileID: 1818185163}
     - {fileID: 339340984}
     - {fileID: 311856719}
     - {fileID: 1064038283}
+    - {fileID: 1099429280}
+    - {fileID: 606921307}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &1001844561
@@ -474,6 +496,24 @@ Transform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1064038283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1099429280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -656,6 +696,7 @@ RectTransform:
   - {fileID: 1482909110}
   - {fileID: 1486533905}
   - {fileID: 61852270}
+  - {fileID: 1228502736}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -692,6 +733,125 @@ MonoBehaviour:
   - {fileID: 1482909112}
   - {fileID: 61852268}
   resultDispatcher: {fileID: 1594036558}
+--- !u!1 &1228502735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1228502736}
+  - component: {fileID: 1228502739}
+  - component: {fileID: 1228502738}
+  - component: {fileID: 1228502737}
+  - component: {fileID: 1228502740}
+  m_Layer: 5
+  m_Name: Messages
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1228502736
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228502735}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1171497016}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -60}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1228502737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228502735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &1228502738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228502735}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1228502739
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228502735}
+  m_CullTransparentMesh: 1
+--- !u!114 &1228502740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228502735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f88c931edd61343afb23b7b8295daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  errorPrefab: {fileID: 5706831206726278113, guid: 5b310b7a8939c3a41bc652c1c9625bb9, type: 3}
+  warningPrefab: {fileID: 5706831206726278113, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
+  infoPrefab: {fileID: 5706831206726278113, guid: 840d34144106cdb40b04e4a6b7ffa2e0, type: 3}
 --- !u!1 &1482909109
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +1027,7 @@ MonoBehaviour:
   fileName: bugcheck
   time: 0
   viewport: {fileID: 1486533906}
+  messageLog: {fileID: 1228502740}
 --- !u!4 &1594036559
 Transform:
   m_ObjectHideFlags: 0

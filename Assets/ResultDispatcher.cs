@@ -29,10 +29,7 @@ public class ResultDispatcher : MonoBehaviour
     int playbackFrameNo;
     public UnityEngine.UI.RawImage viewport;
 
-    public GameObject errorPrefab;
-    public GameObject warningPrefab;
-    public GameObject logPrefab;
-    public GameObject messageLog;
+    public MessageManager messageLog;
 
     KeyFrame firstFrame;
     bool writingToSaveFile = false;
@@ -217,17 +214,17 @@ public class ResultDispatcher : MonoBehaviour
         }
         catch (ArgumentException e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: File Path Not Valid";
+            messageLog.Error("File Path Not Valid");
             return;
         }
         catch (DirectoryNotFoundException e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: Enclosing Folder Does Not Exist";
+            messageLog.Error("Enclosing Folder Does Not Exist");
             return;
         }
         catch (Exception e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: Unknown File Saving Error";
+            messageLog.Error("Unknown File Saving Error");
             return;
         }
     
@@ -295,17 +292,17 @@ public class ResultDispatcher : MonoBehaviour
             f = System.IO.File.Open(path, FileMode.Open);           //Open the file
         } catch (FileNotFoundException e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: File Not Found To Load";
+            messageLog.Error("File Not Found To Load");
             return;
         }
         catch (ArgumentException e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: File Path Not Valid";
+            messageLog.Error("File Path Not Valid");
             return;
         }
         catch (Exception e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: Unknown File Loading Error";
+            messageLog.Error("Unknown File Loading Error");
             return;
         }
         var b = new BinaryFormatter();
@@ -316,12 +313,12 @@ public class ResultDispatcher : MonoBehaviour
         }
         catch (SerializationException e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: File Not Valid To Load";
+            messageLog.Error("File Not Valid To Load");
             return;
         }
         catch (Exception e)
         {
-            Instantiate(errorPrefab, messageLog.transform).GetComponent<UnityEngine.UI.Text>().text = "Error: Unknown File Loading Error";
+            messageLog.Error("Unknown File Decoding Error");
             return;
         }
         
