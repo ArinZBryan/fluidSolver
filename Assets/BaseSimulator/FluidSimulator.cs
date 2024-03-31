@@ -38,6 +38,8 @@ public class FluidSimulator : MonoBehaviour
     public bool drawVelocityField = false;
     public bool drawObjectField = false;
 
+    public Color32 baseColor = new Color32(0, 0, 0, 255);
+    public Color32 fluidColor = new Color32(255, 255, 255, 255);
 
     float mouseX = 0;
     float mouseY = 0;
@@ -57,7 +59,7 @@ public class FluidSimulator : MonoBehaviour
         solver.prev_velocity_horizontal = k.prev_velocity_horizontal;
         solver.prev_velocity_vertical = k.prev_velocity_vertical;
     }
-    
+
 
     public void init()
     {
@@ -78,7 +80,7 @@ public class FluidSimulator : MonoBehaviour
         objectColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
     }
 
-    public Texture2D computeNextTexture(List<UserInput> userInputs) 
+    public Texture2D computeNextTexture(List<UserInput> userInputs)
     {
 
         runSimulationObjects();
@@ -109,20 +111,21 @@ public class FluidSimulator : MonoBehaviour
         if (Input.GetKey(KeyCode.O) || drawObjectField)
         {
             drawSimulationObjects();
-        } 
+        }
         else if (Input.GetKey(KeyCode.V) || drawVelocityField)
-        {   
+        {
             if (drawBoth)
             {
-                drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, ref densTex, Color.green);
-            } else
+                drawDensityAndVelocity(solver.getDensity(), solver.getVelocityX(), solver.getVelocityY(), ref bothTex, ref densTex, Color.green, baseColor, fluidColor);
+            }
+            else
             {
                 drawVelocity(solver.getVelocityX(), solver.getVelocityY(), ref velTex, Color.black, Color.green);
             }
         }
         else
         {
-            drawDensity(solver.getDensity(), ref densTex);
+            drawDensity(solver.getDensity(), ref densTex, baseColor, fluidColor);
         }
         return getCurrentTexture();
     }
@@ -147,19 +150,14 @@ public class FluidSimulator : MonoBehaviour
         return densTex;
     }
 
-    void drawDensity(in PackedArray<float> density, ref Texture2D drawTex)
+    void drawDensity(in PackedArray<float> density, ref Texture2D drawTex, Color baseColor, Color fluidColor)
     {
-        Color col;
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
-                int colIndex = (simCellX - 1) + (simCellY - 1)*gridSize;
-                int denIndex = (simCellX) +(simCellY)*(gridSize + 2);
-                col.r = density[denIndex];
-                col.g = density[denIndex];
-                col.b = density[denIndex];
-                col.a = 1f;
-                densColour[colIndex] = col;
+                int colIndex = (simCellX - 1) + (simCellY - 1) * gridSize;
+                int denIndex = (simCellX) + (simCellY) * (gridSize + 2);
+                densColour[colIndex] = Color.Lerp(baseColor, fluidColor, density[denIndex]);
             }
         drawTex.SetPixels(densColour.scaleArrayAs2D(scale).data);
         drawTex.Apply();
@@ -192,25 +190,19 @@ public class FluidSimulator : MonoBehaviour
         drawTex.SetPixels(velColour.data);
         drawTex.Apply();
     }
-    public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color foreground)
+    public void drawDensityAndVelocity(in PackedArray<float> density, in PackedArray<float> velocityX, in PackedArray<float> velocityY, ref Texture2D bothTex, ref Texture2D densTex, Color lineColor, Color baseColor, Color fluidColor)
     {
-        Color col;
         for (int simCellX = 1; simCellX <= gridSize; simCellX++) for (int simCellY = 1; simCellY <= gridSize; simCellY++)
             {
                 //This was two calls to ArrayFuncs.AccessArray1DAs2D(..), but the function calls were a big time hog
                 int colIndex = (simCellX - 1) + (simCellY - 1) * gridSize;
                 int denIndex = (simCellX) + (simCellY) * (gridSize + 2);
-                col.r = density[denIndex];
-                col.g = density[denIndex];
-                col.b = density[denIndex];
-                col.a = 1f;
-                densColour[colIndex] = col;
+                densColour[colIndex] = Color.Lerp(baseColor, fluidColor, density[denIndex]);
             }
-        //GPUTextureScaler.Scale(bothTex, gridSize * scale, gridSize * scale, FilterMode.Point);
+
         bothColour = densColour.scaleArrayAs2D(scale);
         densTex.SetPixels(bothColour.data);
-        
-        //Makes a texture of one colour
+
 
         int maxLength = (scale - 1) / 2;
 
@@ -228,7 +220,7 @@ public class FluidSimulator : MonoBehaviour
 
                 xCoord = (i - 1) * scale + 2;
                 yCoord = (j - 1) * scale + 2;
-                line(ref bothColour, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, foreground, gridSize * scale, gridSize * scale);
+                line(ref bothColour, xCoord, yCoord, (int)Math.Round((normalised * maxLength).x) + xCoord, (int)Math.Round((normalised * maxLength).y) + yCoord, lineColor, gridSize * scale, gridSize * scale);
 
             }
         }
@@ -239,7 +231,7 @@ public class FluidSimulator : MonoBehaviour
     {
         if (x > width || x2 > width) { return; }
         if (x < 0 || x2 < 0) { return; }
-        if (y > height || y2 > height) {  return; }
+        if (y > height || y2 > height) { return; }
         if (y < 0 || y2 < 0) { return; }
 
         int w = x2 - x;
@@ -275,7 +267,7 @@ public class FluidSimulator : MonoBehaviour
             }
         }
     }
-    
+
     public void runSimulationObjects()
     {
         foreach (SimulationObject obj in simulationObjects)
@@ -283,10 +275,12 @@ public class FluidSimulator : MonoBehaviour
             if (obj is VelocityForceField)
             {
                 ((VelocityForceField)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY());
-            } else if (obj is DensityEnforcer)
+            }
+            else if (obj is DensityEnforcer)
             {
                 ((DensityEnforcer)obj).tick(ref solver.getDensity());
-            } else if (obj is PhysPoint)
+            }
+            else if (obj is PhysPoint)
             {
                 ((PhysPoint)obj).tick(ref solver.getVelocityX(), ref solver.getVelocityY(), deltaTime);
             }
@@ -299,14 +293,14 @@ public class FluidSimulator : MonoBehaviour
         {
             for (int x = obj.x; x < obj.width + obj.x; x++) for (int y = obj.y; y < obj.height + obj.y; y++)
                 {
-                    for (int scaleX = 0; scaleX < scale;  scaleX++) for (int scaleY = 0; scaleY < scale; scaleY++)
+                    for (int scaleX = 0; scaleX < scale; scaleX++) for (int scaleY = 0; scaleY < scale; scaleY++)
                         {
                             int idx = ((x * scale) + scaleX) + ((y * scale) + scaleY) * (gridSize * scale);
                             if (idx < objectColour.length)
                             {
                                 objectColour[idx] = obj.debugColor;
                             }
-                            
+
                         }
                 }
         }
@@ -321,12 +315,12 @@ public class FluidSimulator : MonoBehaviour
     [Button("Print Previous Density")]
     void printPrevDensity() { Debug.Log(solver.getDensityPrev().To2DString()); }
     [Button("Add New Simulation Object (Velocity Force Field)")]
-    void addVelocityField(int x, int y, int w, int h,float valX, float valY)
+    void addVelocityField(int x, int y, int w, int h, float valX, float valY)
     {
         if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
         if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
-        simulationObjects.Add(new VelocityForceField(x,y,w,h,valX,valY,UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
+        simulationObjects.Add(new VelocityForceField(x, y, w, h, valX, valY, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
     }
     [Button("Add New Simulation Object (Density Enforcer)")]
     void addDensityEnforcer(int x, int y, int w, int h, float v)
@@ -348,11 +342,11 @@ public class FluidSimulator : MonoBehaviour
         if (w < 2 || h < 2) { Debug.LogError("Cannot create new collidable cell: Dimensions must be greater than 1"); return; }
         if (x < 0 || y < 0) { Debug.LogError("Cannot create new collidable cell: Position not in simulation bounds"); return; }
         if (x + w > gridSize || y + h > gridSize) { Debug.LogError("Cannot create new collidable cell: Dimensions cause effects outside of simulation range"); return; }
-        CollidableCell c = new CollidableCell(x, y, w, h, 
-                                    Solver2D.Boundary.TOP | 
-                                    Solver2D.Boundary.BOTTOM | 
-                                    Solver2D.Boundary.LEFT | 
-                                    Solver2D.Boundary.RIGHT, 
+        CollidableCell c = new CollidableCell(x, y, w, h,
+                                    Solver2D.Boundary.TOP |
+                                    Solver2D.Boundary.BOTTOM |
+                                    Solver2D.Boundary.LEFT |
+                                    Solver2D.Boundary.RIGHT,
                                     UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f));
         simulationObjects.Add(c);
         solver.addPhysicsObject(c);

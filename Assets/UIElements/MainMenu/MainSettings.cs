@@ -209,6 +209,27 @@ public class MainSettings : Menu
             });
         }
 
+        
+        SliderInt? maybe_fluid_col_r = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/red");
+        SliderInt? maybe_fluid_col_g = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/green");
+        SliderInt? maybe_fluid_col_b = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/blue");
+        SliderInt? maybe_fluid_col_a = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/alpha");
+        if (maybe_fluid_col_r == null || maybe_fluid_col_g == null || maybe_fluid_col_b == null | maybe_fluid_col_a == null ) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        maybe_fluid_col_r.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.fluidColor.r = (byte)e.newValue; });
+        maybe_fluid_col_g.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.fluidColor.g = (byte)e.newValue; });
+        maybe_fluid_col_b.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.fluidColor.b = (byte)e.newValue; });
+        maybe_fluid_col_a.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.fluidColor.a = (byte)e.newValue; });
+
+        SliderInt? maybe_base_col_r = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/red");
+        SliderInt? maybe_base_col_g = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/green");
+        SliderInt? maybe_base_col_b = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/blue");
+        SliderInt? maybe_base_col_a = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/alpha");
+        if (maybe_base_col_r == null || maybe_base_col_g == null || maybe_base_col_b == null | maybe_base_col_a == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        maybe_base_col_r.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.r = (byte)e.newValue; });
+        maybe_base_col_g.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.g = (byte)e.newValue; });
+        maybe_base_col_b.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.b = (byte)e.newValue; });
+        maybe_base_col_a.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.a = (byte)e.newValue; });
+        
         /*
          * This currently does not work, as the feature has not been implemented yet
          * When it has (if it has), this will need to be uncommented

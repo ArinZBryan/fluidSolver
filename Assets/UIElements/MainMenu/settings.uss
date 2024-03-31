@@ -34,10 +34,13 @@ TextField > TextInput {
 .unity-foldout__content {
 	margin-left: 8px;
 }
+.unity-foldout__toggle {
+	margin-left: 0px;
+}
 #unity-dragger {
 	height: 16px;
 	width: 6px;
-	margin-top: -6px;
+	margin-top: -9px;
 	border-radius: 3px;
 	background-color: #999999;
 	border-color: #999999;
@@ -79,6 +82,5 @@ TextField > TextInput {
 	-unity-background-image-tint-color: #D0D0D0;
 }
 .unity-toggle__checkmark {
-	background-color: #3c3c3c;
 	-unity-background-image-tint-color: #006AA6;
 }
