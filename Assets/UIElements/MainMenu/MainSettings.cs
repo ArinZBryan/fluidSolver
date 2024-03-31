@@ -111,6 +111,9 @@ public class MainSettings : Menu
                     case "Custom":
                         maybe_kernel_text.value = "[[0,0,0],[0,1,0],[0,0,0]]";
                         break;
+                    case "None":
+                        maybe_kernel_text.value = "";
+                        break;
                     default:
                         maybe_kernel_text.value = "";
                         return;
@@ -132,6 +135,7 @@ public class MainSettings : Menu
                     case "[[0.003663,0.014652,0.025641,0.014652,0.003663],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.025641,0.095238,0.150183,0.095238,0.025641],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.003663,0.014652,0.025641,0.014652,0.003663]]":
                     case "[[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.0187,0.121,0.185,0.198,0.185,0.121,0.0187],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009]]":
                     case "[[0,-1,0],[-1,5,-1],[0,-1,0]]":
+                    case "":
                         break;
                     default:
                         maybe_kernel_type.value = "Custom";
@@ -159,6 +163,7 @@ public class MainSettings : Menu
                         case "Gaussian Blur (5x5)": kernel = Kernel.gaussianBlur5x5; break;
                         case "Gaussian Blur (7x7)": kernel = Kernel.gaussianBlur7x7; break;
                         case "Sharpen": kernel = Kernel.sharpen3x3; break;
+                        case "None": kernel = null; break;
                         default:
                             TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
                             if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
@@ -191,6 +196,7 @@ public class MainSettings : Menu
                         case "Gaussian Blur (5x5)": kernel = Kernel.gaussianBlur5x5; break;
                         case "Gaussian Blur (7x7)": kernel = Kernel.gaussianBlur7x7; break;
                         case "Sharpen": kernel = Kernel.sharpen3x3; break;
+                        case "None": kernel = null; break;
                         default:
                             TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
                             if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
