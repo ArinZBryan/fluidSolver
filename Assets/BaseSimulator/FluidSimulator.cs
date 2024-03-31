@@ -44,6 +44,7 @@ public class FluidSimulator : MonoBehaviour
     float mouseVelocityX = 0;
     float mouseVelocityY = 0;
 
+    Kernel k = new Kernel(new float[,] { { 1f / 9f, 1f / 9f, 1f / 9f }, { 1f / 9f, 1f / 9f, 1f / 9f }, { 1f / 9f, 1f / 9f, 1f / 9f } });
     public void initFromKeyframe(KeyFrame k)
     {
         gridSize = k.N;

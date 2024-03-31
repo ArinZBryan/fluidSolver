@@ -78,6 +78,131 @@ public class MainSettings : Menu
         if (maybe_mouse_force == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
         else { maybe_mouse_force.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.force = e.newValue; }); }
 
+        DropdownField? maybe_kernel_type = (DropdownField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_type");
+        if (maybe_kernel_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        else { maybe_kernel_type.RegisterValueChangedCallback((e) => 
+            { 
+                TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
+                if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+
+                switch (e.newValue)
+                {
+                    case "Box Blur (3x3)":
+                        maybe_kernel_text.value = "[[0.111,0.111,0.111],[0.111,0.111,0.111],[0.111,0.111,0.111]]";
+                        break;
+                    case "Box Blur (5x5)":
+                        maybe_kernel_text.value = "[[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04]]";
+                        break;
+                    case "Box Blur (7x7)":
+                        maybe_kernel_text.value = "[[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02]]";
+                        break;
+                    case "Gaussian Blur (3x3)":
+                        maybe_kernel_text.value = "[[0.0625,0.125,0.0625],[0.125,0.25,0.125],[0.0625,0.125,0.0625]]";
+                        break;
+                    case "Gaussian Blur (5x5)":
+                        maybe_kernel_text.value = "[[0.003663,0.014652,0.025641,0.014652,0.003663],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.025641,0.095238,0.150183,0.095238,0.025641],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.003663,0.014652,0.025641,0.014652,0.003663]]";
+                        break;
+                    case "Gaussian Blur (7x7)":
+                        maybe_kernel_text.value = "[[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.0187,0.121,0.185,0.198,0.185,0.121,0.0187],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009]]";
+                        break;
+                    case "Sharpen":
+                        maybe_kernel_text.value = "[[0,-1,0],[-1,5,-1],[0,-1,0]]";
+                        break;
+                    case "Custom":
+                        maybe_kernel_text.value = "[[0,0,0],[0,1,0],[0,0,0]]";
+                        break;
+                    default:
+                        maybe_kernel_text.value = "";
+                        return;
+                } 
+            });
+        }
+        TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
+        if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        else { maybe_kernel_text.RegisterValueChangedCallback((e) => 
+            {
+                DropdownField? maybe_kernel_type = (DropdownField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_type");
+                if (maybe_kernel_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                switch (maybe_kernel_text.value)
+                {
+                    case "[[0.111,0.111,0.111],[0.111,0.111,0.111],[0.111,0.111,0.111]]":
+                    case "[[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04],[0.04,0.04,0.04,0.04,0.04]]":
+                    case "[[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02],[0.02,0.02,0.02,0.02,0.02,0.02,0.02]]":
+                    case "[[0.0625,0.125,0.0625],[0.125,0.25,0.125],[0.0625,0.125,0.0625]]":
+                    case "[[0.003663,0.014652,0.025641,0.014652,0.003663],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.025641,0.095238,0.150183,0.095238,0.025641],[0.014652,0.058608,0.095238,0.058608,0.014652],[0.003663,0.014652,0.025641,0.014652,0.003663]]":
+                    case "[[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.0187,0.121,0.185,0.198,0.185,0.121,0.0187],[0.0124,0.0856,0.147,0.185,0.147,0.0856,0.0124],[0.006,0.0406,0.0856,0.121,0.0856,0.0406,0.006],[0.0009,0.006,0.0124,0.0187,0.0124,0.006,0.0009]]":
+                    case "[[0,-1,0],[-1,5,-1],[0,-1,0]]":
+                        break;
+                    default:
+                        maybe_kernel_type.value = "Custom";
+                        break;
+                }
+            });
+        }
+
+        Toggle? maybe_toggle_viewport = (Toggle?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/toggle_viewport");
+        if (maybe_toggle_viewport == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        else { maybe_toggle_viewport.RegisterValueChangedCallback((e) => 
+            {
+                if (e.newValue == false) { menuManager.resultDispatcher.destinations.OfType<Destinations.Viewport>().First().kernel = null; }
+                else
+                {
+                    Kernel kernel;
+                    DropdownField? maybe_kernel_type = (DropdownField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_type");
+                    if (maybe_kernel_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                    switch (maybe_kernel_type.value)
+                    {
+                        case "Box Blur (3x3)": kernel = Kernel.boxBlur3x3; break;
+                        case "Box Blur (5x5)": kernel = Kernel.boxBlur5x5; break;
+                        case "Box Blur (7x7)": kernel = Kernel.boxBlur7x7; break;
+                        case "Gaussian Blur (3x3)": kernel = Kernel.gaussianBlur3x3; break;
+                        case "Gaussian Blur (5x5)": kernel = Kernel.gaussianBlur5x5; break;
+                        case "Gaussian Blur (7x7)": kernel = Kernel.gaussianBlur7x7; break;
+                        case "Sharpen": kernel = Kernel.sharpen3x3; break;
+                        default:
+                            TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
+                            if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                            kernel = new Kernel(maybe_kernel_text.value);
+                            break;
+                    }
+                    menuManager.resultDispatcher.destinations.OfType<Destinations.Viewport>().First().kernel = kernel;
+                }
+            });
+        }
+
+        Toggle? maybe_toggle_export = (Toggle?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/toggle_export");
+        if (maybe_toggle_export == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        else
+        {
+            maybe_toggle_export.RegisterValueChangedCallback((e) =>
+            {
+                if (e.newValue == false) { menuManager.resultDispatcher.destinations.Where(x => !(x is Destinations.Viewport)).First().kernel = null; }
+                else
+                {
+                    Kernel kernel;
+                    DropdownField? maybe_kernel_type = (DropdownField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_type");
+                    if (maybe_kernel_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                    switch (maybe_kernel_type.value)
+                    {
+                        case "Box Blur (3x3)": kernel = Kernel.boxBlur3x3; break;
+                        case "Box Blur (5x5)": kernel = Kernel.boxBlur5x5; break;
+                        case "Box Blur (7x7)": kernel = Kernel.boxBlur7x7; break;
+                        case "Gaussian Blur (3x3)": kernel = Kernel.gaussianBlur3x3; break;
+                        case "Gaussian Blur (5x5)": kernel = Kernel.gaussianBlur5x5; break;
+                        case "Gaussian Blur (7x7)": kernel = Kernel.gaussianBlur7x7; break;
+                        case "Sharpen": kernel = Kernel.sharpen3x3; break;
+                        default:
+                            TextField? maybe_kernel_text = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/kernel_text");
+                            if (maybe_kernel_text == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                            kernel = new Kernel(maybe_kernel_text.value);
+                            break;
+                    }
+                    var targets = menuManager.resultDispatcher.destinations.Where(x => !(x is Destinations.Viewport));
+                    foreach (var target in targets) { target.kernel = kernel; }
+                }
+            });
+        }
+
         /*
          * This currently does not work, as the feature has not been implemented yet
          * When it has (if it has), this will need to be uncommented
@@ -111,32 +236,32 @@ public class MainSettings : Menu
                 {
                     case "PNG":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.PNG, lifetime)
+                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.PNG, lifetime, null)
                         );
                         break;
                     case "JPEG":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.JPG, lifetime)
+                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.JPG, lifetime, null)
                         );
                         break;
                     case "TGA":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.TGA, lifetime)
+                            new Destinations.Image(maybe_file_folder.value, maybe_file_name.value, Destinations.FileFormat.TGA, lifetime, null)
                         );
                         break;
                     case "GIF":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.GIF, ffmpegPath)
+                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.GIF, ffmpegPath, null)
                         );
                         break;
                     case "MP4":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.MP4, ffmpegPath)
+                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.MP4, ffmpegPath, null)
                         );
                         break;
                     case "MOV":
                         menuManager.resultDispatcher.destinations.Add(
-                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.MOV, ffmpegPath)
+                            new Destinations.Video(maybe_file_folder.value, maybe_file_name.value, maybe_frame_rate.value, lifetime, Destinations.FileFormat.MOV, ffmpegPath, null)
                         );
                         break;
                     default:
@@ -213,6 +338,12 @@ public class MainSettings : Menu
  *      |   |-> Slider mouse_density
  *      |   |-> Slider mouse_force
  *      |   |-> SliderInt mouse_brush_size
+ *      |   
+ *      |-> kernel_settings
+ *      |   |-> Dropdown kernel_type
+ *      |   |-> TextField kernel_text
+ *      |   |-> Toggle toggle_viewport
+ *      |   |-> Toggle toggle_export
  *      |
  *      |-> export_settings
  *      |   |-> Dropdown file_format

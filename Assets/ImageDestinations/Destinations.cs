@@ -17,6 +17,9 @@ public class Destinations
     {
         RenderTexture texture;
         public RawImage rawImage;
+        //Square blur kernel
+        public Kernel? kernel { get; set; }
+
         public int lifetimeRemaining { get; set; } = int.MaxValue;
         public Viewport(RawImage viewport, int texSize)
         {
@@ -25,7 +28,12 @@ public class Destinations
         }
         public void setImage(Texture2D img)
         {
-            Graphics.Blit(img, texture);
+            if (kernel == null)
+            {
+                Graphics.Blit(img, texture);
+                return;
+            }
+            Graphics.Blit(kernel.apply(img), texture);
         }
         public string destroy()
         {
@@ -36,55 +44,15 @@ public class Destinations
             rawImage.texture = texture;
         }
     }
-    public class Image : IImageDestination
-    {
-        Destinations.FileFormat fmt;
-        string folder, name;
-        List<byte[]> unsavedImages = new List<byte[]>();
-        public int lifetimeRemaining { get; set; } = int.MaxValue;
-        public Image(string folder, string name, Destinations.FileFormat format, int lifetime)
-        {
-            this.folder = folder;
-            this.name = name;
-            this.fmt = format;
-            this.lifetimeRemaining = lifetime;
-        }
-
-        public void setImage(Texture2D img)
-        {
-            switch (fmt)
-            {
-                case FileFormat.PNG: unsavedImages.Add(img.EncodeToPNG()); break;
-                case FileFormat.JPG: unsavedImages.Add(img.EncodeToJPG()); break;
-                case FileFormat.TGA: unsavedImages.Add(img.EncodeToTGA()); break;
-                default: UnityEngine.Debug.LogError("Cannot Use Fileformat with ImageSequence"); break;
-            }
-        }
-        public string destroy()
-        {
-            for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
-            {
-                string path = folder + name + (imageIndex - 1).ToString().PadLeft(4, '0');
-                switch (fmt)
-                {
-                    case FileFormat.PNG: path += ".png"; break;
-                    case FileFormat.JPG: path += ".jpg"; break;
-                    case FileFormat.TGA: path += ".tga"; break;
-                    default: UnityEngine.Debug.LogError("Why? You changed the file format during execution, and now it's all fucked. i_i"); break;
-                }
-                File.WriteAllBytes(path, unsavedImages[imageIndex]);
-            }
-            return folder;
-        }
-    }
     public class Video : IImageDestination
     {
         Destinations.FileFormat fmt;
         int frameRate;
         string folder, filename, ffmpegPath;
-        List<byte[]> unsavedImages = new List<byte[]>();
+        List<Texture2D> unsavedImages = new List<Texture2D>();
+        public Kernel? kernel { get; set; }
         public int lifetimeRemaining { get; set; } = int.MaxValue;
-        public Video(string Folder, string Filename, int Framerate, int lifetime, Destinations.FileFormat Format, string ffmpegPath)
+        public Video(string Folder, string Filename, int Framerate, int lifetime, Destinations.FileFormat Format, string ffmpegPath, Kernel kernel)
         {
             this.folder = Folder;
             this.filename = Filename;
@@ -92,11 +60,14 @@ public class Destinations
             this.frameRate = Framerate;
             this.ffmpegPath = ffmpegPath;
             this.lifetimeRemaining = lifetime;
+            this.kernel = kernel;
         }
 
         public void setImage(Texture2D img)
         {
-            unsavedImages.Add(img.EncodeToPNG());
+            Texture2D tex = new Texture2D(img.width, img.height);
+            Graphics.CopyTexture(img, tex);
+            unsavedImages.Add(tex);
         }
         public string destroy()
         {
@@ -117,14 +88,53 @@ public class Destinations
                     return "";
             }
 
-            if (Directory.Exists(folder + "\\imgsequence")) Directory.Delete(folder + "\\imgsequence", true);
-            if (File.Exists(folder + "\\" + filename + format)) File.Delete(folder + "\\" + filename + format);
+            if (Directory.Exists(folder + "\\imgsequence"))
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Warn("Detected directory with same name as temporary directory, deleting...");
+                Directory.Delete(folder + "\\imgsequence", true);
+            }
+            if (File.Exists(folder + "\\" + filename + format))
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("File with same path as output file detected, deleting...");
+                File.Delete(folder + "\\" + filename + format);
+            }
 
             Directory.CreateDirectory(folder + "\\imgsequence");
             string path = folder + "\\imgsequence\\" + filename;
             for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
             {
-                File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", unsavedImages[imageIndex]);
+                if (kernel != null)
+                {
+                    unsavedImages[imageIndex] = kernel.apply(unsavedImages[imageIndex]);
+                }
+                try
+                {
+                    File.WriteAllBytes(path + (imageIndex).ToString().PadLeft(4, '0') + ".png", unsavedImages[imageIndex].EncodeToPNG());
+                }
+                catch (ArgumentException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Calculated file path is not valid");
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Directory not found");
+                }
+                catch (PathTooLongException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path too long");
+                }
+                catch (IOException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("IO Error");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Unauthorized Access");
+                }
+                catch (NotSupportedException)
+                {
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path is in an invalid format");
+                }
             }
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -149,4 +159,104 @@ public class Destinations
             return folder;
         }
     }
+    public class Image : IImageDestination
+    {
+        Destinations.FileFormat fmt;
+        string folder, name;
+        List<Texture2D> unsavedImages = new List<Texture2D>();
+        public Kernel? kernel { get; set; }
+        public int lifetimeRemaining { get; set; } = int.MaxValue;
+        public Image(string folder, string name, Destinations.FileFormat format, int lifetime, Kernel? kernel)
+        {
+            this.folder = folder;
+            this.name = name;
+            this.fmt = format;
+            this.lifetimeRemaining = lifetime;
+            this.kernel = kernel;
+        }
+
+        public void setImage(Texture2D img)
+        {
+            Texture2D tex = new Texture2D(img.width, img.height);
+            Graphics.CopyTexture(img, tex);
+            switch (fmt)
+            {
+                case FileFormat.PNG: unsavedImages.Add(tex); break;
+                case FileFormat.JPG: unsavedImages.Add(tex); break;
+                case FileFormat.TGA: unsavedImages.Add(tex); break;
+                default:
+                    GameObject.Find("Messages").GetComponent<MessageManager>().Warn("Invalid file format used for this ImageDestination");
+                    break;
+            }
+        }
+        public string destroy()
+        {
+            for (int imageIndex = 1; imageIndex < unsavedImages.Count; imageIndex++)
+            {
+                if (kernel != null)
+                {
+                    unsavedImages[imageIndex] = kernel.apply(unsavedImages[imageIndex]);
+                }
+                string path = folder + "/" + name + (imageIndex - 1).ToString().PadLeft(4, '0');
+                switch (fmt)
+                {
+                    case FileFormat.PNG: 
+                        path += ".png";
+                        saveImage(unsavedImages[imageIndex].EncodeToPNG(), path);
+                        break;
+                    case FileFormat.JPG: 
+                        path += ".jpg";
+                        saveImage(unsavedImages[imageIndex].EncodeToJPG(), path);
+                        break;
+                    case FileFormat.TGA: 
+                        path += ".tga";
+                        saveImage(unsavedImages[imageIndex].EncodeToTGA(), path);
+                        break;
+                    default:
+                        GameObject.Find("Messages").GetComponent<MessageManager>().Error("File format changed during save process... Files may be corrupted");
+                        break;
+                }
+            }
+            return folder;
+        }
+        bool saveImage(byte[] img, string path)
+        {
+            try
+            {
+                File.WriteAllBytes(path, img);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("Calculated file path is not valid");
+                return false;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("Directory not found");
+                return false;
+            }
+            catch (PathTooLongException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path too long");
+                return false;
+            }
+            catch (IOException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("IO Error");
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("Unauthorized Access");
+                return false;
+            }
+            catch (NotSupportedException)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path is in an invalid format");
+                return false;
+            }
+        }
+    }
+
 }

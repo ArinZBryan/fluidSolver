@@ -18,6 +18,12 @@ public struct PackedArray<T> : IEnumerable<T>
         }
         data = new T[this.length];
     }
+    public PackedArray(T[] UnderlyingArray, int[] Dimensions)
+    {
+        this.data = UnderlyingArray;
+        this.length = data.Length;
+        this.dimensions = Dimensions;
+    }
     public T this[int i]
     {
        get { return data[i]; }

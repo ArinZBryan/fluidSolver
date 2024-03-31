@@ -45,7 +45,7 @@ public class ResultDispatcher : MonoBehaviour
         simulator.init();
 
         destinations.Add(new Destinations.Viewport(viewport, simulator.gridSize * simulator.scale));
-        
+
         doHaveViewportAsTarget = destinations.OfType<Destinations.Viewport>().Any();
         //Instantiate gameobject to use for simulation rendering if needed
         if (doHaveViewportAsTarget)
@@ -233,7 +233,7 @@ public class ResultDispatcher : MonoBehaviour
     [Button("Take Single Image")]
     void screenshot()
     {
-        Destinations.Image image = new Destinations.Image(folder, fileName, fmt, 1);
+        Destinations.Image image = new Destinations.Image(folder, fileName, fmt, 1, null);
         destinations.Add(image);
     }
     [Button("Begin Recording")]

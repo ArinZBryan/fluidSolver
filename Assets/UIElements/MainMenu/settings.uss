@@ -75,3 +75,10 @@ TextField > TextInput {
 	width: 15px;
 	margin: -3px;
 }
+.unity-foldout__checkmark {
+	-unity-background-image-tint-color: #D0D0D0;
+}
+.unity-toggle__checkmark {
+	background-color: #3c3c3c;
+	-unity-background-image-tint-color: #006AA6;
+}
