@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
 using System.Threading;
+using System.Runtime.Serialization;
 
 public class ResultDispatcher : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class ResultDispatcher : MonoBehaviour
 #nullable disable
     int playbackFrameNo;
     public UnityEngine.UI.RawImage viewport;
+
+    public MessageManager messageLog;
 
     KeyFrame firstFrame;
     bool writingToSaveFile = false;
@@ -204,7 +207,27 @@ public class ResultDispatcher : MonoBehaviour
     }
     void saveFile(string path)
     {
-        var f = System.IO.File.Create(path);
+        FileStream f;
+        try 
+        {
+            f = System.IO.File.Create(path);
+        }
+        catch (ArgumentException e)
+        {
+            messageLog.Error("File Path Not Valid");
+            return;
+        }
+        catch (DirectoryNotFoundException e)
+        {
+            messageLog.Error("Enclosing Folder Does Not Exist");
+            return;
+        }
+        catch (Exception e)
+        {
+            messageLog.Error("Unknown File Saving Error");
+            return;
+        }
+    
         var b = new BinaryFormatter();
         var p = new PlaybackFile(playbackFrames, firstFrame);
         b.Serialize(f, p);
@@ -264,9 +287,41 @@ public class ResultDispatcher : MonoBehaviour
     [Button("Load Save File")]
     public void loadSaveFile(string path = "./saves/save.simsave")
     {
-        var f = System.IO.File.Open(path, FileMode.Open);           //Open the file
+        FileStream f;
+        try {
+            f = System.IO.File.Open(path, FileMode.Open);           //Open the file
+        } catch (FileNotFoundException e)
+        {
+            messageLog.Error("File Not Found To Load");
+            return;
+        }
+        catch (ArgumentException e)
+        {
+            messageLog.Error("File Path Not Valid");
+            return;
+        }
+        catch (Exception e)
+        {
+            messageLog.Error("Unknown File Loading Error");
+            return;
+        }
         var b = new BinaryFormatter();
-        PlaybackFile p = (PlaybackFile)b.Deserialize(f);            //Deserialise the save file 
+        PlaybackFile p;
+        try
+        {
+            p = (PlaybackFile)b.Deserialize(f);            //Deserialise the save file 
+        }
+        catch (SerializationException e)
+        {
+            messageLog.Error("File Not Valid To Load");
+            return;
+        }
+        catch (Exception e)
+        {
+            messageLog.Error("Unknown File Decoding Error");
+            return;
+        }
+        
         playbackFrames = p.frames.ToList();                         //Grab the update frames
         firstFrame = p.startFrame;                                  //Grab the first frame (the keyframe)
         playbackFrameNo = 0;
