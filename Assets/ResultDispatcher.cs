@@ -39,6 +39,8 @@ public class ResultDispatcher : MonoBehaviour
     float mouseVelocityX = 0;
     float mouseVelocityY = 0;
 
+    public int penSize = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -116,16 +118,16 @@ public class ResultDispatcher : MonoBehaviour
 
             if (Input.GetKey(KeyCode.V) && Input.GetMouseButton(0))
             {
-                inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityX, fieldToWriteTo.VELX));
-                inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityY, fieldToWriteTo.VELY));
+                inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityX, penSize, fieldToWriteTo.VELX));
+                inputThisFrame.Add(new UserInput(cursorX, cursorY, mouseVelocityY, penSize, fieldToWriteTo.VELY));
             }
             else if (Input.GetMouseButton(0))
             {
-                inputThisFrame.Add(new UserInput(cursorX, cursorY, simulator.drawValue, fieldToWriteTo.DENS));
+                inputThisFrame.Add(new UserInput(cursorX, cursorY, simulator.drawValue, penSize, fieldToWriteTo.DENS));
             }
             else if (Input.GetMouseButton(1))
             {
-                inputThisFrame.Add(new UserInput(cursorX, cursorY, -simulator.drawValue, fieldToWriteTo.DENS));
+                inputThisFrame.Add(new UserInput(cursorX, cursorY, -simulator.drawValue, penSize, fieldToWriteTo.DENS));
             }
 
             // Step the simulation with gathered input
@@ -177,7 +179,7 @@ public class ResultDispatcher : MonoBehaviour
         Slider? fluid_diffusion_rate = (Slider?)Menu.getElementByRelativeNamePathLogged(settingsPanel.document.rootVisualElement, "root/scroll_menu/simulation_settings/fluid_diffusion_rate");
         Slider? mouse_density = (Slider?)Menu.getElementByRelativeNamePathLogged(settingsPanel.document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_density");
         Slider? mouse_force = (Slider?)Menu.getElementByRelativeNamePathLogged(settingsPanel.document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_force");
-        SliderInt? mouse_brush_size = (SliderInt?)Menu.getElementByRelativeNamePathLogged(settingsPanel.document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_brush_size");
+        
 #nullable disable
         simulator.gridSize = field_size?.value ?? simulator.gridSize;
         simulator.deltaTime = 1f / tick_rate?.value ?? simulator.deltaTime;
@@ -185,7 +187,6 @@ public class ResultDispatcher : MonoBehaviour
         simulator.diffusionRate = fluid_diffusion_rate?.value ?? simulator.diffusionRate;
         simulator.drawValue = mouse_density?.value ?? simulator.drawValue;
         simulator.force = mouse_force?.value ?? simulator.force;
-        simulator.penSize = mouse_brush_size?.value ?? simulator.penSize;
 
         simulator.viewport = viewport.rectTransform;
 

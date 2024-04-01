@@ -17,7 +17,6 @@ public class FluidSimulator : MonoBehaviour
 
     public float force = 100f;
     public float drawValue = 100f;
-    public int penSize = 0;
 
     public List<SimulationObject> simulationObjects = new List<SimulationObject>();
     public Texture2D objectTex;
@@ -41,12 +40,6 @@ public class FluidSimulator : MonoBehaviour
     public Color32 baseColor = new Color32(0, 0, 0, 255);
     public Color32 fluidColor = new Color32(255, 255, 255, 255);
 
-    float mouseX = 0;
-    float mouseY = 0;
-    float mouseVelocityX = 0;
-    float mouseVelocityY = 0;
-
-    Kernel k = new Kernel(new float[,] { { 1f / 9f, 1f / 9f, 1f / 9f }, { 1f / 9f, 1f / 9f, 1f / 9f }, { 1f / 9f, 1f / 9f, 1f / 9f } });
     public void initFromKeyframe(KeyFrame k)
     {
         gridSize = k.N;
@@ -89,15 +82,15 @@ public class FluidSimulator : MonoBehaviour
         {
             if (i.field == fieldToWriteTo.VELX)
             {
-                solver.getVelocityX().paintToArrayAs2D(i.value, i.x, i.y, penSize);
+                solver.getVelocityX().paintToArrayAs2D(i.value, i.x, i.y, i.brushSize);
             }
             else if (i.field == fieldToWriteTo.VELY)
             {
-                solver.getVelocityY().paintToArrayAs2D(i.value, i.x, i.y, penSize);
+                solver.getVelocityY().paintToArrayAs2D(i.value, i.x, i.y, i.brushSize);
             }
             else if (i.field == fieldToWriteTo.DENS)
             {
-                solver.getDensity().paintToArrayAs2D(i.value, i.x, i.y, penSize);
+                solver.getDensity().paintToArrayAs2D(i.value, i.x, i.y, i.brushSize);
             }
         }
 

@@ -52,17 +52,19 @@ public struct UserInput
     public int x;
     public int y;
     public float value;
+    public int brushSize;
     public enum fieldToWriteTo
     {
         VELX, VELY, DENS
     }
     public fieldToWriteTo field;
-    public UserInput(int x, int y, float value, fieldToWriteTo field)
+    public UserInput(int x, int y, float value, int brushSize, fieldToWriteTo field)
     {
         this.x = x;
         this.y = y;
         this.value = value;
         this.field = field;
+        this.brushSize = brushSize;
 
     }
 }

@@ -13,6 +13,10 @@ public class MainSettings : Menu
         menuManager = GameObject.Find("Canvas").GetComponent<MenuManager>();
 
         // Add functionality to the menu here
+        SliderInt? maybe_mouse_brush_size = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_brush_size");
+        if (maybe_mouse_brush_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
+        maybe_mouse_brush_size.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.penSize = e.newValue; });
+
         Button? maybe_restart_button = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/simulation_settings/action_restart");
         if (maybe_restart_button == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
         else
@@ -335,7 +339,7 @@ public class MainSettings : Menu
         else { maybe_mouse_force.value = menuManager.resultDispatcher.simulator.force; }
         SliderInt? maybe_mouse_brush_size = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_brush_size");
         if (maybe_mouse_brush_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
-        else { maybe_mouse_brush_size.value = menuManager.resultDispatcher.simulator.penSize; }
+        else { maybe_mouse_brush_size.value = menuManager.resultDispatcher.penSize; }
     }
 
     public override void Open()
