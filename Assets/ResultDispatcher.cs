@@ -7,9 +7,7 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
-using System.Threading;
 using System.Runtime.Serialization;
-
 public class ResultDispatcher : MonoBehaviour
 {
     public GameObject simulatorPrefab;
@@ -43,7 +41,6 @@ public class ResultDispatcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
         simulator.viewport = viewport.rectTransform;
         simulator.init();
