@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -96,12 +96,14 @@ public class PhysObjSettings : Menu
         base.Open();
         simulationObjects = menuManager.resultDispatcher.simulator.simulationObjects;
         initialiseMenuValues();
+        menuManager.resultDispatcher.gameObject.SetActive(false);
     }
     public override void Close()
     {
         base.Close();
-        menuManager.resultDispatcher.simulator.simulationObjects = simulationObjects;
-        menuManager.resultDispatcher.simulator.solver.setPhysicsObjects(simulationObjects.OfType<CollidableCell>().ToList());
+        
+        menuManager.resultDispatcher.gameObject.SetActive(true);
+        menuManager.resultDispatcher.simulator.simulationObjects = simulationObjects;   
     }
     void addPhysicsObject()
     {
@@ -182,7 +184,6 @@ public class PhysObjSettings : Menu
                     if (collideRight.value) { collidableFaces |= Solver2D.Boundary.RIGHT; }
                     if (collideTop.value) { collidableFaces |= Solver2D.Boundary.TOP; }
                     if (collideBottom.value) { collidableFaces |= Solver2D.Boundary.BOTTOM; }
-
 
                     simulationObjects.Add(new CollidableCell(posX, posY, dimX, dimY, collidableFaces, UnityEngine.Random.ColorHSV(0f, 1f, 0.5f, 1f, 0f, 1f, 1f, 1f)));
 
