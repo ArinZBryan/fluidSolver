@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FPSCounter : MonoBehaviour
+public class FPSCounter : Menu
 {
     public Text Text;
 
@@ -56,5 +56,24 @@ public class FPSCounter : MonoBehaviour
                 _ => "?"
             };
         }
+    }
+
+    public override void Open()
+    {
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            gameObject.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        gameObject.GetComponent<Image>().enabled = true;
+        IsOpen = true;
+    }
+    public override void Close()
+    {
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            gameObject.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        gameObject.GetComponent<Image>().enabled = false;
+        IsOpen = false;
     }
 }

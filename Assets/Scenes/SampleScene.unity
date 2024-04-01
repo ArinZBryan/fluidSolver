@@ -299,24 +299,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &351733490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseInspectorFoldout: 0
-  layoutInfos: []
-  buttonMethods: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &436878205
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +310,6 @@ GameObject:
   - component: {fileID: 436878209}
   - component: {fileID: 436878208}
   - component: {fileID: 436878207}
-  - component: {fileID: 436878206}
   m_Layer: 5
   m_Name: FPS
   m_TagString: Untagged
@@ -336,19 +317,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &436878206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436878205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b489ebccf469047b7f6b922be4e95e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Text: {fileID: 436878207}
 --- !u!114 &436878207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +626,8 @@ MonoBehaviour:
     - {fileID: 61852268}
     - {fileID: -2663187775335547616, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
     - {fileID: 1228502740}
-    - {fileID: 436878206}
+    - {fileID: 1876726035}
+    - {fileID: 1171497017}
     values:
     - {fileID: 771651728}
     - {fileID: 1818185163}
@@ -667,7 +636,8 @@ MonoBehaviour:
     - {fileID: 1064038283}
     - {fileID: 1099429280}
     - {fileID: 606921307}
-    - {fileID: 351733490}
+    - {fileID: 2000545110}
+    - {fileID: 1415085760}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &1001844561
@@ -924,6 +894,7 @@ MonoBehaviour:
   menus:
   - {fileID: 1482909112}
   - {fileID: 61852268}
+  - {fileID: 1876726035}
   resultDispatcher: {fileID: 1594036558}
 --- !u!1 &1228502735
 GameObject:
@@ -1044,6 +1015,24 @@ MonoBehaviour:
   errorPrefab: {fileID: 5706831206726278113, guid: 5b310b7a8939c3a41bc652c1c9625bb9, type: 3}
   warningPrefab: {fileID: 5706831206726278113, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
   infoPrefab: {fileID: 5706831206726278113, guid: 840d34144106cdb40b04e4a6b7ffa2e0, type: 3}
+--- !u!114 &1415085760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1482909109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,6 +1289,7 @@ MonoBehaviour:
   time: 0
   viewport: {fileID: 1486533906}
   messageLog: {fileID: 1228502740}
+  penSize: 0
 --- !u!4 &1594036559
 Transform:
   m_ObjectHideFlags: 0
@@ -1344,6 +1334,7 @@ GameObject:
   - component: {fileID: 1876726032}
   - component: {fileID: 1876726034}
   - component: {fileID: 1876726033}
+  - component: {fileID: 1876726035}
   m_Layer: 5
   m_Name: FPSContainer
   m_TagString: Untagged
@@ -1411,3 +1402,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876726031}
   m_CullTransparentMesh: 1
+--- !u!114 &1876726035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876726031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b489ebccf469047b7f6b922be4e95e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boundKey: 102
+  document: {fileID: 0}
+  menuManager: {fileID: 1171497018}
+  Text: {fileID: 436878207}
+--- !u!114 &2000545110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
