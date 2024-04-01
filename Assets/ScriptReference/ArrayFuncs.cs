@@ -26,19 +26,19 @@ public struct PackedArray<T> : IEnumerable<T>
     }
     public T this[int i]
     {
-       get { return data[i]; }
-       set { data[i] = value; }
+        get { return data[i]; }
+        set { data[i] = value; }
     }
     public T this[int i, int j]
     {
         get { return data[i + j * dimensions[0]]; }
-        set { data[i + j* dimensions[0]] = value; }
+        set { data[i + j * dimensions[0]] = value; }
     }
     public T this[int i, int j, int k]
     {
         get { return data[i + j * dimensions[0] + k * dimensions[0] * dimensions[1]]; }
         set { data[i + j * dimensions[0] + k * dimensions[0] * dimensions[1]] = value; }
-}
+    }
     public IEnumerator<T> GetEnumerator()
     {
         return (IEnumerator<T>)data.GetEnumerator();
@@ -50,15 +50,15 @@ public struct PackedArray<T> : IEnumerable<T>
     //FIXME:    This calculates the valid indicies incorrectly, for the time being, the above function is replacing this.
     //          It has no support for brushes larger than 1, so this needs doing sometime soon.
     //          In the mean time, a workaround is to just have a really large value to paint with, and let diffusion do its hting
-    public PackedArray<T> paintTo1DArrayAs2D(T value, int x, int y, int arrW, int arrH, int brushSize)
+    public PackedArray<T> paintToArrayAs2D(T value, int x, int y, int brushSize)
     {
-        int a = (brushSize - 1) / 2;
+        int a = brushSize;
         List<int> validIndicies = new List<int>(brushSize * brushSize);
         for (int i = -a; i <= a; i++) for (int j = -a; j <= a; j++)
             {
-                int index = (y + i) + (x + j) * arrW;
-                if (y + i >= arrW || y + i < 0) { continue; }
-                if (x + j >= arrH || x + j < 0) { continue; }
+                int index = (x + i) + (y + j) * this.dimensions[0];
+                if (x + i >= this.dimensions[0] || x + i < 0) { continue; }
+                if (y + j >= this.dimensions[1] || y + j < 0) { continue; }
                 if (index > this.length) { continue; }
                 validIndicies.Add(index);
             }
