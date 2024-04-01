@@ -1,4 +1,4 @@
-integer_scaling = false
-complex_boundaries = true
-ffmpeg_path = "PATH"
-ffmpeg_timeout = 5000
+integer_scaling=false
+complex_boundaries=true
+ffmpeg_path="PATH"
+ffmpeg_timeout=5000
