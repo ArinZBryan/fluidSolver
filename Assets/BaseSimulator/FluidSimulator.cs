@@ -72,7 +72,7 @@ public class FluidSimulator : MonoBehaviour
         densTex.filterMode = FilterMode.Point;
         velTex.filterMode = FilterMode.Point;
 
-        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime, false);
+        solver = new Solver2D(gridSize, diffusionRate, viscosity, deltaTime);
         N = gridSize + 2;
         densColour = new PackedArray<Color>(new int[] { gridSize, gridSize });
         velColour = new PackedArray<Color>(new int[] { gridSize * scale, gridSize * scale });
@@ -90,17 +90,14 @@ public class FluidSimulator : MonoBehaviour
             if (i.field == fieldToWriteTo.VELX)
             {
                 solver.getVelocityX().paintToArrayAs2D(i.value, i.x, i.y, penSize);
-                //solver.getVelocityX()[i.x, i.y] = i.value;
             }
             else if (i.field == fieldToWriteTo.VELY)
             {
-                //solver.getVelocityY()[i.x, i.y] = i.value;
                 solver.getVelocityY().paintToArrayAs2D(i.value, i.x, i.y, penSize);
             }
             else if (i.field == fieldToWriteTo.DENS)
             {
                 solver.getDensity().paintToArrayAs2D(i.value, i.x, i.y, penSize);
-                //solver.getDensity()[i.x, i.y] = i.value;
             }
         }
 

@@ -41,7 +41,6 @@ public class ResultDispatcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
         simulator.viewport = viewport.rectTransform;
         simulator.init();
@@ -53,7 +52,7 @@ public class ResultDispatcher : MonoBehaviour
         if (doHaveViewportAsTarget)
         {
             bool integerScale = Config.getBool("integer_scaling");
-            
+
             int pixWidth = simulator.gridSize * simulator.scale;
             int pixHeight = simulator.gridSize * simulator.scale;
             RectTransform rectTransform = viewport.gameObject.GetComponent<RectTransform>();
@@ -67,7 +66,7 @@ public class ResultDispatcher : MonoBehaviour
                 rectTransform.sizeDelta = new Vector2(512, 512);
                 rectTransform.anchoredPosition = new Vector2(256, -256);
             }
-            
+
         }
     }
     // Update is called once per tick

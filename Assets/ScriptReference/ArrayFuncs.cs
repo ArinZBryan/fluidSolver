@@ -26,19 +26,19 @@ public struct PackedArray<T> : IEnumerable<T>
     }
     public T this[int i]
     {
-       get { return data[i]; }
-       set { data[i] = value; }
+        get { return data[i]; }
+        set { data[i] = value; }
     }
     public T this[int i, int j]
     {
         get { return data[i + j * dimensions[0]]; }
-        set { data[i + j* dimensions[0]] = value; }
+        set { data[i + j * dimensions[0]] = value; }
     }
     public T this[int i, int j, int k]
     {
         get { return data[i + j * dimensions[0] + k * dimensions[0] * dimensions[1]]; }
         set { data[i + j * dimensions[0] + k * dimensions[0] * dimensions[1]] = value; }
-}
+    }
     public IEnumerator<T> GetEnumerator()
     {
         return (IEnumerator<T>)data.GetEnumerator();
