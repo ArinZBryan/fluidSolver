@@ -7,7 +7,6 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
-using System.Threading;
 using System.Runtime.Serialization;
 
 public class ResultDispatcher : MonoBehaviour
