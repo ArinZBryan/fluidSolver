@@ -15,11 +15,10 @@ public class Solver2D
     //Constants
     int N;
     float diffusion_rate, viscosity, sim_delta_time;
-    readonly bool USE_COMPLEX_BOUNDARIES;
     List<CollidableCell> physicsObjects;
 
 
-    public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime, bool complexBoundaries)
+    public Solver2D(int N, float diffusionRate, float viscosity, float deltaTime)
     {
         int size = (N + 2) * (N + 2);
 
@@ -35,7 +34,6 @@ public class Solver2D
         this.viscosity = viscosity;
         this.sim_delta_time = deltaTime;
         this.N = N;
-        this.USE_COMPLEX_BOUNDARIES = Config.getBool("complex_boundaries");
     }
 
     [Flags] // Sets this enum to work using bitwise operations, so that we can combine multiple flags into one variable
@@ -61,30 +59,6 @@ public class Solver2D
         }
     }
     void set_bnd(int N, Boundary b, ref PackedArray<float> x)
-    {
-        if (USE_COMPLEX_BOUNDARIES)
-        {
-            if (b == Boundary.HORIZONTAL)
-            {
-                set_bnd_complex(N, Boundary.LEFT, ref x);
-                set_bnd_complex(N, Boundary.RIGHT, ref x);
-            }
-            else if (b == Boundary.VERTICAL)
-            {
-                set_bnd_complex(N, Boundary.TOP, ref x);
-                set_bnd_complex(N, Boundary.BOTTOM, ref x);
-            }
-            else
-            {
-                set_bnd_complex(N, b, ref x);
-            }
-        }
-        else
-        {
-            set_bnd_compatibility(N, b, ref x);
-        }
-    }
-    void set_bnd_compatibility(int N, Boundary b, ref PackedArray<float> x)
     {
         int i;
 

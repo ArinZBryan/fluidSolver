@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -231,11 +230,13 @@ public class MainSettings : Menu
         maybe_base_col_b.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.b = (byte)e.newValue; });
         maybe_base_col_a.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.baseColor.a = (byte)e.newValue; });
         
-        
+        /*
+         * This currently does not work, as the feature has not been implemented yet
+         * When it has (if it has), this will need to be uncommented
         SliderInt? maybe_mouse_brush_size = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/interaction_settings/mouse_brush_size");
         if (maybe_mouse_brush_size == null) { Debug.LogError("An error occured while connecting to the UI"); }
         else { maybe_mouse_brush_size.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.penSize = e.newValue; }); }
-        
+        */
 
         Button? maybe_export_button = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/action_begin_export");
         if (maybe_export_button == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
@@ -254,37 +255,12 @@ public class MainSettings : Menu
                 if (maybe_file_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
                 SliderInt? maybe_frame_rate = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/simulation_settings/tick_rate");
                 if (maybe_frame_rate == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
-                TextField? maybe_ffmpeg_path = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/ffmpeg_path");
-                if (maybe_ffmpeg_path == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
-                ffmpegPath = maybe_ffmpeg_path.value;
-
-                if (ffmpegPath == "") 
-                { 
-                    if (Config.getString("ffmpeg_path") == "PATH")
-                    {
-                        var envPath = System.Environment.GetEnvironmentVariable("PATH");
-                        var paths = envPath.Split(';');
-                        var exePath = paths.Select(x => Path.Combine(x, "ffmpeg.exe"))
-                                           .Where(x => File.Exists(x))
-                                           .FirstOrDefault();
-                        if (exePath == null || exePath == "")
-                        {
-                            menuManager.resultDispatcher.messageLog.Error("No FFmpeg executable found in system PATH variable. Please Specify a path.");
-                            return;
-                        }
-                        ffmpegPath = exePath;
-                    }
-                    else if (File.Exists(Config.getString("ffmpeg_path"))) { ffmpegPath = Config.getString("ffmpeg_path"); }
-                    else { menuManager.resultDispatcher.messageLog.Error("Invalid FFmpeg path specified in config file"); return; }
-                    
-                    
-                }
 
                 if (maybe_file_folder.value.EndsWith('/') || maybe_file_folder.value.EndsWith("\\")) { maybe_file_folder.value = maybe_file_folder.value.Substring(0, maybe_file_folder.value.Length - 1); }
 
                 int lifetime = maybe_file_time.value;
                 if (maybe_file_time.value == 0) { lifetime = int.MaxValue; }
-                    
+
                 switch (maybe_file_type.value)
                 {
                     case "PNG":
