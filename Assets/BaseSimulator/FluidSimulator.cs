@@ -17,7 +17,7 @@ public class FluidSimulator : MonoBehaviour
 
     public float force = 100f;
     public float drawValue = 100f;
-    public int penSize = 1;
+    public int penSize = 0;
 
     public List<SimulationObject> simulationObjects = new List<SimulationObject>();
     public Texture2D objectTex;
@@ -89,15 +89,18 @@ public class FluidSimulator : MonoBehaviour
         {
             if (i.field == fieldToWriteTo.VELX)
             {
-                solver.getVelocityX()[i.x, i.y] = i.value;
+                solver.getVelocityX().paintToArrayAs2D(i.value, i.x, i.y, penSize);
+                //solver.getVelocityX()[i.x, i.y] = i.value;
             }
             else if (i.field == fieldToWriteTo.VELY)
             {
-                solver.getVelocityY()[i.x, i.y] = i.value;
+                //solver.getVelocityY()[i.x, i.y] = i.value;
+                solver.getVelocityY().paintToArrayAs2D(i.value, i.x, i.y, penSize);
             }
             else if (i.field == fieldToWriteTo.DENS)
             {
-                solver.getDensity()[i.x, i.y] = i.value;
+                solver.getDensity().paintToArrayAs2D(i.value, i.x, i.y, penSize);
+                //solver.getDensity()[i.x, i.y] = i.value;
             }
         }
 

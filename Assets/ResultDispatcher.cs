@@ -7,9 +7,7 @@ using AdvancedEditorTools.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UserInput;
-using System.Threading;
 using System.Runtime.Serialization;
-
 public class ResultDispatcher : MonoBehaviour
 {
     public GameObject simulatorPrefab;
@@ -43,6 +41,7 @@ public class ResultDispatcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         simulator = Instantiate(simulatorPrefab).GetComponent<FluidSimulator>();
         simulator.viewport = viewport.rectTransform;
         simulator.init();
@@ -53,11 +52,22 @@ public class ResultDispatcher : MonoBehaviour
         //Instantiate gameobject to use for simulation rendering if needed
         if (doHaveViewportAsTarget)
         {
+            bool integerScale = Config.getBool("integer_scaling");
+            
             int pixWidth = simulator.gridSize * simulator.scale;
             int pixHeight = simulator.gridSize * simulator.scale;
             RectTransform rectTransform = viewport.gameObject.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(pixWidth, pixHeight);
-            rectTransform.anchoredPosition = new Vector2(pixWidth / 2, -pixHeight / 2);
+            if (integerScale)
+            {
+                rectTransform.sizeDelta = new Vector2(pixWidth, pixHeight);
+                rectTransform.anchoredPosition = new Vector2(pixWidth / 2, -pixHeight / 2);
+            }
+            else
+            {
+                rectTransform.sizeDelta = new Vector2(512, 512);
+                rectTransform.anchoredPosition = new Vector2(256, -256);
+            }
+            
         }
     }
     // Update is called once per tick

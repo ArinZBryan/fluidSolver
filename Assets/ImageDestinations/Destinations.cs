@@ -149,7 +149,10 @@ public class Destinations
             Process ffmpegProcess = Process.Start(startInfo);
             string ffmpegResult = ffmpegProcess.StandardError.ReadToEnd();
 
-            if (!ffmpegProcess.WaitForExit(5000)) { UnityEngine.Debug.Log("FFMPEG process was killed for taking too long. Set a higher timout if this is in error."); }
+            if (!ffmpegProcess.WaitForExit(Config.getInt("ffmpeg_timeout"))) 
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Warn("FFMPEG process was killed for taking too long. Set a higher timeout if this is an error");
+            }
 
             UnityEngine.Debug.Log(ffmpegResult);
             UnityEngine.Debug.Log("Process Exited");

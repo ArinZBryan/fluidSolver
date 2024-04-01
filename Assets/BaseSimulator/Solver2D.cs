@@ -35,7 +35,7 @@ public class Solver2D
         this.viscosity = viscosity;
         this.sim_delta_time = deltaTime;
         this.N = N;
-        this.USE_COMPLEX_BOUNDARIES = complexBoundaries;
+        this.USE_COMPLEX_BOUNDARIES = Config.getBool("complex_boundaries");
     }
 
     [Flags] // Sets this enum to work using bitwise operations, so that we can combine multiple flags into one variable
