@@ -20,7 +20,7 @@
             <ui:Foldout text="Interaction Settings" name="interaction_settings" value="true">
                 <ui:Slider picking-mode="Ignore" label="Density Brush" value="10" high-value="100" name="mouse_density" show-input-field="true" />
                 <ui:Slider picking-mode="Ignore" label="Force Brush" value="10" high-value="100" name="mouse_force" show-input-field="true" />
-                <ui:SliderInt picking-mode="Ignore" label="Brush Size" value="1" high-value="25" name="mouse_brush_size" show-input-field="true" low-value="1" inverted="false" focusable="true" />
+                <ui:SliderInt picking-mode="Ignore" label="Brush Size" value="0" high-value="25" name="mouse_brush_size" show-input-field="true" low-value="0" inverted="false" focusable="true" />
             </ui:Foldout>
             <ui:Foldout text="Effect Settings" name="kernel_settings" value="true" style="height: auto;">
                 <ui:DropdownField label="Kernel Type" index="0" choices="None, Box Blur (3x3), Box Blur (5x5), Box Blur (7x7), Gaussian Blur (3x3), Gaussian Blur (5x5), Gaussian Blur (7x7), Sharpen, Custom" name="kernel_type" />
@@ -42,10 +42,11 @@
             </ui:Foldout>
             <ui:Foldout text="Export Settings" name="export_settings" value="true">
                 <ui:DropdownField label="File Format" index="0" choices="PNG,JPEG,TGA,GIF,MP4,MOV" name="file_format" />
-                <ui:TextField picking-mode="Ignore" label="File Folder Path" value="filler text" text="filler text" name="file_folder_path" />
-                <ui:TextField picking-mode="Ignore" label="File Name" value="filler text" text="filler text" name="file_name" />
+                <ui:TextField picking-mode="Ignore" label="File Folder Path" name="file_folder_path" />
+                <ui:TextField picking-mode="Ignore" label="File Name" name="file_name" />
                 <ui:SliderInt picking-mode="Ignore" label="Recording Time" value="0" high-value="500" name="recording_time" show-input-field="true" direction="Horizontal" />
                 <ui:Button text="Begin Exporting" display-tooltip-when-elided="true" name="action_begin_export" />
+                <ui:TextField picking-mode="Ignore" label="FFmpeg Path" is-delayed="true" name="ffmpeg_path" />
             </ui:Foldout>
             <ui:Foldout text="Playback Settings" name="savefile_settings" value="true">
                 <ui:TextField picking-mode="Ignore" label="File Path" value="filler text" text="filler text" name="file_path" />
