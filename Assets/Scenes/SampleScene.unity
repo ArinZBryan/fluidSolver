@@ -432,17 +432,17 @@ MonoBehaviour:
   baseInspectorFoldout: 0
   layoutInfos: []
   buttonMethods:
-  - rid: 4193276365003292735
-  - rid: 4193276365003292736
-  - rid: 4193276365003292737
-  - rid: 4193276365003292738
-  - rid: 4193276365003292739
-  - rid: 4193276365003292740
-  - rid: 4193276365003292741
+  - rid: 2833660329618571271
+  - rid: 2833660329618571272
+  - rid: 2833660329618571273
+  - rid: 2833660329618571274
+  - rid: 2833660329618571275
+  - rid: 2833660329618571276
+  - rid: 2833660329618571277
   references:
     version: 2
     RefIds:
-    - rid: 4193276365003292735
+    - rid: 2833660329618571271
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: deleteMediaFolderContents
@@ -450,7 +450,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193276365003292736
+    - rid: 2833660329618571272
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: screenshot
@@ -458,7 +458,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193276365003292737
+    - rid: 2833660329618571273
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: beginRecording
@@ -466,7 +466,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193276365003292738
+    - rid: 2833660329618571274
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecording
@@ -474,7 +474,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193276365003292739
+    - rid: 2833660329618571275
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: stopRecordingJson
@@ -482,7 +482,7 @@ MonoBehaviour:
         foldout: 1
         buttonSize: 12
         parameters: []
-    - rid: 4193276365003292740
+    - rid: 2833660329618571276
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: loadSaveFile
@@ -496,7 +496,7 @@ MonoBehaviour:
           isUsingRealTarget: 0
           target: {fileID: 496911285}
           containerTarget: {fileID: 496911285}
-    - rid: 4193276365003292741
+    - rid: 2833660329618571277
       type: {class: ButtonInfo, ns: AdvancedEditorTools, asm: Assembly-CSharp}
       data:
         methodName: forceEndLoadingFromSaveFile
@@ -627,7 +627,7 @@ MonoBehaviour:
     - {fileID: -2663187775335547616, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
     - {fileID: 1228502740}
     - {fileID: 1876726035}
-    - {fileID: 1171497017}
+    - {fileID: -2663187775335547616, guid: 5b310b7a8939c3a41bc652c1c9625bb9, type: 3}
     values:
     - {fileID: 771651728}
     - {fileID: 1818185163}
@@ -637,7 +637,7 @@ MonoBehaviour:
     - {fileID: 1099429280}
     - {fileID: 606921307}
     - {fileID: 2000545110}
-    - {fileID: 1415085760}
+    - {fileID: 1828601335}
   extensionEnabled: 1
   debugMode: 0
 --- !u!4 &1001844561
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 512, y: 512}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -933,8 +933,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 60, y: -60}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 256, y: -60}
+  m_SizeDelta: {x: 512, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1228502737
 MonoBehaviour:
@@ -949,15 +949,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 15
+    m_Right: 15
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -1015,24 +1015,6 @@ MonoBehaviour:
   errorPrefab: {fileID: 5706831206726278113, guid: 5b310b7a8939c3a41bc652c1c9625bb9, type: 3}
   warningPrefab: {fileID: 5706831206726278113, guid: 499c73ccca5a95841a15742e03fd692a, type: 3}
   infoPrefab: {fileID: 5706831206726278113, guid: 840d34144106cdb40b04e4a6b7ffa2e0, type: 3}
---- !u!114 &1415085760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseInspectorFoldout: 0
-  layoutInfos: []
-  buttonMethods: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &1482909109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1266,7 @@ MonoBehaviour:
   simulator: {fileID: 0}
   menuManager: {fileID: 1171497018}
   fmt: 0
-  folder: c:\dev\fluidSolve\Media
+  folder: c:\dev\fluidSolver\Media
   fileName: bugcheck
   time: 0
   viewport: {fileID: 1486533906}
@@ -1306,6 +1288,24 @@ Transform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1818185163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91035bcb2ca13824395c1c51b162bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseInspectorFoldout: 0
+  layoutInfos: []
+  buttonMethods: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1828601335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

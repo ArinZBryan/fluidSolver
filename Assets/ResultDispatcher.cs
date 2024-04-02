@@ -138,10 +138,6 @@ public class ResultDispatcher : MonoBehaviour
         //If currently saving to a file
         if (playbackFrames != null && writingToSaveFile)
         {
-            if (playbackFrames.Count() == 0)
-            {
-                firstFrame = new KeyFrame(simulator.solver);
-            }
             playbackFrames.Add(new PlaybackFrame(inputThisFrame, simulator.simulationObjects));
 
         }
@@ -243,6 +239,7 @@ public class ResultDispatcher : MonoBehaviour
         var b = new BinaryFormatter();
         var p = new PlaybackFile(playbackFrames, firstFrame);
         b.Serialize(f, p);
+        f.Close();
     }
     void saveFileJson(string path)
     {
@@ -251,6 +248,7 @@ public class ResultDispatcher : MonoBehaviour
         string file = JsonUtility.ToJson(new PlaybackFile(playbackFrames, firstFrame));
         //var p = new PlaybackFile(playbackFrames, firstFrame);
         f.Write(System.Text.Encoding.UTF8.GetBytes(file));
+        f.Close();
     }
     [Button("Delete Media Folder Contents")]
     void deleteMediaFolderContents()
@@ -280,20 +278,21 @@ public class ResultDispatcher : MonoBehaviour
             return;
         }
         playbackFrames = new List<PlaybackFrame>();
+        firstFrame = new KeyFrame(simulator.solver);
     }
     [Button("Stop Recording")]
-    public void stopRecording()
+    public void stopRecording(string path)
     {
         writingToSaveFile = false;
-        saveFile("./saves/save.simsave");
+        saveFile(path);
         playbackFrames = null;
     }
     [Button("Stop Recording (JSON)")]
-    void stopRecordingJson()
+    void stopRecordingJson(string path)
     {
         writingToSaveFile = false;
-        saveFile("./saves/save.simsave");
-        saveFileJson("./saves/save.json");
+        saveFile(path);
+        saveFileJson(path);
         playbackFrames = null;
     }
     [Button("Load Save File")]
@@ -315,6 +314,7 @@ public class ResultDispatcher : MonoBehaviour
         catch (Exception e)
         {
             messageLog.Error("Unknown File Loading Error");
+            messageLog.Error(e.Message);
             return;
         }
         var b = new BinaryFormatter();

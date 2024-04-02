@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 512, y: 20}
+  m_SizeDelta: {x: 103, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5706831206726278116
 CanvasRenderer:
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Runtime Error: '
 --- !u!114 &-2663187775335547616

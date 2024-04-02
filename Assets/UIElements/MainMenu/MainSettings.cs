@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -67,7 +68,7 @@ public class MainSettings : Menu
                 if (maybe_file_path == null) { Debug.LogError("An error occured while connecting to the UI"); }
                 else
                 {
-                    menuManager.resultDispatcher.stopRecording();
+                    menuManager.resultDispatcher.stopRecording(maybe_file_path.value);
                 }
             };
         }
@@ -240,11 +241,11 @@ public class MainSettings : Menu
         else { maybe_mouse_brush_size.RegisterValueChangedCallback((e) => { menuManager.resultDispatcher.simulator.penSize = e.newValue; }); }
         */
 
-        Button? maybe_export_button = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/action_begin_export");
-        if (maybe_export_button == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        Button? maybe_export_start_button = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/action_begin_export");
+        if (maybe_export_start_button == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
         else
         {
-            maybe_export_button.clicked += () =>
+            maybe_export_start_button.clicked += () =>
             {
                 Debug.Log("Beginning Export");
                 TextField? maybe_file_folder = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/file_folder_path");
@@ -257,6 +258,31 @@ public class MainSettings : Menu
                 if (maybe_file_type == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
                 SliderInt? maybe_frame_rate = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/simulation_settings/tick_rate");
                 if (maybe_frame_rate == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                TextField? maybe_ffmpeg_path = (TextField?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/ffmpeg_path");
+                if (maybe_ffmpeg_path == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                ffmpegPath = maybe_ffmpeg_path.value;
+
+                if (ffmpegPath == "")
+                {
+                    if (Config.getString("ffmpeg_path") == "PATH")
+                    {
+                        var envPath = System.Environment.GetEnvironmentVariable("PATH");
+                        var paths = envPath.Split(';');
+                        var exePath = paths.Select(x => Path.Combine(x, "ffmpeg.exe"))
+                                           .Where(x => File.Exists(x))
+                                           .FirstOrDefault();
+                        if (exePath == null || exePath == "")
+                        {
+                            menuManager.resultDispatcher.messageLog.Error("No FFmpeg executable found in system PATH variable. Please Specify a path.");
+                            return;
+                        }
+                        ffmpegPath = exePath;
+                    }
+                    else if (File.Exists(Config.getString("ffmpeg_path"))) { ffmpegPath = Config.getString("ffmpeg_path"); }
+                    else { menuManager.resultDispatcher.messageLog.Error("Invalid FFmpeg path specified in config file"); return; }
+
+
+                }
 
                 if (maybe_file_folder.value.EndsWith('/') || maybe_file_folder.value.EndsWith("\\")) { maybe_file_folder.value = maybe_file_folder.value.Substring(0, maybe_file_folder.value.Length - 1); }
 
@@ -303,7 +329,23 @@ public class MainSettings : Menu
 
             };
         }
-    
+
+        Button? maybe_export_end_button = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/action_end_export");
+        if (maybe_export_end_button == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        else
+        {
+            maybe_export_end_button.clicked += () =>
+            {
+                var valid = menuManager.resultDispatcher.destinations.Where(x => { return (x is not Destinations.Viewport); }).ToList();
+                foreach (var dest in valid)
+                {
+                    dest.destroy();
+                    menuManager.resultDispatcher.destinations.Remove(dest);
+                }
+            };
+
+        }
+
         Button? maybe_physObj_menu = (Button?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/action_open_physObj_settings");
         if (maybe_physObj_menu == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
         else

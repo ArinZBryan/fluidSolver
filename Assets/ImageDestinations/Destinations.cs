@@ -86,7 +86,7 @@ public class Destinations
                     UnityEngine.Debug.Log("You can't use this format for a video you silly goose");
                     return "";
             }
-
+            GameObject.Find("Messages").GetComponent<MessageManager>().Log("Beginning Export");
             if (Directory.Exists(folder + "\\imgsequence"))
             {
                 GameObject.Find("Messages").GetComponent<MessageManager>().Warn("Detected directory with same name as temporary directory, deleting...");
@@ -94,7 +94,7 @@ public class Destinations
             }
             if (File.Exists(folder + "\\" + filename + format))
             {
-                GameObject.Find("Messages").GetComponent<MessageManager>().Error("File with same path as output file detected, deleting...");
+                GameObject.Find("Messages").GetComponent<MessageManager>().Warn("File with same path as output file detected, deleting...");
                 File.Delete(folder + "\\" + filename + format);
             }
 
@@ -135,7 +135,7 @@ public class Destinations
                     GameObject.Find("Messages").GetComponent<MessageManager>().Error("Path is in an invalid format");
                 }
             }
-
+            GameObject.Find("Messages").GetComponent<MessageManager>().Log("Finished Writing Files");
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = ffmpegPath;
             startInfo.CreateNoWindow = true;
@@ -143,8 +143,18 @@ public class Destinations
             startInfo.RedirectStandardError = true;     //For some reason FFMPEG writes all its logs to the error stream, don't ask me why
             startInfo.WorkingDirectory = folder + "\\imgsequence\\";
             startInfo.Arguments = $"-framerate {frameRate} -i {filename}%04d.png -pix_fmt yuv420p {folder + "\\imgsequence\\" + filename + format}";
-
-            Process ffmpegProcess = Process.Start(startInfo);
+            GameObject.Find("Messages").GetComponent<MessageManager>().Log("Starting FFmpeg");
+            Process ffmpegProcess;
+            try
+            {
+                ffmpegProcess = Process.Start(startInfo);
+            } catch (Exception e)
+            {
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error("FFMPEG failed to start. Check that the path is correct and that the file exists");
+                GameObject.Find("Messages").GetComponent<MessageManager>().Error(e.ToString());
+                return "";
+            }
+            GameObject.Find("Messages").GetComponent<MessageManager>().Log("Started FFmpeg");
             string ffmpegResult = ffmpegProcess.StandardError.ReadToEnd();
 
             if (!ffmpegProcess.WaitForExit(Config.getInt("ffmpeg_timeout")))
@@ -154,7 +164,7 @@ public class Destinations
 
 
             UnityEngine.Debug.Log(ffmpegResult);
-            UnityEngine.Debug.Log("Process Exited");
+            GameObject.Find("Messages").GetComponent<MessageManager>().Log("FFmpeg finished");
 
             File.Move(folder + "\\imgsequence\\" + filename + format, folder + "\\" + filename + format);
             Directory.Delete(folder + "\\imgsequence", true);

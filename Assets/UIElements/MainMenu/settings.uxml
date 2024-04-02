@@ -46,6 +46,7 @@
                 <ui:TextField picking-mode="Ignore" label="File Name" name="file_name" />
                 <ui:SliderInt picking-mode="Ignore" label="Recording Time" value="0" high-value="500" name="recording_time" show-input-field="true" direction="Horizontal" />
                 <ui:Button text="Begin Exporting" display-tooltip-when-elided="true" name="action_begin_export" />
+                <ui:Button text="End Exporting" display-tooltip-when-elided="true" name="action_end_export" />
                 <ui:TextField picking-mode="Ignore" label="FFmpeg Path" is-delayed="true" name="ffmpeg_path" />
             </ui:Foldout>
             <ui:Foldout text="Playback Settings" name="savefile_settings" value="true">

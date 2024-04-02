@@ -24,6 +24,22 @@ public struct PackedArray<T> : IEnumerable<T>
         this.length = data.Length;
         this.dimensions = Dimensions;
     }
+    public PackedArray(PackedArray<T> source)
+    {
+        data = new T[source.data.Length];
+        this.dimensions = new int[source.dimensions.Length];
+        //deep copy dimensions
+        for (int i = 0; i < source.dimensions.Length; i++)
+        {
+            this.dimensions[i] = source.dimensions[i];
+        }
+        //deep copy data
+        for (int i = 0; i < source.data.Length; i++)
+        {
+            this.data[i] = source.data[i];
+        }
+        this.length = source.length;
+    }
     public T this[int i]
     {
         get { return data[i]; }

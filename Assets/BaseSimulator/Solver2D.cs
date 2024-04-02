@@ -341,12 +341,12 @@ public class Solver2D
                         out PackedArray<float> velocity_vertical, 
                         out PackedArray<float> velocity_vertical_prev)
     {
-        density = this.density;
-        density_prev = this.prev_density;
-        velocity_horizontal = this.velocity_horizontal;
-        velocity_vertical = this.velocity_vertical;
-        velocity_horizontal_prev = this.prev_velocity_horizontal;
-        velocity_vertical_prev = this.prev_velocity_vertical;
+        density = new PackedArray<float>(this.density);
+        density_prev = new PackedArray<float>(this.prev_density);
+        velocity_horizontal = new PackedArray<float>(this.velocity_horizontal);
+        velocity_vertical = new PackedArray<float>(this.velocity_vertical);
+        velocity_horizontal_prev = new PackedArray<float>(this.prev_velocity_horizontal);
+        velocity_vertical_prev = new PackedArray<float>(this.prev_velocity_vertical);
     }
     public void getCurrent( out PackedArray<float> density, 
                             out PackedArray<float> velocity_horizontal,

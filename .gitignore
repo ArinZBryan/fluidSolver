@@ -50,4 +50,5 @@ crashlytics-build.properties
 # Test Media Output Directory
 /Media/
 /saves/
+/ClassDiagrams/
 /UserSettings/
