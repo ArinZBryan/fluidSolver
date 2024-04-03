@@ -262,6 +262,24 @@ public class MainSettings : Menu
                 if (maybe_ffmpeg_path == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
                 ffmpegPath = maybe_ffmpeg_path.value;
 
+                SliderInt? maybe_alpha_1 = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/alpha");
+                if (maybe_frame_rate == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                SliderInt? maybe_alpha_2 = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/fluid_color/alpha");
+                if (maybe_ffmpeg_path == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                if (maybe_alpha_1.value != 255 || maybe_alpha_2.value != 255) 
+                { 
+                    if (maybe_file_type.value == "GIF" || maybe_file_type.value == "MP4" || maybe_file_type.value == "MOV")
+                    {
+                        menuManager.resultDispatcher.messageLog.Warn("Alpha is not supported when exporting video. Use an image sequence of filetype .png or .tga to use transparency. All transparency values will be set to opaque for these exported files.");
+                    }
+                    if (maybe_file_type.value == "JPEG")
+                    {
+                        menuManager.resultDispatcher.messageLog.Warn("Alpha is not supported when exporting JPEG. Use an image sequence of filetype .png or .tga to use transparency. All transparency values will be set to opaque for these exported files.");
+                    }
+                    
+                }
+
+
                 if (ffmpegPath == "")
                 {
                     if (Config.getString("ffmpeg_path") == "PATH")
