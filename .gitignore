@@ -54,3 +54,4 @@ crashlytics-build.properties
 /UserSettings/
 *.exe
 /bin/
+/bin/fluidSolver_Data/

@@ -2,6 +2,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using AdvancedEditorTools.Attributes;
+using System;
 
 public class MainSettings : Menu
 {
@@ -263,9 +265,9 @@ public class MainSettings : Menu
                 ffmpegPath = maybe_ffmpeg_path.value;
 
                 SliderInt? maybe_alpha_1 = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/alpha");
-                if (maybe_frame_rate == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
-                SliderInt? maybe_alpha_2 = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/export_settings/fluid_color/alpha");
-                if (maybe_ffmpeg_path == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                if (maybe_alpha_1 == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+                SliderInt? maybe_alpha_2 = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_Settings/fluid_color/alpha");
+                if (maybe_alpha_2 == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
                 if (maybe_alpha_1.value != 255 || maybe_alpha_2.value != 255) 
                 { 
                     if (maybe_file_type.value == "GIF" || maybe_file_type.value == "MP4" || maybe_file_type.value == "MOV")
@@ -412,6 +414,48 @@ public class MainSettings : Menu
     {
         base.Close();
         menuManager.resultDispatcher.gameObject.SetActive(true);
+    }
+    [Button("Set Foreground Colour")]
+    void setForegroundColour(string code)
+    {
+        if (code.Length != 8) { Debug.LogError("Invalid Colour Code"); return; }
+        int length = 2;
+        var substrings = Enumerable.Range(0, code.Length / length)
+            .Select(i => code.Substring(i * length, length));
+        byte[] bytes = substrings.Select(x => Convert.ToByte(x, 16)).ToArray();
+        
+        SliderInt? maybe_fluid_col_r = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/red");
+        SliderInt? maybe_fluid_col_g = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/green");
+        SliderInt? maybe_fluid_col_b = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/blue");
+        SliderInt? maybe_fluid_col_a = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/fluid_color/alpha");
+        if (maybe_fluid_col_r == null || maybe_fluid_col_g == null || maybe_fluid_col_b == null | maybe_fluid_col_a == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+        
+        maybe_fluid_col_r.value = bytes[0];
+        maybe_fluid_col_g.value = bytes[1];
+        maybe_fluid_col_b.value = bytes[2];
+        maybe_fluid_col_a.value = bytes[3];
+        menuManager.resultDispatcher.simulator.fluidColor = new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
+    }
+    [Button("Set Background Colour")]
+    void setBackgroundColour(string code)
+    {
+        if (code.Length != 8) { Debug.LogError("Invalid Colour Code"); return; }
+        int length = 2;
+        var substrings = Enumerable.Range(0, code.Length / length)
+            .Select(i => code.Substring(i * length, length));
+        byte[] bytes = substrings.Select(x => Convert.ToByte(x, 16)).ToArray();
+
+        SliderInt? maybe_base_col_r = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/red");
+        SliderInt? maybe_base_col_g = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/green");
+        SliderInt? maybe_base_col_b = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/blue");
+        SliderInt? maybe_base_col_a = (SliderInt?)getElementByRelativeNamePathLogged(document.rootVisualElement, "root/scroll_menu/kernel_settings/base_color/alpha");
+        if (maybe_base_col_r == null || maybe_base_col_g == null || maybe_base_col_b == null | maybe_base_col_a == null) { Debug.LogError("An error occured while connecting to the UI"); return; }
+
+        maybe_base_col_r.value = bytes[0];
+        maybe_base_col_g.value = bytes[1];
+        maybe_base_col_b.value = bytes[2];
+        maybe_base_col_a.value = bytes[3];
+        menuManager.resultDispatcher.simulator.baseColor = new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
 }
 

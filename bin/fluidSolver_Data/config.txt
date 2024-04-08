@@ -1,3 +1,0 @@
-integer_scaling=false
-ffmpeg_path="PATH"
-ffmpeg_timeout=5000
