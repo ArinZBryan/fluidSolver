@@ -53,3 +53,4 @@ crashlytics-build.properties
 /ClassDiagrams/
 /UserSettings/
 *.exe
+/bin/
